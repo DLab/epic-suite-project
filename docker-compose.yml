@@ -1,0 +1,21 @@
+version: "3.10"
+services:
+  sse:
+    container_name: sse
+    image: sse
+    build: .
+    ports:
+      - "0.0.0.0:9000:9000"
+    # volumes:
+    #   - .:/sse
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    environment:
+      - REDIS_PORT_NUMBER=6000
+    ports:
+      - "6000:6000"
+    command: redis-server --port 6000 & redis-cli -6000
