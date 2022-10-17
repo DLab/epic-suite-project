@@ -1,0 +1,10 @@
+quart
+hypercorn
+quart_CORS
+redis
+uuid
+requests
+aiohttp
+pytest
+pytest-asyncio
+coverage
