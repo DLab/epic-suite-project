@@ -12,5 +12,5 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 9000
 # CMD [ "hypercorn","--bind","0.0.0.0:9000", "example:app"]
-CMD [ "hypercorn","-b","0.0.0.0:9000", "app.server:app", "--debug", "--config", "format.toml", "--access-logfile","-"]
-# CMD [ "hypercorn","-b","0.0.0.0:9000", "app.server:app", "--debug", "--access-logfile", "-"]
+# CMD [ "hypercorn","-b","0.0.0.0:9000", "app.server:app", "--debug", "--config", "format.toml", "--access-logfile","-"]
+CMD [ "hypercorn","-b","0.0.0.0:9000", "app.server:app", "--debug", "--access-logfile", "-"]

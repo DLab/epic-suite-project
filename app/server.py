@@ -8,7 +8,8 @@ import async_timeout
 import uuid
 import json
 from app.connections.connect_redis import connect_redis as connect
-from app.simulate_model import Model
+from app.simulate_model import Model, ConfigModel
+from app.schedule_task import schedule_task
 
 app = Quart(__name__)
 app = cors(app, allow_origin="*")
@@ -17,20 +18,21 @@ app = cors(app, allow_origin="*")
 async def status():
     return await make_response(jsonify("ok"), 200)
 
-
 @app.post("/simulations")
 async def channels():
     try:
         type_sim = request.args.get("type")
         form = await request.get_data()
         id_req = f"{uuid.uuid4()}"
-        ip_addr = request.remote_addr
-        sim_request = Model(id_req, type_sim, ip_addr)
-        sim_request.set_init_data(form)
+        config = ConfigModel(id_req,type_sim, json.loads(form))
+        sim_request = Model()
+        sim_request.set_config(config)
         response = await make_response(
             jsonify({"id": id_req, "status": "recieved", "description": "ready"})
         )
-        asyncio.create_task(sim_request.simulate_model()).set_name(id_req)
+        asyncio.create_task(schedule_task(sim_request.simulate_model)).set_name(id_req)
+        
+        #asyncio.create_task(sim_request.simulate_model()).set_name(id_req)
         return response
     except Exception as error:
         print(error)
@@ -99,16 +101,14 @@ async def cancel(id_req):
 
 @app.get("/results/<id_req>")
 async def result(id_req):
-    ip_addr = request.remote_addr
     if not id_req:
         return await make_response(jsonify(id="undefined"), 404)
     redis = connect()
 
     try:
-        data = await redis.get(ip_addr)
+        data = await redis.get(id_req)
         if json.loads(data)["status"] == "error":
             return await make_response(jsonify(status="error"), 404)
         return await make_response(jsonify(json.loads(data)["data"]), 200)
     except Exception:
         return await make_response(jsonify(status="error"), 404)
-

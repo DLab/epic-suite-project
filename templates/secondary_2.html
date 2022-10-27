@@ -16,7 +16,7 @@
 		</form>
 		<script>
 			const body = JSON.stringify({
-				Model4: {
+				Model6: {
 					model: {
 						model: "SEIRMETA",
 						id: 1662577076319,
@@ -41,14 +41,14 @@
 						static: {
 							t_init: 0,
 							t_end: 500,
-							mu: [1.5],
+							mu: [1.5, 1.5],
 							pI_det: 1,
 							k_I: 0,
 							k_R: 0,
 						},
 						dynamic: {
-							beta: [0.3],
-							alpha: [1],
+							beta: [0.3, 0.8],
+							alpha: [1, 1],
 							Phi: false,
 							tE_I: 5,
 							tI_R: 7,
@@ -56,11 +56,11 @@
 						},
 					},
 					initialconditions: {
-						I: [217425],
-						I_d: [15811],
-						I_ac: [9560220],
-						population: [39512223],
-						R: [0],
+						I: [217425, 232323],
+						I_d: [15811, 12344],
+						I_ac: [9560220, 474747],
+						population: [39512223, 1234567],
+						R: [0, 0],
 						E: false,
 						E_d: false,
 					},
