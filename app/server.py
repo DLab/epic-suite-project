@@ -1,57 +1,80 @@
-from operator import itemgetter
-import time
-from quart import Quart, abort, make_response, request, jsonify
-from quart_cors import cors
-from app.sse.sse import ServerSentEvent
 import asyncio
-import async_timeout
-import uuid
 import json
-from app.connections.connect_redis import connect_redis as connect
-from app.simulate_model import Model, ConfigModel
-from app.schedule_task import schedule_task
+from operator import itemgetter
+import uuid
+from app.connections.connect_redis import Connect, RedisDatabase, StatusMessage, StatusSimulation
+from fastapi import FastAPI, Request
+from app.constants.pub import CHANNEL_REDIS_PUB, RETRY_TIMEOUT, STREAM_DELAY
+from sse_starlette.sse import EventSourceResponse
+from fastapi.middleware.cors import CORSMiddleware
+import traceback
 
-app = Quart(__name__)
-app = cors(app, allow_origin="*")
+app = FastAPI()
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.get("/status")
 async def status():
-    return await make_response(jsonify("ok"), 200)
+    return {"status":"ok"}
 
-@app.post("/simulations")
-async def channels():
+@app.post("/publish/{type}")
+async def publish_status_simulation(type: str, request: Request):
+    form = await request.json()
+    await RedisDatabase.publish(json.dumps(StatusMessage(form["id"],type,StatusSimulation[form["status"]]).get_message()))
+    if "data" in form and form["status"] == StatusSimulation.FINISHED.name:
+        await RedisDatabase.save_results(form["id"],form["status"],form['data'])
+    else:
+        await RedisDatabase.save_results(form["id"],form["status"])
+    return {"ok": 200}
+
+@app.get("/process/{id_process}")
+async def process_status_simulation(id_process: str):
     try:
-        type_sim = request.args.get("type")
-        form = await request.get_data()
-        id_req = f"{uuid.uuid4()}"
-        config = ConfigModel(id_req,type_sim, json.loads(form))
-        sim_request = Model()
-        sim_request.set_config(config)
-        response = await make_response(
-            jsonify({"id": id_req, "status": "recieved", "description": "ready"})
-        )
-        asyncio.create_task(schedule_task(sim_request.simulate_model)).set_name(id_req)
-        
-        #asyncio.create_task(sim_request.simulate_model()).set_name(id_req)
-        return response
-    except Exception as error:
-        print(error)
-        return await make_response("error", 400)
+        print("Processing",id_process, flush=True)
+        data = await RedisDatabase.get_data(id_process)
+        return data
+    except ValueError:
+        return {"error": "Invalid process id"}
 
+@app.get('/stream')
+async def message_stream(request: Request):
+    print("sse connected", flush=True)
+    
 
-@app.get("/stream")
-async def sse():
-    ip_addr = request.remote_addr
-    if "text/event-stream" not in request.accept_mimetypes:
-        abort(400)
-    redis_db = connect()
-    pubsub = redis_db.pubsub()
-    await pubsub.subscribe("simulations")
+    async def new_messages(pub):
+        # Add logic here to check for new messages
+        if await pub.wait_message():
+            yield True
+        yield False
 
-    async def send_events():
+    async def event_generator(request):
+        redis_db = Connect.connect_redis()
+        pubsub = redis_db.pubsub()
+        await pubsub.subscribe(CHANNEL_REDIS_PUB)
         while True:
+            # If client closes connection, stop sending events
             try:
-                async with async_timeout.timeout(5):
+
+                is_client_disconnected = await request.is_disconnected()
+                if is_client_disconnected:
+                    #await pubsub.unsubscribe(CHANNEL_REDIS_PUB)
+                    break
+
+                # Checks for new messages and return them to client if any
+                if new_messages(pubsub):
                     data = await pubsub.get_message()
                     type_data = type(data)
                     if (
@@ -60,55 +83,21 @@ async def sse():
                         and type(data["data"]) is bytes
                     ):
                         status, event_name, id = itemgetter(
-                            "status", "event_name", "id"
+                            "status", "event", "id"
                         )(json.loads(data["data"]))
                         # status, event_name = json.loads(data["data"]).items()
                         print("--> sse: ",  "id:", id, "status:", status, "event:", event_name, flush=True)
-                        event = ServerSentEvent(
-                            json.dumps(json.loads(data["data"])), event_name, 1, 10
-                        )
-                        yield event.encode()
+                        yield {
+                                "event": event_name,
+                                "id": "message_id",
+                                "retry": RETRY_TIMEOUT,
+                                "data": json.dumps(json.loads(data["data"]))
+                        }
 
-                    await asyncio.sleep(2)
-            except asyncio.CancelledError as error:
-                print(error, flush=True)
-                t = time.localtime()
-                print("exit -> ip: ", ip_addr, time.strftime("%H:%M:%S", t), flush=True)
-                await pubsub.unsubscribe()
-
-    response = await make_response(
-        send_events(),
-        {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-            "Transfer-Encoding": "chunked",
-        },
-    )
-    response.timeout = None
-    return response
-
-
-@app.get("/cancel/<id_req>")
-async def cancel(id_req):
-    if not id_req:
-        return await make_response(jsonify(response="Id is wrong"), 400)
-    for task in asyncio.all_tasks(asyncio.get_event_loop()):
-        if task.get_name() == id_req:
-            print("exit task", task.get_name(), flush=True)
-            task.cancel()
-    return await make_response(jsonify(id_req))
-
-
-@app.get("/results/<id_req>")
-async def result(id_req):
-    if not id_req:
-        return await make_response(jsonify(id="undefined"), 404)
-    redis = connect()
-
-    try:
-        data = await redis.get(id_req)
-        if json.loads(data)["status"] == "error":
-            return await make_response(jsonify(status="error"), 404)
-        return await make_response(jsonify(json.loads(data)["data"]), 200)
-    except Exception:
-        return await make_response(jsonify(status="error"), 404)
+                await asyncio.sleep(STREAM_DELAY)
+            except Exception as e:
+                print("Error:", e, flush=True)
+                await pubsub.unsubscribe(CHANNEL_REDIS_PUB)
+                traceback.print_exc()
+                break
+    return EventSourceResponse(event_generator(request))
