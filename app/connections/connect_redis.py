@@ -38,9 +38,6 @@ class StatusMessage:
     def get_message(self):
         return {'id': self.id, 'event': self.event, 'status': self.status, 'description': self.description}
 
-# T = TypeVar('T')
-# R = TypeVar('R')
-
 class RedisDatabase():
     @staticmethod
     async def publish(message):
@@ -49,8 +46,8 @@ class RedisDatabase():
         await conn.close()
         
     @staticmethod
-    async def save_results(id, status=StatusSimulation.NOT_STARTED.name, results=None):
-        data = {"status": status, "results": results}
+    async def save_results(id, status=StatusSimulation.NOT_STARTED.name, results={"results":None}):
+        data = {"status": status, "results": results["results"] or ""}
         conn = Connect.connect_redis()
         await conn.set(id, json.dumps(data))
         await conn.expire(id, 300)

@@ -45,9 +45,11 @@ async def process_status_simulation(id_process: str):
     try:
         print("Processing",id_process, flush=True)
         data = await RedisDatabase.get_data(id_process)
+        if data is None:
+            return {"message":f"There is not any process with id {id_process}"}, 404
         return data
     except ValueError:
-        return {"error": "Invalid process id"}
+        return {"error": "Invalid process id"}, 400
 
 @app.get('/stream')
 async def message_stream(request: Request):
