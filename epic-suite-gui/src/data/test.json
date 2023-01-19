@@ -1,0 +1,70 @@
+{
+    "Sim 1": {
+        "idSim": 1648125700694,
+        "model": {
+            "name": "SIR",
+            "compartments": [
+                "S",
+                "I",
+                "R"
+            ]
+        },
+        "data": {
+            "datafile": false,
+            "importdata": false,
+            "initdate": "2020-03-22",
+            "country": "USA",
+            "state": [
+                "06"
+            ],
+            "county": "",
+            "healthservice": "",
+            "loc_name": ""
+        },
+        "parameters": {
+            "static": {
+                "t_init": 0,
+                "t_end": 500,
+                "mu": 1.5,
+                "pI_det": 1
+            },
+            "dynamic": {
+                "beta": {
+                    "function": "events",
+                    "values": [
+                        0.3,
+                        {
+                            "function": "sine",
+                            "min_val": 0,
+                            "max_val": 1,
+                            "period": 20,
+                            "initphase": 0
+                        }
+                    ],
+                    "days": [
+                        [
+                            0,
+                            300
+                        ],
+                        [
+                            300,
+                            510
+                        ]
+                    ],
+                    "default": 0.3
+                },
+                "alpha": 1,
+                "tE_I": 0.3,
+                "tI_R": 7,
+                "rR_S": 0
+            }
+        },
+        "initialconditions": {
+            "I": 72240,
+            "I_d": 5670,
+            "I_ac": 5087185,
+            "population": 39512223,
+            "R": 106
+        }
+    }
+}
