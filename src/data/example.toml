@@ -1,0 +1,184 @@
+title = "Example of a SEIR Configuration File"
+date = "2021-04-20"
+user = "Samuel"
+
+[[simulation]]
+idGraph = 0
+scale = "Counties"
+
+  [simulation.model]
+  name = "SEIR"
+  compartments = [ "S", "E", "I", "R" ]
+
+  [simulation.data]
+  datafile = false
+  importdata = false
+  initdate = ""
+  country = "USA"
+  state = ""
+  county = [
+  "42105",
+  "42113",
+  "42077",
+  "42023",
+  "42019",
+  "42117",
+  "42047",
+  "42131",
+  "42093",
+  "42083",
+  "42075",
+  "42101",
+  "42129",
+  "42043",
+  "42067",
+  "42009",
+  "42033",
+  "42051",
+  "42095",
+  "42057",
+  "42005",
+  "42003",
+  "42091",
+  "42121",
+  "42021",
+  "42111",
+  "42017",
+  "42031",
+  "42025",
+  "42045",
+  "42107",
+  "42011",
+  "42001",
+  "42059",
+  "42013",
+  "42119",
+  "42029",
+  "42123",
+  "42133",
+  "42037",
+  "42099",
+  "42109",
+  "42097",
+  "42125",
+  "42049",
+  "42073",
+  "42127",
+  "42079",
+  "42053",
+  "42061",
+  "42015",
+  "42069",
+  "42081",
+  "42087",
+  "42089",
+  "42071",
+  "42115",
+  "42007",
+  "42035",
+  "42039",
+  "42063",
+  "42041",
+  "42065",
+  "42103",
+  "42085",
+  "42027",
+  "42055"
+]
+  healthservice = ""
+  loc_name = ""
+
+[simulation.parameters.static]
+t_init = 0
+t_end = 1
+timestep = 0.01
+mu = 1
+pI_det = 0.01
+
+[simulation.parameters.dynamic]
+beta = 0.01
+tE_I = 0
+tI_R = 0
+
+  [simulation.initialconditions]
+  population = 159
+  R = 194
+  I = 178
+  I_d = 360
+  I_ac = 263
+  E = 22
+
+[[simulation]]
+idGraph = 0
+scale = "States"
+
+  [simulation.model]
+  name = "SIR"
+  compartments = [ "S", "I", "R" ]
+
+  [simulation.data]
+  datafile = false
+  importdata = false
+  initdate = ""
+  country = "USA"
+  state = [ "06" ]
+  county = ""
+  healthservice = ""
+  loc_name = ""
+
+[simulation.parameters.static]
+t_init = 0
+t_end = 1
+timestep = 0.01
+mu = 1
+pI_det = 0.01
+
+[simulation.parameters.dynamic]
+beta = 0.01
+tE_I = 0
+tI_R = 0
+
+  [simulation.initialconditions]
+  population = 199
+  R = 249
+  I = 348
+  I_d = 305
+  I_ac = 284
+  E = 0
+
+[[simulation]]
+idGraph = 1
+
+  [simulation.model]
+  name = "SIR"
+  compartments = [ "S", "I", "R" ]
+
+  [simulation.data]
+  datafile = false
+  importdata = false
+  initdate = ""
+  country = "USA"
+  state = ""
+  county = ""
+  healthservice = ""
+  loc_name = ""
+
+[simulation.parameters.static]
+t_init = 0
+t_end = 1
+timestep = 0.01
+mu = 1
+pI_det = 0.01
+
+[simulation.parameters.dynamic]
+beta = 0.01
+tE_I = 0
+tI_R = 0
+
+  [simulation.initialconditions]
+  population = 1_200
+  R = 0
+  I = 1
+  I_d = 0
+  I_ac = 0
+  E = 0

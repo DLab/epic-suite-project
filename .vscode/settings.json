@@ -1,0 +1,8 @@
+{
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": true,
+    "docwriter.progress.trackFunctions": false,
+    "docwriter.progress.trackMethods": true,
+    "docwriter.progress.trackClasses": false,
+    "docwriter.progress.trackTypes": true
+}
