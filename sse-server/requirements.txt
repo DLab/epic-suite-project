@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sse-starlette
+asyncio
+redis
+uuid
+requests
+aiohttp
+aioredis
+hypercorn
+pytest
+pytest-asyncio
+coverage
+fastapi-plugins
