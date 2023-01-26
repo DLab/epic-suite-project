@@ -1,8 +1,9 @@
-version: "3.10"
+version: "3"
 services:
     client:
         build:
             context: ./epic-suite-gui
+            dockerfile: Dockerfile
         image: client
         ports:
             - "3000:3000"
@@ -12,6 +13,8 @@ services:
     initialconditions:
         build:
             context: ./init-cond/endpointV1.2
+            dockerfile: Dockerfile
+
         image: initial_conditions_server
         ports:
             - "5002:5002"
@@ -19,6 +22,8 @@ services:
     nginx:
         build:
             context: ./nginx
+            dockerfile: Dockerfile
+
         image: nginx_proxy
         container_name: nginx
         volumes:
@@ -31,10 +36,11 @@ services:
             - sse
     covid19geomodeller:
         container_name: covid19geomodeller
-        image: server_cv19gm
+        image: simulation-backend
         command: conda run -n myenv python backend/run.py
         build: 
             context: ./simulation-backend
+            dockerfile: Dockerfile
         ports:
           - "5003:5003"
         volumes:
@@ -44,26 +50,28 @@ services:
         entrypoint: "./install.sh"
     worker:
         container_name: worker
-        image: server_cv19gm
+        image: simulation-backend
         command: conda run -n myenv rq worker --name worker --url redis://redis:6379/0
         build: 
             context: ./simulation-backend
+            dockerfile: Dockerfile
         depends_on:
           - redis
           - covid19geomodeller
         volumes:
-          - ./simulation-backend/backend:/app/backend
+          - ./server_cv19gm/backend:/app/backend
         entrypoint: "./worker.sh"
 
     sse:
         container_name: sse
         image: sse
         build: 
-            context: ./sse_server
+            context: ./sse-server
+            dockerfile: Dockerfile
         ports:
           - "9000:9000"
         volumes:
-          - ./sse_server/app:/code/app
+          - ./sse-server/app:/code/app
         depends_on:
           - redis
     redis:

@@ -1,0 +1,15 @@
+numpy
+datetime
+requests
+flask
+flask_cors
+ipython
+waitress
+rq
+redis
+requests
+uuid
+pandas
+scipy
+matplotlib
+pygmo

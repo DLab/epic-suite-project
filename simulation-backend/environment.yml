@@ -1,0 +1,21 @@
+name: myenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - flask
+  - numpy
+  - requests
+  - flask
+  - flask_cors
+  - ipython
+  - waitress
+  - rq
+  - redis
+  - requests
+  - pygmo
+  - pandas
+  - matplotlib
+  - scipy
+  - toml
