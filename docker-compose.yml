@@ -1,19 +1,17 @@
-version: "3"
+version: "3.10"
 services:
     client:
         build:
             context: ./epic-suite-gui
-            dockerfile: Dockerfile
         image: client
         ports:
             - "3000:3000"
         container_name: client
-        volumes:
-          - ./epic-suite-gui/.next:/app/.next
+        # volumes:
+        #   - ./epic-suite-gui/.next:/app/.next
     initialconditions:
         build:
             context: ./init-cond/endpointV1.2
-            dockerfile: Dockerfile
 
         image: initial_conditions_server
         ports:
@@ -22,7 +20,6 @@ services:
     nginx:
         build:
             context: ./nginx
-            dockerfile: Dockerfile
 
         image: nginx_proxy
         container_name: nginx
@@ -40,7 +37,6 @@ services:
         command: conda run -n myenv python backend/run.py
         build: 
             context: ./simulation-backend
-            dockerfile: Dockerfile
         ports:
           - "5003:5003"
         volumes:
@@ -54,12 +50,11 @@ services:
         command: conda run -n myenv rq worker --name worker --url redis://redis:6379/0
         build: 
             context: ./simulation-backend
-            dockerfile: Dockerfile
         depends_on:
           - redis
           - covid19geomodeller
         volumes:
-          - ./server_cv19gm/backend:/app/backend
+          - ./simulation-backend/backend:/app/backend
         entrypoint: "./worker.sh"
 
     sse:
@@ -67,7 +62,6 @@ services:
         image: sse
         build: 
             context: ./sse-server
-            dockerfile: Dockerfile
         ports:
           - "9000:9000"
         volumes:
