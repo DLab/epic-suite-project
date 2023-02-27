@@ -47,7 +47,8 @@ class RedisDatabase():
         
     @staticmethod
     async def save_results(id, status=StatusSimulation.NOT_STARTED.name, results={"results":None}):
-        data = {"status": status, "results": results["results"] or ""}
+        data = {"status": status, "results": results or ""}
+        # data = {"status": status, "results": results["results"] or ""}
         conn = Connect.connect_redis()
         await conn.set(id, json.dumps(data))
         await conn.expire(id, 300)
