@@ -1,3 +1,4 @@
+import { polygon } from "leaflet";
 import { useContext, useReducer, useState, useEffect } from "react";
 import { GeoJSON, Tooltip, useMap } from "react-leaflet";
 import * as topojson from "topojson-client";
@@ -47,7 +48,34 @@ const CountiesModelsMap = ({ idGeo }: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idGeo]);
-
+    useEffect(() => {
+        const selectedFeatures = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        map.eachLayer((lay: any) => {
+            if (lay.options.fillColor === "#016FB9") {
+                const { coordinates } = lay.feature.geometry;
+                if (coordinates.length !== 1) {
+                    const mergedCoordinates = coordinates.reduce(
+                        (acc, cur) => [...acc, ...cur[0]],
+                        []
+                    );
+                    selectedFeatures.push([mergedCoordinates]);
+                } else {
+                    selectedFeatures.push(coordinates);
+                }
+            }
+        });
+        if (selectedFeatures.length > 0) {
+            const xy = selectedFeatures.map((e) => {
+                return [e[0].map((u) => [u[1], u[0]])];
+            });
+            const mergeXY = xy.reduce((a, b) => [...a, ...b[0]], []);
+            const pol = polygon(mergeXY, { color: "red" });
+            map.addLayer(pol);
+            map.flyTo(pol.getCenter());
+            map.removeLayer(pol);
+        }
+    }, [map]);
     useEffect(() => {
         if (tabIndex === 0) {
             map.invalidateSize(false);

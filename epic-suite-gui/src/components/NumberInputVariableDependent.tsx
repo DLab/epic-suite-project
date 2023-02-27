@@ -63,38 +63,60 @@ const NumberInputVariableDependent = ({
      * @param val new parameter value.
      */
     const handleChange = (val: string | number) => {
-        if (isStateLocal) {
-            setIsEditingLocalValue(true);
-            setLocalValue(`${val}`);
-        } else {
-            dispatch(
-                update({
-                    type: "setVariableDependent",
-                    payloadVariableDependent: {
-                        rangeDays: [[0, duration]],
-                        type: [
-                            {
-                                name: NameFunction.static,
-                                value: +val,
-                            },
-                        ],
-                        name: nameParams,
-                        default: 7,
-                        isEnabled: false,
-                        val: +val,
-                    },
-                    positionVariableDependentTime: index ?? -1,
-                    target: nameParams,
-                })
-            );
-        }
+        dispatch(
+            update({
+                type: "setVariableDependent",
+                payloadVariableDependent: {
+                    rangeDays: [[0, duration]],
+                    type: [
+                        {
+                            name: NameFunction.static,
+                            value: +val,
+                        },
+                    ],
+                    name: nameParams,
+                    default: 7,
+                    isEnabled: false,
+                    val: +val,
+                },
+                positionVariableDependentTime: index ?? -1,
+                target: nameParams,
+            })
+        );
     };
+    // const handleChange = (val: string | number) => {
+    //     if (isStateLocal) {
+    //         setIsEditingLocalValue(true);
+    //         setLocalValue(`${val}`);
+    //     } else {
+    //         dispatch(
+    //             update({
+    //                 type: "setVariableDependent",
+    //                 payloadVariableDependent: {
+    //                     rangeDays: [[0, duration]],
+    //                     type: [
+    //                         {
+    //                             name: NameFunction.static,
+    //                             value: +val,
+    //                         },
+    //                     ],
+    //                     name: nameParams,
+    //                     default: 7,
+    //                     isEnabled: false,
+    //                     val: +val,
+    //                 },
+    //                 positionVariableDependentTime: index ?? -1,
+    //                 target: nameParams,
+    //             })
+    //         );
+    //     }
+    // };
     useEffect(() => {
         setLocalValue(`${value}`);
     }, [value]);
     return (
-        <Flex alignItems="center">
-            <Box minW="30%">
+        <>
+            <Box w="5rem">
                 <Text
                     align="left"
                     fontSize="11px"
@@ -105,8 +127,7 @@ const NumberInputVariableDependent = ({
             </Box>
 
             <NumberInput
-                maxH="20px"
-                minW="75px"
+                w="100%"
                 mx="0.2rem"
                 fontSize="11px"
                 value={!isStateLocal ? value : localValue}
@@ -118,7 +139,7 @@ const NumberInputVariableDependent = ({
                 variant="outline"
                 isDisabled={isDisabled}
             >
-                <NumberInputField />
+                <NumberInputField borderRadius="8px" />
                 <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -128,7 +149,7 @@ const NumberInputVariableDependent = ({
                 <Icon as={InfoIcon} color="#016FB9" />
             </Tooltip>
 
-            {isStateLocal && isEditingLocalValue && (
+            {/* {isStateLocal && isEditingLocalValue && (
                 <Flex mt="0.5rem" justifyContent="end">
                     <IconButton
                         bg="white"
@@ -202,8 +223,8 @@ const NumberInputVariableDependent = ({
                         }}
                     />
                 </Flex>
-            )}
-        </Flex>
+            )} */}
+        </>
     );
 };
 

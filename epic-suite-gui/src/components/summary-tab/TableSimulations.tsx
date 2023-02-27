@@ -14,17 +14,20 @@ import {
     Text,
     Icon,
     ButtonGroup,
+    Stack,
 } from "@chakra-ui/react";
 import { ArrowRightCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 
+import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
-import { NewModelsParams } from "types/SimulationTypes";
+import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 import RunButton from "./RunButton";
+import StatusHardSimPop from "./StatusHardSimPop";
 
 type ReducedIdForPermissions = Record<number, boolean>;
 
@@ -41,6 +44,7 @@ const TableSimulations = () => {
         setIdModelUpdate,
         setNewModel,
     } = useContext(NewModelSetted);
+    const { hardSimulation } = useContext(HardSimSetted);
     const [permission, setPermission] = useState<ReducedIdForPermissions>({});
     const [codMetaModelSelected, setCodMetaModelSelected] = useState<number>(0);
     const { setIndex } = useContext(TabIndex);
@@ -62,6 +66,7 @@ const TableSimulations = () => {
                 populationType: undefined,
                 typeSelection: undefined,
                 idGeo: undefined,
+                idMobilityMatrix: undefined,
                 idGraph: undefined,
                 numberNodes: undefined,
                 t_init: format(new Date(2022, 4, 31), "yyyy/MM/dd"),
@@ -89,11 +94,18 @@ const TableSimulations = () => {
                     )
             );
         }
+        if (
+            completeModel.every(
+                (c: NewModelsAllParams) => c.populationType === "monopopulation"
+            )
+        ) {
+            setCodMetaModelSelected(0);
+        }
     }, [completeModel]);
 
-    return completeModel.length > 0 ? (
+    return (
         <Flex direction="column" gridColumn="1/4">
-            <Text fontSize="24px" fontWeight={600} mb="5px">
+            <Text fontSize="1rem" fontWeight={600} mb="5px">
                 Models
             </Text>
             <TableContainer
@@ -111,7 +123,7 @@ const TableSimulations = () => {
                                 textAlign="center"
                                 color="#016FB9"
                                 textTransform="capitalize"
-                                fontSize="16px"
+                                fontSize="1rem"
                             >
                                 Model
                             </Th>
@@ -119,7 +131,7 @@ const TableSimulations = () => {
                                 textAlign="center"
                                 color="#016FB9"
                                 textTransform="capitalize"
-                                fontSize="16px"
+                                fontSize="1rem"
                             >
                                 Compartments
                             </Th>
@@ -127,7 +139,7 @@ const TableSimulations = () => {
                                 textAlign="center"
                                 color="#016FB9"
                                 textTransform="capitalize"
-                                fontSize="16px"
+                                fontSize="1rem"
                             >
                                 Nodes
                             </Th>
@@ -135,10 +147,11 @@ const TableSimulations = () => {
                                 textAlign="center"
                                 color="#016FB9"
                                 textTransform="capitalize"
-                                fontSize="16px"
+                                fontSize="1rem"
                             >
                                 Data source
                             </Th>
+
                             <Th />
                         </Tr>
                     </Thead>
@@ -146,7 +159,7 @@ const TableSimulations = () => {
                         {completeModel.map((elem) => {
                             return (
                                 <Tr key={createIdComponent()}>
-                                    <Td>
+                                    <Td fontSize="0.875rem">
                                         <Checkbox
                                             isDisabled={
                                                 codMetaModelSelected !== 0 &&
@@ -209,72 +222,101 @@ const TableSimulations = () => {
                                             }}
                                         />
                                     </Td>
-                                    <Td textAlign="center">
-                                        {elem.name ?? "Not defined yet"}
+                                    <Td fontSize="0.875rem" textAlign="center">
+                                        {elem?.name ? (
+                                            <Text
+                                                textDecoration="underline"
+                                                fontStyle=""
+                                                cursor="pointer"
+                                                onClick={() => {
+                                                    updateModelSelection(
+                                                        elem?.idNewModel
+                                                    );
+                                                    setIndex(1);
+                                                }}
+                                            >
+                                                {elem.name}
+                                            </Text>
+                                        ) : (
+                                            "Not defined yet"
+                                        )}
                                     </Td>
-                                    <Td textAlign="center">
-                                        {elem.modelType.toUpperCase() ??
+                                    <Td fontSize="0.875rem" textAlign="center">
+                                        {elem?.modelType?.toUpperCase() ??
                                             "Not defined yet"}
                                     </Td>
-                                    <Td textAlign="center">
-                                        {elem.populationType ??
+                                    <Td fontSize="0.875rem" textAlign="center">
+                                        {elem?.populationType ??
                                             "Not defined yet"}
                                     </Td>
-                                    <Td textAlign="center">
-                                        {elem.typeSelection ??
+                                    <Td fontSize="0.875rem" textAlign="center">
+                                        {elem?.typeSelection ??
                                             "Not defined yet"}
                                     </Td>
-                                    <Td>
+                                    {/* <Td fontSize="0.875rem">
                                         <Icon
-                                            w="20px"
-                                            h="20px"
+                                            w="1.25rem"
+                                            h="1.25rem"
                                             as={ArrowRightCircleIcon}
                                             color="#1B1B3A"
                                             onClick={() => {
                                                 updateModelSelection(
-                                                    elem.idNewModel
+                                                    elem?.idNewModel
                                                 );
                                                 setIndex(1);
                                             }}
                                         />
-                                    </Td>
+                                    </Td> */}
+                                    <td>
+                                        {elem?.populationType ===
+                                            "metapopulation" &&
+                                            elem?.idNewModel ===
+                                                hardSimulation.details
+                                                    .idModel && (
+                                                <StatusHardSimPop />
+                                            )}
+                                    </td>
                                 </Tr>
                             );
                         })}
                     </Tbody>
                     <TableCaption textAlign="start" m="5px 0">
-                        <ButtonGroup spacing={5}>
-                            <RunButton permission={permission} />
-                            <Button
-                                size="sm"
-                                fontSize="10px"
-                                bg="#016FB9"
-                                color="#FFFFFF"
-                                onClick={() => {
-                                    addNewModel();
-                                    setIndex(1);
-                                }}
-                            >
-                                <Icon
-                                    w="14px"
-                                    h="14px"
-                                    as={PlusIcon}
-                                    mr="5px"
-                                />
-                                ADD NEW
-                            </Button>
-                        </ButtonGroup>
+                        <Stack direction="row" justifyContent="space-between">
+                            <ButtonGroup spacing={5}>
+                                <RunButton permission={permission} />
+                                <Button
+                                    size="sm"
+                                    fontSize="0.625rem"
+                                    bg="#016FB9"
+                                    color="#FFFFFF"
+                                    onClick={() => {
+                                        addNewModel();
+                                        setIndex(1);
+                                    }}
+                                >
+                                    <Icon
+                                        w="0.875rem"
+                                        h="0.875rem"
+                                        as={PlusIcon}
+                                        mr="5px"
+                                    />
+                                    ADD NEW
+                                </Button>
+                            </ButtonGroup>
+                        </Stack>
                     </TableCaption>
                 </Table>
             </TableContainer>
-            <Text fontSize="12px" fontWeight={300} textAlign="justify">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam
+            <Text
+                fontStyle="italic"
+                fontSize="12px"
+                fontWeight={300}
+                textAlign="justify"
+            >
+                * You can only simulate one metapopulation model because the
+                process can take several minutes.
             </Text>
         </Flex>
-    ) : (
-        <Flex>There's not models to simulate</Flex>
     );
 };
 

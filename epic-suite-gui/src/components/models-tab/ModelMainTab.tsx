@@ -1,7 +1,13 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import _ from "lodash";
 import dynamic from "next/dynamic";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import { ControlPanel } from "context/ControlPanelContext";
 import { NewModelSetted } from "context/NewModelsContext";
@@ -24,22 +30,9 @@ interface Props {
     initialConditions: InitialConditionsNewModel[];
     actualModelName: string;
     setActualModelName: (value: string) => void;
+    matrixId: number;
+    setMatrixId: (value: number) => void;
 }
-
-const ModelsMap = dynamic(() => import("./model-map/ModelsMap"), {
-    loading: () => (
-        <Flex justifyContent="center" alignItems="center" w="100%">
-            <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size="xl"
-            />
-        </Flex>
-    ),
-    ssr: false,
-});
 
 /**
  * Component container for configuring model parameters, obtaining initial conditions, and displaying geographic selection.
@@ -52,6 +45,8 @@ const ModelMainTab = ({
     initialConditions,
     actualModelName,
     setActualModelName,
+    matrixId,
+    setMatrixId,
 }: Props) => {
     const [modelValue, setModelValue] = useState(undefined);
     const [numberOfNodes, setNumberOfNodes] = useState(0);
@@ -85,6 +80,25 @@ const ModelMainTab = ({
             return newModel.find(({ idNewModel }) => idNewModel === id)[field];
         },
         [newModel, id]
+    );
+    // const ModelsMap =
+    const ModelsMap = useMemo(
+        () =>
+            dynamic(() => import("./model-map/ModelsMap"), {
+                loading: () => (
+                    <Flex justifyContent="center" alignItems="center" w="100%">
+                        <Spinner
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                            color="blue.500"
+                            size="xl"
+                        />
+                    </Flex>
+                ),
+                ssr: false,
+            }),
+        []
     );
 
     useEffect(() => {
@@ -137,6 +151,8 @@ const ModelMainTab = ({
                     }
                     graphsSelectedValue={graphsSelectedValue}
                     setGraphsSelectedValue={setGraphsSelectedValue}
+                    matrixId={matrixId}
+                    setMatrixId={setMatrixId}
                 />
                 {numberOfNodes !== 0 &&
                     numberOfNodes !== undefined &&
@@ -159,19 +175,23 @@ const ModelMainTab = ({
                             dataSourceValue={dataSourceValue}
                             modelName={actualModelName}
                             startDate={startDate}
+                            matrixId={matrixId}
+                            setMatrixId={setMatrixId}
                         />
                     )}
             </Flex>
-            {showSectionInitialConditions && (
+            {showSectionInitialConditions && !showSectionVariable && (
                 <Flex
                     direction="column"
-                    w="60%"
+                    w="50%"
                     m="0 2%"
                     borderRadius="6px"
                     boxShadow="sm"
                     overflowY="auto"
                     h="75vh"
                 >
+                    {/* <ModelsMap idGeo={areaSelectedValue} /> */}
+
                     {dataSourceValue === "geographic" &&
                         areaSelectedValue !== undefined &&
                         areaSelectedValue !== "" && (
@@ -195,25 +215,26 @@ const ModelMainTab = ({
             {showSectionVariable && (
                 <Flex
                     direction="column"
-                    w="60%"
-                    m="0 2%"
-                    bg="#FAFAFA"
-                    borderRadius="6px"
+                    ml="2%"
+                    borderRadius="8px"
                     boxShadow="sm"
-                    overflowY="auto"
-                    p="1rem"
+                    border="1px solid #DDDDDD"
+                    p="2%"
                     textAlign="center"
+                    h="75vh"
+                    w="50%"
+                    overflowY="scroll"
                 >
                     <SectionVariableDependentTime
                         valuesVariablesDependent={dataViewVariable}
                         showSectionVariable={setShowSectionVariable}
                         positionVariableDependentTime={positionVDT}
+                        showSectionInitialConditions={
+                            setShowSectionInitialConditions
+                        }
                     />
                 </Flex>
             )}
-            {/* <Flex direction="column">
-                <ExportModels idModel={id} />
-            </Flex> */}
         </Flex>
     );
 };

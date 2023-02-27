@@ -7,6 +7,7 @@ import DeleteGeoAlert from "../DeleteGeoAlert";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
 import { Model } from "types/ControlPanelTypes";
+import { DataGeoSelections } from "types/SelectFeaturesTypes";
 
 interface Props {
     scale: string;
@@ -176,19 +177,59 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
             });
         }
     };
-
+    const repeatedNameGeoSelection = (nameGeoSelection: string): boolean => {
+        return geoSelections.some(
+            (geoSelection: DataGeoSelections) =>
+                geoSelection.name === nameGeoSelection
+        );
+    };
+    const veryfyIsSelfName = (
+        idMod: number,
+        currentNameGeoSelection: string
+    ) => {
+        return Boolean(
+            geoSelections.find(
+                (geoSelection: DataGeoSelections) => geoSelection.id === idMod
+            )?.name === currentNameGeoSelection
+        );
+    };
     /**
      * If there is a geographic selection, it sends it to local storage.
      */
     const verifyGeoselection = () => {
-        if (states.length !== 0 || counties.length !== 0) {
+        if (!geoSelectionName) {
+            toast({
+                position: bottomLeft,
+                title: "Error",
+                description:
+                    "Cannot save a geographic selection without a name",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
+        } else if (
+            (mode === Model.Add &&
+                repeatedNameGeoSelection(geoSelectionName)) ||
+            (mode === Model.Update &&
+                repeatedNameGeoSelection(geoSelectionName) &&
+                !veryfyIsSelfName(idGeoSelectionUpdate, geoSelectionName))
+        ) {
+            toast({
+                position: bottomLeft,
+                title: "Error",
+                description: "Name already exists",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
+        } else if (states.length !== 0 || counties.length !== 0) {
             handleDataLocalStorage();
         } else {
             toast({
                 position: bottomLeft,
-                title: "Warning",
+                title: "Error",
                 description: "At least one geographic area must be selected.",
-                status: "warning",
+                status: "error",
                 duration: 2000,
                 isClosable: true,
             });
@@ -205,7 +246,12 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
                         bg="#016FB9"
                         color="#FFFFFF"
                         size="sm"
-                        // mt="20px"
+                        disabled={
+                            !geoSelectionName ||
+                            !scale ||
+                            (counties.length === 0 && states.length === 0) ||
+                            repeatedNameGeoSelection(geoSelectionName)
+                        }
                         borderRadius="4px"
                         fontSize="10px"
                     >

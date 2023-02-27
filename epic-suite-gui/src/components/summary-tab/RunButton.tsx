@@ -1,14 +1,22 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/dot-notation */
-import { Button, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Icon, Spinner, Text, useToast } from "@chakra-ui/react";
 import { format, add } from "date-fns";
 import { useContext, useState, useEffect } from "react";
 
+import Play from "components/icons/Play";
+import RunModelsButton from "components/icons/RunModelsButton";
 import { GraphicsData } from "context/GraphicsContext";
+import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
+import {
+    Actions,
+    StatusSimulation,
+    TypeHardSimulation,
+} from "types/HardSimulationType";
 import { NewModelsAllParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 import postData from "utils/fetchData";
@@ -51,7 +59,7 @@ const RunButton = ({ permission }: Props) => {
         setSelectedModelsToSimulate,
         setSimulationsPopulatioType,
     } = useContext(NewModelSetted);
-
+    const { hardSimulation, setHardSimulation } = useContext(HardSimSetted);
     /**
      * Gets the configuration object to request the real data from the "realData" endpoint.
      * @param {NewModelsAllParams[]} selectedModels monopopulation models selected to simulate.
@@ -285,46 +293,80 @@ const RunButton = ({ permission }: Props) => {
                     const metaObjectConfig = {
                         [`${selectedModels[0].name}`]: metaSimulationsSelected,
                     };
+                    if (
+                        hardSimulation.status === StatusSimulation.RECIEVED ||
+                        hardSimulation.status === StatusSimulation.STARTED
+                    ) {
+                        throw new Error(
+                            "You already have a high-cost simulation in progress, you can cancel that process or wait until it finishes."
+                        );
+                    }
                     response = await postData(
                         `${process.env.NEXT_PUBLIC_COVID19GEOMODELLER_URL}/simulate_meta`,
                         metaObjectConfig
                     );
-                    const name = `${selectedModels[0].name}`;
-
-                    const jsonResponse = await JSON.parse(
-                        response.results[name]
-                    );
-
-                    const jsonGlobalResultsResponse = await JSON.parse(
-                        response.global_results[name]
-                    );
-                    const listResponse = Object.keys(jsonResponse).map(
-                        (key) => {
-                            return { name: key, ...jsonResponse[key] };
-                        }
-                    );
-
-                    let globalResultsListResponse = { name: "general" };
-                    Object.keys(jsonGlobalResultsResponse).forEach((key) => {
-                        globalResultsListResponse = {
-                            ...globalResultsListResponse,
-                            [key]: Object.values(
-                                jsonGlobalResultsResponse[key]
-                            ),
-                        };
+                    setHardSimulation({
+                        type: Actions.SET,
+                        payload: {
+                            name: `${selectedModels[0].name}`,
+                            type: TypeHardSimulation.METAPOPULATION,
+                            idProcess: response.id,
+                            idModel: simulationsSelected[0].idSim,
+                            description:
+                                "Simulation parameters received successfully",
+                        },
+                        status: response.status.toUpperCase(),
                     });
-
-                    setAllGraphicData([]);
-                    setAllResults([]);
-                    setDataToShowInMap([]);
-                    setRealDataSimulationKeys([]);
-                    setAux(JSON.stringify(listResponse));
-                    setGlobalParametersValues(
-                        JSON.stringify([globalResultsListResponse])
+                    window.localStorage.setItem(
+                        "hardSimulationStatus",
+                        JSON.stringify({
+                            status: response.status.toUpperCase(),
+                            details: {
+                                name: `${selectedModels[0].name}`,
+                                type: TypeHardSimulation.METAPOPULATION,
+                                idProcess: response.id,
+                                idModel: simulationsSelected[0].idSim,
+                                description:
+                                    "Simulation parameters received successfully",
+                            },
+                        })
                     );
-                    setSelectedModelsToSimulate(selectedModels);
-                    getGraphicRealMetaData(selectedModels);
-                    setIndex(4);
+                    // const name = `${selectedModels[0].name}`;
+
+                    // const jsonResponse = await JSON.parse(
+                    //     response.results[name]
+                    // );
+
+                    // const jsonGlobalResultsResponse = await JSON.parse(
+                    //     response.global_results[name]
+                    // );
+                    // const listResponse = Object.keys(jsonResponse).map(
+                    //     (key) => {
+                    //         return { name: key, ...jsonResponse[key] };
+                    //     }
+                    // );
+
+                    // let globalResultsListResponse = { name: "general" };
+                    // Object.keys(jsonGlobalResultsResponse).forEach((key) => {
+                    //     globalResultsListResponse = {
+                    //         ...globalResultsListResponse,
+                    //         [key]: Object.values(
+                    //             jsonGlobalResultsResponse[key]
+                    //         ),
+                    //     };
+                    // });
+
+                    // setAllGraphicData([]);
+                    // setAllResults([]);
+                    // setDataToShowInMap([]);
+                    // setRealDataSimulationKeys([]);
+                    // setAux(JSON.stringify(listResponse));
+                    // setGlobalParametersValues(
+                    //     JSON.stringify([globalResultsListResponse])
+                    // );
+                    // setSelectedModelsToSimulate(selectedModels);
+                    // getGraphicRealMetaData(selectedModels);
+                    // setIndex(4);
                 } else {
                     response = await postData(
                         `${process.env.NEXT_PUBLIC_COVID19GEOMODELLER_URL}/simulate`,
@@ -378,7 +420,6 @@ const RunButton = ({ permission }: Props) => {
     return (
         <>
             <Button
-                id={createIdComponent()}
                 onClick={() => {
                     const withPermission = Object.values(permission).some(
                         (perm) => perm
@@ -417,13 +458,10 @@ const RunButton = ({ permission }: Props) => {
                         </Text>
                     </>
                 ) : (
-                    /* <Icon
-                                w="20px"
-                                h="20px"
-                                as={RunModelsButton}
-                                mr="5px"
-                            /> */
-                    `RUN ALL MODELS`
+                    <>
+                        <Icon w="20px" h="20px" as={Play} mr="5px" />
+                        RUN SELECTED MODELS
+                    </>
                 )}
             </Button>
         </>

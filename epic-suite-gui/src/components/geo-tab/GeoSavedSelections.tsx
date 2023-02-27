@@ -32,6 +32,9 @@ const GeoSavedSelections = () => {
             size="sm"
             mr="15px"
             placeholder="Select Geographic"
+            bg="#F4F4F4"
+            borderColor="#F4F4F4"
+            borderRadius="8px"
             onChange={(e) => {
                 setMode(Model.Update);
                 updateGeoSelection(e.target.value);

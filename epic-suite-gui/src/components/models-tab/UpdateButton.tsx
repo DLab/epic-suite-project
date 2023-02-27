@@ -11,22 +11,32 @@ import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
 interface Props {
     actualModelName: string;
     saveModel: () => void;
+    matrixId: number;
+    verifyName: (name: string) => boolean;
+    verifySelfName: (num: number, name: string) => boolean;
+    isEmpty: boolean;
 }
 
-const UpdateButton = ({ actualModelName, saveModel }: Props) => {
-    const [isModelSavedLocal, setIsModelSavedLocal] = useState(false);
+const UpdateButton = ({
+    actualModelName,
+    saveModel,
+    matrixId,
+    verifyName,
+    verifySelfName,
+    isEmpty,
+}: Props) => {
     const {
         newModel,
         completeModel,
         idModelUpdate: id,
     } = useContext(NewModelSetted);
+    const [isModelSavedLocal, setIsModelSavedLocal] = useState(false);
     const [modelValue, setModelValue] = useState(undefined);
     const [numberOfNodes, setNumberOfNodes] = useState(0);
     const [dataSourceValue, setDataSourceValue] = useState(undefined);
     const [areaSelectedValue, setAreaSelectedValue] = useState(undefined);
     const [populationValue, setPopulationValue] = useState(undefined);
     const [graphId, setGraphId] = useState(undefined);
-    // const { setAux } = useContext(TabIndex);
     const parameters = useSelector((state: RootState) => state.controlPanel);
 
     /**
@@ -54,6 +64,7 @@ const UpdateButton = ({ actualModelName, saveModel }: Props) => {
                 name: modelSaved?.name,
                 numberNodes: modelSaved?.numberNodes,
                 populationType: modelSaved?.populationType,
+                idMobilityMatrix: modelSaved?.idMobilityMatrix,
                 typeSelection: modelSaved?.typeSelection,
             };
 
@@ -65,6 +76,7 @@ const UpdateButton = ({ actualModelName, saveModel }: Props) => {
                 name: actualModelName,
                 numberNodes: numberOfNodes,
                 populationType: populationValue,
+                idMobilityMatrix: matrixId,
                 typeSelection: dataSourceValue,
             };
 
@@ -102,6 +114,7 @@ const UpdateButton = ({ actualModelName, saveModel }: Props) => {
         newModel,
         numberOfNodes,
         populationValue,
+        matrixId,
     ]);
 
     useEffect(() => {
@@ -137,15 +150,20 @@ const UpdateButton = ({ actualModelName, saveModel }: Props) => {
         <Button
             leftIcon={<CheckIcon />}
             onClick={() => {
-                saveModel();
+                if (
+                    !isEmpty &&
+                    (!verifyName(actualModelName) ||
+                        verifySelfName(id, actualModelName))
+                ) {
+                    saveModel();
+                }
             }}
-            isDisabled={isModelSavedLocal}
+            isDisabled={isModelSavedLocal || isEmpty}
             bg="#016FB9"
             color="#FFFFFF"
             size="sm"
-            // mt="20px"
             borderRadius="4px"
-            fontSize="10px"
+            fontSize="0.625rem"
         >
             SAVE CHANGES
         </Button>

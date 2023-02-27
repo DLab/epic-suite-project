@@ -49,7 +49,7 @@ const TableGeographic = () => {
 
     return (
         <Flex direction="column" gridColumn="4/6">
-            <Text fontSize="24px" fontWeight={600} mb="5px">
+            <Text fontSize="16px" fontWeight={600} mb="5px">
                 Geographic selection
             </Text>
             <TableContainer border="1px solid #DDDDDD" borderRadius="8px">
@@ -79,12 +79,16 @@ const TableGeographic = () => {
                         {geoSelections.map((geoSelection) => {
                             return (
                                 <Tr key={geoSelection.id}>
-                                    <Td>{geoSelection.name}</Td>
-                                    <Td>{geoSelection.scale}</Td>
-                                    <Td>
+                                    <Td fontSize="0.875rem">
+                                        {geoSelection.name}
+                                    </Td>
+                                    <Td fontSize="0.875rem">
+                                        {geoSelection.scale}
+                                    </Td>
+                                    <Td fontSize="0.875rem">
                                         <Icon
-                                            w="20px"
-                                            h="20px"
+                                            w="1.25rem"
+                                            h="1.25rem"
                                             as={ArrowRightCircleIcon}
                                             color="#1B1B3A"
                                             onClick={() => {
@@ -106,7 +110,7 @@ const TableGeographic = () => {
                     <TableCaption textAlign="start" m="5px 0">
                         <Button
                             size="sm"
-                            fontSize="10px"
+                            fontSize="0.625rem"
                             bg="#016FB9"
                             color="#FFFFFF"
                             onClick={() => {
@@ -114,7 +118,12 @@ const TableGeographic = () => {
                                 setIndex(2);
                             }}
                         >
-                            <Icon w="14px" h="14px" as={PlusIcon} mr="5px" />
+                            <Icon
+                                w="0.875rem"
+                                h="0.875rem"
+                                as={PlusIcon}
+                                mr="5px"
+                            />
                             ADD NEW
                         </Button>
                     </TableCaption>

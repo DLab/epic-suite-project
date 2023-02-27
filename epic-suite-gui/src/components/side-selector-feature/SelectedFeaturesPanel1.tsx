@@ -22,13 +22,13 @@ const SelectedFeaturesPanel1 = ({ scale }: Props) => {
                     <StatesSelectedCheckbox stateSelected={states} />
                 )}
                 {scale === "States" && states.length <= 0 && (
-                    <Text fontSize="14px"> No states selected</Text>
+                    <Text fontSize="0.875rem"> No states selected</Text>
                 )}
                 {scale === "Counties" && counties.length > 0 && (
                     <StatesSelectedCheckbox countiesSelected={counties} />
                 )}
                 {scale === "Counties" && counties.length <= 0 && (
-                    <Text id={createIdComponent()} fontSize="14px">
+                    <Text id={createIdComponent()} fontSize="0.875rem">
                         {" "}
                         No counties
                     </Text>

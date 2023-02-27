@@ -14,4 +14,9 @@ const postData = async (url: string, body) => {
     const res = await axios.post(url, body);
     return res.data;
 };
+export const getData = async (url: string) => {
+    const res = await axios.get(url);
+    return res.data;
+};
+
 export default postData;

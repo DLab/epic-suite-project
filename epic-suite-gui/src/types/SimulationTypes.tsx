@@ -34,6 +34,7 @@ export interface NewModelsParams {
     populationType: string;
     typeSelection: string;
     idGeo: undefined | number | string;
+    idMobilityMatrix: undefined | number;
     idGraph: undefined | number;
     initialConditions: InitialConditionsNewModel[];
     numberNodes: number;
@@ -47,6 +48,7 @@ export interface NewModelsAllParams {
     populationType: string;
     typeSelection: string;
     idGeo: undefined | number | string;
+    idMobilityMatrix: undefined | number;
     idGraph: undefined | number;
     initialConditions: InitialConditionsNewModel[];
     numberNodes: number;
@@ -88,6 +90,8 @@ export interface NewModelType {
     setIdModelUpdate: (value: number | undefined) => void;
     name: string;
     setName: (value: string) => void;
+    idMobility: number;
+    setIdMobility: (value: number) => void;
 }
 
 export interface SimulatorParams {

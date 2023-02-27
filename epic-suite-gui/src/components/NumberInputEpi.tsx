@@ -60,27 +60,37 @@ const NumberInputEpi = ({
      * @param val new parameter value.
      */
     const handleChange = (val: string | number) => {
-        if (isStateLocal) {
-            setIsEditingLocalValue(true);
-            setLocalValue(`${val}`);
-        } else {
-            dispatch(
-                update({
-                    type: "set",
-                    positionVariableDependentTime: index,
-                    target: nameParams,
-                    payload: +localValue,
-                })
-            );
-        }
+        dispatch(
+            update({
+                type: "set",
+                positionVariableDependentTime: index,
+                target: nameParams,
+                payload: +val,
+            })
+        );
     };
+    // const handleChange = (val: string | number) => {
+    //     if (isStateLocal) {
+    //         setIsEditingLocalValue(true);
+    //         setLocalValue(`${val}`);
+    //     } else {
+    //         dispatch(
+    //             update({
+    //                 type: "set",
+    //                 positionVariableDependentTime: index,
+    //                 target: nameParams,
+    //                 payload: +localValue,
+    //             })
+    //         );
+    //     }
+    // };
     useEffect(() => {
         setLocalValue(`${value}`);
     }, [value]);
 
     return (
         <>
-            <Box minW="30%">
+            <Box w="5rem">
                 <Text
                     align="left"
                     fontSize="11px"
@@ -89,51 +99,12 @@ const NumberInputEpi = ({
                     {name ?? nameParams}
                 </Text>
             </Box>
-
-            {/* {type === "slider" && (
-                <>
-                    <NumberInput
-                        fontSize="11px"
-                        maxW="70px"
-                        mr="1rem"
-                        onChange={handleChange}
-                        size="xs"
-                        min={+min}
-                        max={+max}
-                        step={step}
-                        value={!isStateLocal ? value : localValue}
-                    >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-                    <Slider
-                        flex="1"
-                        focusThumbOnChange={false}
-                        id="slider-number-input"
-                        value={!isStateLocal ? +value : +localValue}
-                        step={step}
-                        min={+min}
-                        max={+max}
-                        onChange={handleChange}
-                    >
-                        <SliderTrack>
-                            <SliderFilledTrack />
-                        </SliderTrack>
-                        <SliderThumb fontSize="sm" boxSize="32px">
-                            {!isStateLocal ? +value : +localValue}
-                        </SliderThumb>
-                    </Slider>
-                </>
-            )} */}
             {type === "number" && !isInitialParameters && (
                 <NumberInput
-                    maxH="20px"
-                    minW="75px"
+                    w="100%"
                     mx="0.2rem"
                     fontSize="11px"
+                    bg="red"
                     // defaultValue={value}
                     onChange={handleChange}
                     size="xs"
@@ -163,6 +134,7 @@ const NumberInputEpi = ({
                     max={max}
                     step={step}
                     variant="outline"
+                    borderRadius="8px"
                 >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -171,10 +143,10 @@ const NumberInputEpi = ({
                     </NumberInputStepper>
                 </NumberInput>
             )}
+            {/* input in common parameters, not dependent on time */}
             {isInitialParameters && isStateLocal && (
                 <NumberInput
-                    maxH="20px"
-                    minW="75px"
+                    w="100%"
                     mx="0.2rem"
                     fontSize="11px"
                     value={localValue}
@@ -185,7 +157,7 @@ const NumberInputEpi = ({
                     step={step}
                     variant="outline"
                 >
-                    <NumberInputField />
+                    <NumberInputField borderRadius="8px" />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />

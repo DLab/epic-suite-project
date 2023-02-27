@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
     Skeleton,
     Box,
@@ -17,6 +17,8 @@ import {
     NumberInput,
     useToast,
     Spinner,
+    Text,
+    Input,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useReducer, useState, useContext } from "react";
@@ -56,6 +58,7 @@ const Graphic = dynamic(() => import("./GraphDependentTimeParameters"), {
 interface Props {
     valuesVariablesDependent: VariableDependentTime;
     showSectionVariable: (value: boolean) => void;
+    showSectionInitialConditions: (value: boolean) => void;
     positionVariableDependentTime?: number;
 }
 
@@ -63,6 +66,7 @@ const SectionVariableDependentTime = ({
     valuesVariablesDependent,
     showSectionVariable,
     positionVariableDependentTime,
+    showSectionInitialConditions,
 }: Props) => {
     const [idRangeUpdating, setIdRangeUpdating] = useState(-1);
     const [isRangeUpdating, setIsRangeUpdating] = useState<boolean>(false);
@@ -89,38 +93,41 @@ const SectionVariableDependentTime = ({
                 duration={parameters.t_end}
             />
             <Box>
-                <Flex justifyContent="space-between">
-                    <Heading as="h3">{values["name"]}</Heading>
-                    <Flex alignItems="center">
-                        Default:
-                        <NumberInput
-                            ml="0.2rem"
-                            w="30%"
-                            size="xs"
-                            value={values["default"]}
-                            onChange={(e) =>
-                                setValues({
-                                    type: "editDefault",
-                                    index: e,
-                                })
-                            }
-                        >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
+                <Flex
+                    direction="column"
+                    justifyContent="space-between"
+                    mb="10px"
+                >
+                    <Text fontSize="1rem" fontWeight={700} mb="15px">
+                        {values["name"]}
+                    </Text>
+                    <Flex justifyContent="space-between">
+                        <Flex alignItems="center">
+                            Default:
+                            <NumberInput
+                                ml="0.2rem"
+                                w="30%"
+                                size="xs"
+                                borderRadius="6px"
+                                value={values["default"]}
+                                onChange={(e) =>
+                                    setValues({
+                                        type: "editDefault",
+                                        index: e,
+                                    })
+                                }
+                            >
+                                <NumberInputField borderRadius="6px" />
+                            </NumberInput>
+                        </Flex>
                     </Flex>
-                    <Tooltip label="Add a range">
-                        <IconButton
-                            bg="#16609E"
-                            color="#FFFFFF"
-                            aria-label="Call Segun"
-                            size="sm"
+                    <Flex justify="space-between">
+                        <Text fontSize="0.875ren">Range</Text>
+                        <Text
+                            color="#016FB9"
+                            fontSize="0.875ren"
+                            textDecorationLine="underline"
                             cursor="pointer"
-                            _hover={{ bg: "blue.500" }}
-                            icon={<AddIcon />}
                             onClick={() => {
                                 setValues({
                                     type: "add",
@@ -138,28 +145,23 @@ const SectionVariableDependentTime = ({
                                     },
                                 });
                             }}
-                        />
-                    </Tooltip>
+                        >
+                            + Add new
+                        </Text>
+                    </Flex>
                 </Flex>
-                <Box
-                    border="1px"
-                    p="0.5"
-                    borderColor="gray.200"
-                    maxH="40vh"
-                    h="40vh"
-                    overflowY="scroll"
-                >
+
+                <Box p="0.5">
                     {values["rangeDays"].map((range: number[], i: number) => (
                         <Flex
                             key={createIdComponent()}
-                            h="3rem"
+                            display="grid"
+                            gridTemplateColumns="auto auto auto auto auto"
+                            gridGap="15px"
                             alignItems="center"
-                            justifyContent="space-between"
-                            borderBottom="1px"
-                            borderColor="gray.200"
+                            mb="15px"
                         >
-                            range: {i + 1}{" "}
-                            <Flex w="50%" justifyContent="space-around">
+                            <Flex>
                                 <IconButton
                                     bg="#ffffff"
                                     color="#16609E"
@@ -195,16 +197,12 @@ const SectionVariableDependentTime = ({
                                     }}
                                 />
                             </Flex>
-                            <Flex
-                                w="50%"
-                                alignItems="center"
-                                justifyContent="end"
-                            >
+                            <Flex fontSize="sm">
                                 Type function:
                                 <Select
-                                    w="45%"
                                     size="sm"
                                     ml="0.2rem"
+                                    borderRadius="6px"
                                     value={values["type"][i]["name"]}
                                     onChange={(e) => {
                                         handleNameFunctionSelect(
@@ -240,7 +238,7 @@ const SectionVariableDependentTime = ({
                                         size="xs"
                                         isDisabled={isRangeUpdating}
                                         cursor="pointer"
-                                        icon={<DeleteIcon />}
+                                        icon={<CloseIcon />}
                                         onClick={() => {
                                             setValues({
                                                 type: "delete",
@@ -282,6 +280,7 @@ const SectionVariableDependentTime = ({
                                     })
                                 );
                                 showSectionVariable(false);
+                                showSectionInitialConditions(true);
                             } else {
                                 toast({
                                     title: "Failed setting function",
@@ -300,7 +299,10 @@ const SectionVariableDependentTime = ({
                     <Button
                         w="50%"
                         size="sm"
-                        onClick={() => showSectionVariable(false)}
+                        onClick={() => {
+                            showSectionVariable(false);
+                            showSectionInitialConditions(true);
+                        }}
                     >
                         Cancel
                     </Button>

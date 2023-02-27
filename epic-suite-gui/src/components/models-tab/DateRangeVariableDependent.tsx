@@ -43,75 +43,67 @@ const DateRangeVariableDependent = ({
     const [initVal, setInitVal] = useState(init);
     const [endVal, setEndVal] = useState(end);
     return (
-        <Flex w="80%" justifyContent="space-between" alignItems="center">
-            Init:
+        <>
             <NumberInput
                 min={0}
                 ml="0.2rem"
-                w="35%"
-                size="xs"
+                mr="0.2rem"
+                w="10rem"
+                size="sm"
                 isInvalid={id !== 0 && initVal - beforeRange < 0}
                 value={initVal}
                 onChange={(e) => setInitVal(+e)}
                 isDisabled={!isRangeUpdating || idRangeUpdating !== id}
             >
-                <NumberInputField />
-                <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                </NumberInputStepper>
+                <NumberInputField borderRadius="6px" />
             </NumberInput>
-            End:
             <NumberInput
                 min={0}
-                ml="0.2rem"
-                w="35%"
-                size="xs"
+                size="sm"
+                w="10rem"
                 value={endVal}
                 onChange={(e) => setEndVal(+e)}
                 isDisabled={!isRangeUpdating || idRangeUpdating !== id}
             >
-                <NumberInputField />
-                <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                </NumberInputStepper>
+                <NumberInputField borderRadius="6px" />
             </NumberInput>
-            {idRangeUpdating === id && (
-                <>
-                    <IconButton
-                        bg="white"
-                        border="thin"
-                        color="teal.500"
-                        aria-label="Check date range button"
-                        size="xs"
-                        cursor="pointer"
-                        icon={<CheckIcon />}
-                        onClick={() => {
-                            setDate({
-                                type: "updateDay",
-                                range: [initVal, endVal],
-                                index: id,
-                            });
-                            handleInput.setId(-1);
-                            handleInput.setIsRange(false);
-                        }}
-                    />
-                    <IconButton
-                        bg="white"
-                        color="red.500"
-                        aria-label="Cancel date range button"
-                        size="xs"
-                        cursor="pointer"
-                        icon={<CloseIcon />}
-                        onClick={() => {
-                            handleInput.setId(-1);
-                            handleInput.setIsRange(false);
-                        }}
-                    />
-                </>
-            )}
-        </Flex>
+            <Box w="3rem">
+                {idRangeUpdating === id && (
+                    <>
+                        <IconButton
+                            bg="white"
+                            border="thin"
+                            color="teal.500"
+                            aria-label="Check date range button"
+                            size="xs"
+                            cursor="pointer"
+                            icon={<CheckIcon />}
+                            onClick={() => {
+                                setDate({
+                                    type: "updateDay",
+                                    range: [initVal, endVal],
+                                    index: id,
+                                });
+                                handleInput.setId(-1);
+                                handleInput.setIsRange(false);
+                            }}
+                        />
+                        <IconButton
+                            bg="white"
+                            color="red.500"
+                            aria-label="Cancel date range button"
+                            size="xs"
+                            cursor="pointer"
+                            icon={<CloseIcon />}
+                            onClick={() => {
+                                handleInput.setId(-1);
+                                handleInput.setIsRange(false);
+                            }}
+                        />
+                    </>
+                )}
+            </Box>
+        </>
     );
 };
 export default DateRangeVariableDependent;

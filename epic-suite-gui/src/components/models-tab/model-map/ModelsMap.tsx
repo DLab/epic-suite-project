@@ -28,10 +28,11 @@ const ModelsMap = ({ idGeo }: Props) => {
 
     return (
         <Flex
-            bg="#c8cdcd"
+            bg="#dddddd"
             borderRadius="6px"
             justify="center"
             align="center"
+            borderWidth="1px"
             mb="2%"
             boxShadow="sm"
         >

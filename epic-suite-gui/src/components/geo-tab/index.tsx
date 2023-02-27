@@ -19,6 +19,9 @@ const GeoTab = () => {
     const [secondLink, setSecondLink] = useState(undefined);
     const [extentionOption, setExtentionOption] = useState("States");
     const [geoSelectionName, setGeoSelectionName] = useState("");
+    const [secondaryZoom, setSecondaryZoom] = useState<[number, number]>([
+        38, -96,
+    ]);
     const {
         setMode,
         mode,

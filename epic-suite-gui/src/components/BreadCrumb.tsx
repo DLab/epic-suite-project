@@ -8,10 +8,12 @@ import {
 import { HomeIcon } from "@heroicons/react/24/outline";
 import React, { useContext, useEffect } from "react";
 
+import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
 import { Model } from "types/ControlPanelTypes";
+import { MobilityModes } from "types/MobilityMatrixTypes";
 import { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
@@ -30,6 +32,12 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
     const { setMode, mode, idGeoSelectionUpdate, geoSelections } =
         useContext(SelectFeature);
     const { setIndex } = useContext(TabIndex);
+    const {
+        matrixMode,
+        mobilityMatrixList,
+        idMobilityMatrixUpdate,
+        setMatrixMode,
+    } = useContext(MobilityMatrix);
 
     useEffect(() => {
         if (firstLink === "Models") {
@@ -76,6 +84,29 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
         setSecondLink,
     ]);
 
+    useEffect(() => {
+        if (firstLink === "Mobility") {
+            if (matrixMode === MobilityModes.Initial) {
+                setSecondLink(undefined);
+            }
+            if (matrixMode === MobilityModes.Add) {
+                setSecondLink("New");
+            }
+            if (matrixMode === MobilityModes.Update) {
+                const { nameMobilityMatrix } = mobilityMatrixList.find(
+                    (matrix) => matrix.id === idMobilityMatrixUpdate
+                );
+                setSecondLink(nameMobilityMatrix);
+            }
+        }
+    }, [
+        firstLink,
+        idMobilityMatrixUpdate,
+        matrixMode,
+        mobilityMatrixList,
+        setSecondLink,
+    ]);
+
     return (
         <Breadcrumb
             spacing="8px"
@@ -99,6 +130,9 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
                         }
                         if (firstLink === "Models") {
                             setModelMode("initial");
+                        }
+                        if (firstLink === "Mobility") {
+                            setMatrixMode(MobilityModes.Initial);
                         }
                     }}
                 >

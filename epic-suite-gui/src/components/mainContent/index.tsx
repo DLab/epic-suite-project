@@ -14,7 +14,6 @@ import Results from "../results-tab";
 import DataFitTab from "components/data-fit-tab";
 import MobilityMatrix from "components/mobility-matrix-tab";
 import ModelTab from "components/models-tab";
-import NewModel from "components/new-model";
 import SummaryTab from "components/summary-tab/SummaryTab";
 import { TabIndex } from "context/TabContext";
 
@@ -78,7 +77,7 @@ const MainContentTab = () => {
                         </Center>
                     </Flex>
                 </TabPanel>
-                <TabPanel maxH="100vh" h="100%">
+                <TabPanel maxH="100vh" h="100%" overflow="hidden">
                     <MobilityMatrix />
                 </TabPanel>
                 {/* <TabPanel maxH="100vh" h="100%">
