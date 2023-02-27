@@ -103,7 +103,7 @@ const Results = () => {
                 justifyContent="space-between"
             >
                 <Flex justifyContent="space-between">
-                    <Text color="#16609E" fontSize="18px" fontWeight="bold">
+                    <Text color="#16609E" fontSize="1.125rem" fontWeight="bold">
                         Results
                     </Text>
                     <ResultsDrawer

@@ -73,7 +73,7 @@ const EndPointSource = ({ modelId, setDataValues, algorithmValue }: Props) => {
         try {
             const objectConfig = getObjectConfig();
             const res = await postData(
-                `${process.env.NEXT_PUBLIC_INITIALCONDITIONS_URL}/api/v0/realData`,
+                `${process.env.NEXT_PUBLIC_INITIALCONDITIONS_URL}/realData`,
                 {
                     Data_Fit: objectConfig,
                 }

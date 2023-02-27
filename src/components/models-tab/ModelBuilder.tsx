@@ -29,6 +29,8 @@ interface Props {
     dataSourceValue: string;
     modelName: string;
     startDate: Date;
+    matrixId: number;
+    setMatrixId: (value: number) => void;
 }
 
 /**
@@ -47,6 +49,8 @@ const ModelBuilder = ({
     dataSourceValue,
     modelName,
     startDate,
+    matrixId,
+    setMatrixId,
 }: Props) => {
     const { geoSelections: allGeoSelections } = useContext(SelectFeature);
 
@@ -177,6 +181,9 @@ const ModelBuilder = ({
                 setShowSectionInitialConditions={
                     setShowSectionInitialConditions
                 }
+                populationValue={populationValue}
+                matrixId={matrixId}
+                setMatrixId={setMatrixId}
             />
         </>
     );

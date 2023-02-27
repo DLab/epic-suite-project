@@ -6,19 +6,15 @@ import {
     Flex,
     Heading,
     IconButton,
-    Input,
-    Select,
     Stat,
     StatGroup,
     StatLabel,
     StatNumber,
-    Text,
 } from "@chakra-ui/react";
 
 import VariableDependentTime, {
     NameFunction,
 } from "types/VariableDependentTime";
-import createIdComponent from "utils/createIdcomponent";
 import showOnlySelectedAttributes, {
     findValueByKeyInMatrix,
     getSubTypeTransitionFunction,
@@ -33,7 +29,7 @@ interface Props {
 
 const ViewVariableDependentTime = ({ data, close }: Props) => {
     return (
-        <Box px="10" py="1rem" borderRadius="6px" boxShadow="sm" bg="#FAFAFA">
+        <Box px="10" py="1rem" borderRadius="6px" boxShadow="sm" bg="#fffff">
             <Heading textAlign="justify">
                 <Flex justifyContent="space-between" alignItems="center">
                     {data.name.toLocaleUpperCase()}{" "}

@@ -104,7 +104,7 @@ const StatesSelectedCheckbox = ({
                         >
                             <Flex
                                 justifyContent="space-between"
-                                fontSize="14px"
+                                fontSize="0.875rem"
                             >
                                 {s.label}
                                 <CloseIcon
@@ -136,7 +136,7 @@ const StatesSelectedCheckbox = ({
                                 >
                                     <Text
                                         id={createIdComponent()}
-                                        fontSize="14px"
+                                        fontSize="0.875rem"
                                         color="gray.600"
                                     >
                                         {cc.label}
@@ -163,7 +163,7 @@ const StatesSelectedCheckbox = ({
                                             id={createIdComponent()}
                                             flex="1"
                                             textAlign="left"
-                                            fontSize="14px"
+                                            fontSize="0.875rem"
                                         >
                                             {c.labelState}
                                         </Box>

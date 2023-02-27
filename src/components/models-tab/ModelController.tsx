@@ -1,20 +1,12 @@
 /* eslint-disable sonarjs/no-identical-functions */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { EditIcon } from "@chakra-ui/icons";
 import {
-    Box,
     Text,
     Flex,
     IconButton,
     Switch,
     FormControl,
     Heading,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionIcon,
-    AccordionPanel,
-    Select,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { useContext, useState, useEffect } from "react";
@@ -29,6 +21,7 @@ import { update } from "store/ControlPanel";
 import { RootState } from "store/store";
 import { NewModelsAllParams } from "types/SimulationTypes";
 
+import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
 import NodesParams from "./NodesParams";
 
 interface Props {
@@ -37,6 +30,9 @@ interface Props {
     setPositionVDT: (value: number) => void;
     nodes?: string[];
     modelCompartment?: string;
+    populationValue: string;
+    matrixId: number;
+    setMatrixId: (value: number) => void;
 }
 
 /**
@@ -50,6 +46,9 @@ const ModelController = ({
     setPositionVDT,
     modelCompartment,
     nodes,
+    populationValue,
+    matrixId,
+    setMatrixId,
 }: Props) => {
     const { description, setDataViewVariable, idModelUpdate } =
         useContext(ControlPanel);
@@ -94,9 +93,7 @@ const ModelController = ({
                     ],
                 };
             }
-            // if (_.isEmpty(current)) {
-            //     return acc;
-            // }
+
             return {
                 ...acc,
                 [current.name]: [current.isEnabled],
@@ -167,13 +164,13 @@ const ModelController = ({
 
     return (
         <>
-            {/* <Text>
-             
-                <Box flex="1" textAlign="left">
-                    Parameters
-                </Box>
-            </Text> */}
-            <Text fontSize="16px" fontWeight={700} mb="5%" mt="5%">
+            {populationValue === "metapopulation" && (
+                <MobilityMatrixModel
+                    matrixId={matrixId}
+                    setMatrixId={setMatrixId}
+                />
+            )}
+            <Text fontSize="1rem" fontWeight={700} mb="5%" mt="5%">
                 Common parameters
             </Text>
             <Flex justifyContent="space-between" wrap="wrap">
@@ -193,31 +190,11 @@ const ModelController = ({
                         />
                     </Flex>
                 </FormControl>
-                {/* {nodes.length > 1 && (
-                        <FormControl display="flex" alignItems="center">
-                        <Text fontSize="14px" fontWeight={500}>
-                            Mobility Matrix
-                        </Text>
-                            <Flex Flex w="50%" h="2rem" alignItems="center">
-                                <Select
-                                    value="Demo"
-                                    w="13rem"
-                                    fontSize="14px"
-                                    size="sm"
-                                    placeholder="Name Selection"
-                                >
-                                    <option value="Demo">
-                                        Demo Mobility Matrix
-                                    </option>
-                                </Select>
-                            </Flex>
-                        </FormControl>
-                    )} */}
             </Flex>
             <Flex justifyContent="space-between" wrap="wrap">
                 {modelCompartment !== "SEIRHVD" && (
                     <FormControl display="flex" alignItems="center">
-                        <Flex w="50%" justifyContent="space-between">
+                        <Flex w="50%" h="2rem" alignItems="center">
                             <NumberInputVariableDependent
                                 value={parameters.tI_R.val}
                                 nameParams="tI_R"
@@ -236,7 +213,7 @@ const ModelController = ({
                             w="50%"
                             justifyContent="flex-end"
                         >
-                            <Text fontSize="11px">Set function</Text>
+                            <Text fontSize="0.688rem">Set function</Text>
                             <Switch
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.tI_R[0]}
@@ -281,7 +258,7 @@ const ModelController = ({
             <Flex justifyContent="space-between" wrap="wrap">
                 {modelCompartment === "SEIR" && (
                     <FormControl display="flex" alignItems="center">
-                        <Flex w="50%" justifyContent="space-between">
+                        <Flex w="50%" h="2rem" alignItems="center">
                             <NumberInputVariableDependent
                                 value={parameters.tE_I.val}
                                 nameParams="tE_I"
@@ -300,7 +277,7 @@ const ModelController = ({
                             w="50%"
                             justifyContent="flex-end"
                         >
-                            <Text fontSize="11px">Set function</Text>
+                            <Text fontSize="0.688rem">Set function</Text>
                             <Switch
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.tE_I[0]}
@@ -364,7 +341,7 @@ const ModelController = ({
                             w="50%"
                             justifyContent="flex-end"
                         >
-                            <Text fontSize="11px">Set function</Text>
+                            <Text fontSize="0.688rem">Set function</Text>
                             <Switch
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.rR_S[0]}
@@ -450,7 +427,7 @@ const ModelController = ({
                     </FormControl>
                 </Flex>
             )}
-            <Heading as="h3" fontSize="14px" mt="5%">
+            <Heading as="h3" fontSize="1rem" mt="5%">
                 Parameters per Nodes
             </Heading>
             {/* <Accordion allowToggle reduceMotion> */}

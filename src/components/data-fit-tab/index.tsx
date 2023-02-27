@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 import React, { useState, useContext, useEffect } from "react";
 
 import BreadCrumb from "components/BreadCrumb";
-import { getParametersFitModel } from "components/new-model/GetParametersByNodes";
+import { getParametersFitModel } from "components/models-tab/GetParametersByNodes";
 import { DataFit } from "context/DataFitContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { EpidemicsData } from "types/ControlPanelTypes";
@@ -153,6 +153,7 @@ const DataFitTab = () => {
             populationType: originalModel.populationType,
             typeSelection: originalModel.typeSelection,
             idGeo: originalModel.idGeo,
+            idMobilityMatrix: originalModel.idMobilityMatrix,
             idGraph: originalModel.idGraph,
             initialConditions: originalModel.initialConditions,
             numberNodes: originalModel.numberNodes,

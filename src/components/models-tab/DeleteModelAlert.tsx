@@ -13,6 +13,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useRef, useContext } from "react";
 
 import { GraphicsData } from "context/GraphicsContext";
+import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { NewModelsAllParams } from "types/SimulationTypes";
 
@@ -27,6 +28,8 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
         setCompleteModel,
         idModelUpdate: id,
     } = useContext(NewModelSetted);
+    const { setMobilityMatrixList, mobilityMatrixList } =
+        useContext(MobilityMatrix);
     const {
         setAllGraphicData,
         setRealDataSimulationKeys,
@@ -42,6 +45,12 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
         );
         localStorage.setItem("newModels", JSON.stringify(modelFilter));
     };
+    const deleteMatrix = () => {
+        setMobilityMatrixList({
+            type: "remove-several",
+            element: id,
+        });
+    };
 
     return (
         <>
@@ -54,7 +63,7 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
                 aria-label="Delete geographic selection"
                 p="0"
             >
-                <Icon w="20px" h="20px" as={TrashIcon} />
+                <Icon w="1.25rem" h="1.25rem" as={TrashIcon} />
             </Button>
 
             <AlertDialog
@@ -78,7 +87,7 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
                                 onClick={onClose}
                                 size="sm"
                                 fontWeight={700}
-                                fontSize="10px"
+                                fontSize="0.625rem"
                                 bg="#016FB9"
                                 color="#FFFFFF"
                                 letterSpacing="0.05em"
@@ -95,6 +104,7 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
                                         type: "remove",
                                         element: id,
                                     });
+                                    deleteMatrix();
                                     deleteFromLocalStorage();
                                     setAllGraphicData([]);
                                     setRealDataSimulationKeys([]);
@@ -105,7 +115,7 @@ const DeleteModelAlert = ({ setModelMode }: Props) => {
                                 }}
                                 size="sm"
                                 fontWeight={700}
-                                fontSize="10px"
+                                fontSize="0.625rem"
                                 ml={3}
                                 bg="#016FB9"
                                 color="#FFFFFF"

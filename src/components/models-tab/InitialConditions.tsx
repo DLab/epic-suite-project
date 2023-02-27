@@ -104,176 +104,209 @@ const InitialConditionsModel = ({
                     <Flex wrap="wrap" w="100%">
                         <Box w="25%">
                             <Stat>
-                                <StatLabel>Population</StatLabel>
+                                <StatLabel fontSize="0.75rem">Total</StatLabel>
+                                <StatLabel fontSize="0.75rem">
+                                    (Population)
+                                </StatLabel>
                                 <StatNumber fontSize="xl">
                                     {new Intl.NumberFormat().format(
                                         initialConditions.population
                                     )}
                                 </StatNumber>
-                                <StatHelpText>Total</StatHelpText>
                             </Stat>
                         </Box>
                         <Box w="25%">
                             <Stat>
-                                <StatLabel>R</StatLabel>
+                                <StatLabel fontSize="0.75rem">
+                                    Removed
+                                </StatLabel>
+                                <StatLabel fontSize="0.75rem">(R)</StatLabel>
                                 <StatNumber fontSize="xl">
                                     {new Intl.NumberFormat().format(
                                         initialConditions.R
                                     )}
                                 </StatNumber>
-                                <StatHelpText>Removed</StatHelpText>
                             </Stat>
                         </Box>
                         <Box w="25%">
                             <Stat>
-                                <StatLabel>I</StatLabel>
+                                <StatLabel fontSize="0.75rem">
+                                    Infected actives
+                                </StatLabel>
+                                <StatLabel fontSize="0.75rem">(I)</StatLabel>
                                 <StatNumber fontSize="xl">
                                     {new Intl.NumberFormat().format(
                                         initialConditions.I
                                     )}
                                 </StatNumber>
-                                <StatHelpText>Infected actives</StatHelpText>
                             </Stat>
                         </Box>
                         <Box w="25%">
                             <Stat>
-                                <StatLabel>I_d</StatLabel>
+                                <StatLabel fontSize="0.75rem">
+                                    Infected daily
+                                </StatLabel>
+                                <StatLabel fontSize="0.75rem">(I_d)</StatLabel>
                                 <StatNumber fontSize="xl">
                                     {new Intl.NumberFormat().format(
                                         initialConditions.I_d
                                     )}
                                 </StatNumber>
-                                <StatHelpText>Infected daily</StatHelpText>
                             </Stat>
                         </Box>
                         <Box w="25%">
                             <Stat>
-                                <StatLabel>I_ac</StatLabel>
+                                <StatLabel fontSize="0.75rem">
+                                    {" "}
+                                    Infected accumulated
+                                </StatLabel>
+                                <StatLabel fontSize="0.75rem">(I_ac)</StatLabel>
                                 <StatNumber fontSize="xl">
                                     {new Intl.NumberFormat().format(
                                         initialConditions.I_ac
                                     )}
                                 </StatNumber>
-                                <StatHelpText>
-                                    Infected accumulated
-                                </StatHelpText>
                             </Stat>
                         </Box>
                         {modelValue === "seirhvd" && (
                             <>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>Iv</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            {" "}
+                                            Vaccinated Inffected
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (Iv)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.Iv
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Vaccinated Inffected
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>Iv_d</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            {" "}
+                                            Daily new Vaccinated Infected
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (Iv_d)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.Iv_d ?? 0
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Daily new Vaccinated Infected
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>Iv_ac</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            Accumulated Vaccinated Infected
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (Iv_ac)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.Iv_ac ?? 0
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Accumulated Vaccinated Infected
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>Sv</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            {" "}
+                                            Infected Susceptible
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (Sv)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.Sv
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Infected Susceptible
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>H_cap</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            Hospitalization Capacity
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (H_cap)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.H_cap
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Hospitalization Capacity
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>H_d</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            {" "}
+                                            Daily new Hospitalized
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (H_d)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.H_d ?? 0
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Daily new Hospitalized
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>H_ac</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            Hospitalized
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (H_ac)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.H ?? 0
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Hospitalized
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>D_d</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            Daily new Deaths
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (D_d)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.D_d
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>
-                                            Daily new Deaths
-                                        </StatHelpText>
                                     </Stat>
                                 </Box>
                                 <Box w="25%">
                                     <Stat>
-                                        <StatLabel>D</StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            Deaths
+                                        </StatLabel>
+                                        <StatLabel fontSize="0.75rem">
+                                            (D)
+                                        </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
                                                 initialConditions.D ?? 0
                                             )}
                                         </StatNumber>
-                                        <StatHelpText>Deaths</StatHelpText>
                                     </Stat>
                                 </Box>
                             </>
@@ -383,7 +416,8 @@ const InitialConditionsModel = ({
                     <Button
                         id={createIdComponent()}
                         mr="10%"
-                        colorScheme="teal"
+                        bg="#016FB9"
+                        color="#ffffff"
                         onClick={() => {
                             const isAllZero = Object.values(value).every(
                                 (element: number) => element === 0

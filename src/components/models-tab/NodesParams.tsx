@@ -62,7 +62,7 @@ const NodesParams = ({
                 <AccordionItem key={createIdComponent()}>
                     <h2>
                         <AccordionButton>
-                            <Box flex="1" textAlign="left">
+                            <Box flex="1" textAlign="left" fontSize="0.875rem">
                                 {node}
                             </Box>
                             <AccordionIcon />
@@ -93,7 +93,9 @@ const NodesParams = ({
                                     w="50%"
                                     justifyContent="flex-end"
                                 >
-                                    <Text fontSize="11px">Set function</Text>
+                                    <Text fontSize="0.688rem">
+                                        Set function
+                                    </Text>
                                     <Switch
                                         ml="0.5rem"
                                         isChecked={isEnableIconButton.beta[i]}
@@ -167,7 +169,9 @@ const NodesParams = ({
                                     w="50%"
                                     justifyContent="flex-end"
                                 >
-                                    <Text fontSize="11px">Set function</Text>
+                                    <Text fontSize="0.688rem">
+                                        Set function
+                                    </Text>
                                     <Switch
                                         ml="0.5rem"
                                         isChecked={isEnableIconButton.alpha[i]}
