@@ -12,6 +12,7 @@ import { useContext } from "react";
 
 import Results from "../results-tab";
 import DataFitTab from "components/data-fit-tab";
+import InterventionsTab from "components/interventions-tab";
 import MobilityMatrix from "components/mobility-matrix-tab";
 import ModelTab from "components/models-tab";
 import SummaryTab from "components/summary-tab/SummaryTab";
@@ -77,12 +78,17 @@ const MainContentTab = () => {
                         </Center>
                     </Flex>
                 </TabPanel>
-                <TabPanel maxH="100vh" h="100%" overflow="hidden">
+                <TabPanel
+                    display="none"
+                    maxH="100vh"
+                    h="100%"
+                    overflow="hidden"
+                >
                     <MobilityMatrix />
                 </TabPanel>
-                {/* <TabPanel maxH="100vh" h="100%">
-                    <NewModel />
-                </TabPanel> */}
+                <TabPanel maxH="100vh" h="100%">
+                    <InterventionsTab />
+                </TabPanel>
             </TabPanels>
         </Tabs>
     );

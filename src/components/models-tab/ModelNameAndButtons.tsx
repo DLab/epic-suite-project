@@ -14,10 +14,12 @@ import {
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { InterventionColection } from "context/InterventionsContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
 import { RootState } from "store/store";
+import { Actions } from "types/InterventionsTypes";
 import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
 
 import DeleteModelAlert from "./DeleteModelAlert";
@@ -47,6 +49,7 @@ const ModelNameAndButtons = ({
         setName,
         idMobility,
     } = useContext(NewModelSetted);
+    const { setInterventionsCreated } = useContext(InterventionColection);
     const toast = useToast();
     const parameters = useSelector((state: RootState) => state.controlPanel);
     const { setIndex } = useContext(TabIndex);
@@ -332,6 +335,10 @@ const ModelNameAndButtons = ({
                                     setNewModel({
                                         type: "remove",
                                         element: id,
+                                    });
+                                    setInterventionsCreated({
+                                        type: Actions.remove,
+                                        id,
                                     });
                                     setModelMode("initial");
                                 }}

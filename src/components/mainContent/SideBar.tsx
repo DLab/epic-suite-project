@@ -7,6 +7,7 @@ import {
     ChartBarSquareIcon,
     MapIcon,
     RocketLaunchIcon,
+    ViewfinderCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useRef, useEffect, useContext } from "react";
 
@@ -136,7 +137,7 @@ const SideBar = () => {
                     </Tab>
                     <Tab
                         _focus={{ boxShadow: "none" }}
-                        display="flex"
+                        display="none"
                         flexDirection="column"
                         w="100%"
                         border="none"
@@ -150,6 +151,24 @@ const SideBar = () => {
                         />
                         <Text fontSize="0.5rem" color="#3EBFE0">
                             MOBILITY
+                        </Text>
+                    </Tab>
+                    <Tab
+                        _focus={{ boxShadow: "none" }}
+                        display="flex"
+                        flexDirection="column"
+                        w="100%"
+                        border="none"
+                        m="10px 0"
+                    >
+                        <Icon
+                            w="20px"
+                            h="20px"
+                            as={ViewfinderCircleIcon}
+                            color="#3EBFE0"
+                        />
+                        <Text fontSize="0.5rem" color="#3EBFE0">
+                            INTERVENTIONS
                         </Text>
                     </Tab>
                 </Box>

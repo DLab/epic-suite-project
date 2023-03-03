@@ -3,10 +3,10 @@ const defaultSEOConfig = {
   title: "EPIc Suite",
   titleTemplate: "%s | EPIc Suite",
   defaultTitle: "EPIc Suite",
-  description: "Next.js + chakra-ui + TypeScript template",
-  canonical: "https://nextchakra-starter.sznm.dev",
+  description: "Epidemiology + tools + spatial",
+  canonical: "https://cv19gm.org",
   openGraph: {
-    url: "https://nextchakra-starter.sznm.dev",
+    url: "https://cv19gm.org",
     title: "EPIc Suite",
     description: "EPIc Suite GUI",
     images: [
@@ -15,12 +15,8 @@ const defaultSEOConfig = {
         alt: "nextchakra-starter.sznm.dev og-image",
       },
     ],
-    site_name: "nextchakra-starter",
-  },
-  twitter: {
-    handle: "@sozonome",
-    cardType: "summary_large_image",
-  },
+    site_name: "Epic Suite",
+  }
 };
 
 export default defaultSEOConfig;
