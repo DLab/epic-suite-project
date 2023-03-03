@@ -177,7 +177,7 @@ export default function StatusHardSimPop() {
                 <PopoverHeader fontWeight="bold">{status}</PopoverHeader>
                 <PopoverBody>
                     <Text marginBottom="0.2rem">Detail: {description}</Text>
-                    {status === StatusSimulation.RECIEVED ||
+                    {/* {status === StatusSimulation.RECIEVED ||
                         (status === StatusSimulation.STARTED && (
                             <Button
                                 onClick={() => {
@@ -188,7 +188,7 @@ export default function StatusHardSimPop() {
                             >
                                 Cancel
                             </Button>
-                        ))}
+                        ))} */}
                     {status === StatusSimulation.FINISHED && (
                         <Button
                             size="sm"

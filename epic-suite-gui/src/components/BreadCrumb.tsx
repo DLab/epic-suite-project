@@ -8,11 +8,13 @@ import {
 import { HomeIcon } from "@heroicons/react/24/outline";
 import React, { useContext, useEffect } from "react";
 
+import { InterventionColection } from "context/InterventionsContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
 import { Model } from "types/ControlPanelTypes";
+import { Interventions, InterventionsModes } from "types/InterventionsTypes";
 import { MobilityModes } from "types/MobilityMatrixTypes";
 import { NewModelsAllParams } from "types/SimulationTypes";
 
@@ -38,6 +40,16 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
         idMobilityMatrixUpdate,
         setMatrixMode,
     } = useContext(MobilityMatrix);
+    const {
+        interventionsMode,
+        setInterventionMode,
+        interventionsCreated,
+        setInterventionsCreated,
+        originOfInterventionCreation,
+        setOriginOfInterventionCreation,
+        idInterventionToUpdate,
+        setIdInterventionToUpdate,
+    } = useContext(InterventionColection);
 
     useEffect(() => {
         if (firstLink === "Models") {
@@ -106,6 +118,35 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
         mobilityMatrixList,
         setSecondLink,
     ]);
+    useEffect(() => {
+        if (firstLink === "Interventions") {
+            if (interventionsMode === InterventionsModes.Initial) {
+                setSecondLink(undefined);
+            }
+            if (interventionsMode === InterventionsModes.Add) {
+                setSecondLink("New");
+            }
+            if (
+                interventionsMode === InterventionsModes.Update &&
+                idInterventionToUpdate !== 0
+            ) {
+                // if (idInterventionToUpdate !== 0) {
+                const { modelId } = interventionsCreated.find(
+                    (interv: Interventions) =>
+                        interv.id === idInterventionToUpdate
+                );
+                setSecondLink(`${modelId}`);
+                // }
+            }
+        }
+    }, [
+        firstLink,
+        idMobilityMatrixUpdate,
+        interventionsMode,
+        setSecondLink,
+        interventionsCreated,
+        idInterventionToUpdate,
+    ]);
 
     return (
         <Breadcrumb
@@ -133,6 +174,9 @@ const BreadCrumb = ({ firstLink, secondLink, setSecondLink }: Props) => {
                         }
                         if (firstLink === "Mobility") {
                             setMatrixMode(MobilityModes.Initial);
+                        }
+                        if (firstLink === "Interventions") {
+                            setInterventionMode(InterventionsModes.Initial);
                         }
                     }}
                 >

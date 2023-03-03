@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, useToast } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 
 import {
@@ -14,9 +14,11 @@ import {
 import getResponseForHardMetaSimulation from "utils/eventSourceProcessResponse";
 import { getData } from "utils/fetchData";
 
+const bottonLeft = "bottom-left";
 const EventSourceConnection = () => {
     const { setHardSimulation } = useContext(HardSimSetted);
     const [serverMessage, setServerMessage] = useState("");
+    const toast = useToast();
     useEffect(() => {
         const source = new EventSource(
             `${process.env.NEXT_PUBLIC_SSE_URL}/stream`
@@ -30,7 +32,7 @@ const EventSourceConnection = () => {
         source.addEventListener("metapopulation", (e: MessageEvent) => {
             const { id, event, status, description } = JSON.parse(e.data);
             getData(`${process.env.NEXT_PUBLIC_SSE_URL}/process/${id}`)
-                .then((d) =>
+                .then((d) => {
                     getResponseForHardMetaSimulation(
                         d,
                         setHardSimulation,
@@ -38,10 +40,31 @@ const EventSourceConnection = () => {
                         id,
                         description,
                         status
-                    )
-                )
+                    );
+                    if (status === StatusSimulation.FINISHED) {
+                        toast({
+                            position: bottonLeft,
+                            title: "Simulation finished",
+                            description:
+                                "Simulation was completed successfully",
+                            status: "success",
+                            duration: 3000,
+                            isClosable: true,
+                        });
+                    }
+                })
                 // eslint-disable-next-line no-console
-                .catch((err) => console.log("error", err));
+                .catch((err) => {
+                    console.log("error", err);
+                    toast({
+                        position: bottonLeft,
+                        title: "Error",
+                        description: "Your simulation has failed",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                });
         });
         source.addEventListener("datafit", (e: MessageEvent) => {
             console.log("fit", e);
@@ -88,6 +111,7 @@ const EventSourceConnection = () => {
             });
             source.close();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setHardSimulation]);
     useEffect(() => {
         if (window.localStorage.getItem("hardSimulationStatus")) {
@@ -117,49 +141,50 @@ const EventSourceConnection = () => {
         }
     }, [setHardSimulation]);
     return (
-        <Box>
-            <Button
-                onClick={() => {
-                    setHardSimulation({
-                        type: Actions.SET,
-                        payload: {
-                            type: TypeHardSimulation.METAPOPULATION,
-                            idModel: 1234,
-                            idProcess: "1234",
-                            description: "testing",
-                            result: "nana",
-                        },
-                        status: StatusSimulation.RECIEVED,
-                    });
-                    window.localStorage.setItem(
-                        "hardSimulationStatus",
-                        JSON.stringify({
-                            status: StatusSimulation.RECIEVED,
-                            details: {
-                                type: TypeHardSimulation.METAPOPULATION,
-                                idModel: 1234,
-                                idProcess: "1234",
-                                description: "testing",
-                                result: "nana",
-                            },
-                        })
-                    );
-                }}
-            >
-                setear
-            </Button>
-            <Button
-                onClick={() => {
-                    setHardSimulation({ type: Actions.RESET });
-                    window.localStorage.setItem(
-                        "hardSimulationStatus",
-                        JSON.stringify(initialStateHardSim)
-                    );
-                }}
-            >
-                resetear
-            </Button>
-        </Box>
+        <></>
+        // <Box>
+        //     <Button
+        //         onClick={() => {
+        //             setHardSimulation({
+        //                 type: Actions.SET,
+        //                 payload: {
+        //                     type: TypeHardSimulation.METAPOPULATION,
+        //                     idModel: 1234,
+        //                     idProcess: "1234",
+        //                     description: "testing",
+        //                     result: "nana",
+        //                 },
+        //                 status: StatusSimulation.RECIEVED,
+        //             });
+        //             window.localStorage.setItem(
+        //                 "hardSimulationStatus",
+        //                 JSON.stringify({
+        //                     status: StatusSimulation.RECIEVED,
+        //                     details: {
+        //                         type: TypeHardSimulation.METAPOPULATION,
+        //                         idModel: 1234,
+        //                         idProcess: "1234",
+        //                         description: "testing",
+        //                         result: "nana",
+        //                     },
+        //                 })
+        //             );
+        //         }}
+        //     >
+        //         setear
+        //     </Button>
+        //     <Button
+        //         onClick={() => {
+        //             setHardSimulation({ type: Actions.RESET });
+        //             window.localStorage.setItem(
+        //                 "hardSimulationStatus",
+        //                 JSON.stringify(initialStateHardSim)
+        //             );
+        //         }}
+        //     >
+        //         resetear
+        //     </Button>
+        // </Box>
     );
 };
 
