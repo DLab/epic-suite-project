@@ -15,4 +15,4 @@ set -euo pipefail
 cd backend
 
 # exec the final command:
-exec python run.py
+exec python run.py -d

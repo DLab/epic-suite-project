@@ -32,9 +32,10 @@ services:
             - covid19geomodeller
             - sse
     covid19geomodeller:
+        platform: linux/amd64
         container_name: covid19geomodeller
         image: simulation-backend
-        command: conda run -n myenv python backend/run.py
+        command: conda run -n myenv python backend/run.py -d
         build: 
             context: ./simulation-backend
         ports:
@@ -45,6 +46,7 @@ services:
           - redis
         entrypoint: "./install.sh"
     worker:
+        platform: linux/amd64
         container_name: worker
         image: simulation-backend
         command: conda run -n myenv rq worker --name worker --url redis://redis:6379/0

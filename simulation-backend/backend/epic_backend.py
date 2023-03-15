@@ -22,7 +22,7 @@ from rq import Queue
 from rq.command import send_stop_job_command
 from rq.job import Job
 import redis
-from background_tasks import datafit_task, simulate_meta_task, publish_status_simulation
+from background_tasks import datafit_task, simulate_meta_task, publish_status_simulation, send_task
 import uuid
 from get_mobility_matrix import matrix_builder,matrix_usa
 
@@ -124,13 +124,10 @@ def simulate_meta():
         random_id = uuid.uuid4()
         id_sim = str(random_id)
         cfg =  request.get_json(force=True)
-        print(cfg)
         print("------------ Sending to simulate -----------",flush=True)
         publish_status_simulation({'status': 'RECIEVED', 'id': id_sim}, "metapopulation")
-        q.enqueue(simulate_meta_task, cfg, id_sim, job_id=id_sim, job_timeout=100000)
-
+        q.enqueue(send_task,simulate_meta_task, cfg, id_sim,"metapopulation", job_id=id_sim, job_timeout=100000)
         return {"status": "recieved", "id": id_sim}, 200
-    
     except Exception as e: 
         print("------------ Error -----------",e, flush=True)        
         print(e, flush=True)        
@@ -204,7 +201,7 @@ def datafit():
         id_sim = str(random_id)
         print("------------ Sending to fit -----------",flush=True)
         publish_status_simulation({'status': 'RECIEVED', 'id': id_sim}, "datafit")
-        q.enqueue(datafit_task, cfg, id_sim, job_id=id_sim, job_timeout=100000)
+        q.enqueue(send_task,datafit_task, cfg, id_sim,"datafit", job_id=id_sim, job_timeout=100000)
         return {"status": "RECIEVED", "id": id_sim}, 200
     except Exception as e: 
         print("\033[4;35;47m"+"------------ Error -----------"+'\033[0;m',e, flush=True)        
