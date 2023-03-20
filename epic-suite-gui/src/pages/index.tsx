@@ -5,6 +5,7 @@ import ControlPanelContext from "context/ControlPanelContext";
 import DataFitContext from "context/DataFitContext";
 import GraphicsContext from "context/GraphicsContext";
 import HardSimulationContext from "context/HardSimulationsStatus";
+import InterventionsContext from "context/InterventionsContext";
 import MobilityMatrixContext from "context/MobilityMatrixContext";
 import NewModelsContext from "context/NewModelsContext";
 import SelectFeatureContext from "context/SelectFeaturesContext";
@@ -17,14 +18,15 @@ const Home = () => {
                 <ControlPanelContext>
                     <SelectFeatureContext>
                         <MobilityMatrixContext>
-                            <GraphicsContext>
-                                <DataFitContext>
-                                    <HardSimulationContext>
-                                        <Simulator />
-                                    </HardSimulationContext>
-                                    {/* <EventSourceConnection /> */}
-                                </DataFitContext>
-                            </GraphicsContext>
+                            <InterventionsContext>
+                                <GraphicsContext>
+                                    <DataFitContext>
+                                        <HardSimulationContext>
+                                            <Simulator />
+                                        </HardSimulationContext>
+                                    </DataFitContext>
+                                </GraphicsContext>
+                            </InterventionsContext>
                         </MobilityMatrixContext>
                     </SelectFeatureContext>
                 </ControlPanelContext>

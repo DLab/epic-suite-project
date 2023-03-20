@@ -21,8 +21,9 @@ import { update } from "store/ControlPanel";
 import { RootState } from "store/store";
 import { NewModelsAllParams } from "types/SimulationTypes";
 
-import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
+// import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
 import NodesParams from "./NodesParams";
+// import ModelInterventions from "./interventions/ModelInterventions";
 
 interface Props {
     showSectionVariable: (values: boolean) => void;
@@ -164,12 +165,13 @@ const ModelController = ({
 
     return (
         <>
-            {populationValue === "metapopulation" && (
+            {/* descomentar esto */}
+            {/* {populationValue === "metapopulation" && (
                 <MobilityMatrixModel
                     matrixId={matrixId}
                     setMatrixId={setMatrixId}
                 />
-            )}
+            )} */}
             <Text fontSize="1rem" fontWeight={700} mb="5%" mt="5%">
                 Common parameters
             </Text>

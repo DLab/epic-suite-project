@@ -367,22 +367,39 @@ const RunButton = ({ permission }: Props) => {
                     // setSelectedModelsToSimulate(selectedModels);
                     // getGraphicRealMetaData(selectedModels);
                     // setIndex(4);
+                    toast({
+                        position: bottonLeft,
+                        title: "Simulation sent",
+                        description: "Your simulation was submitted",
+                        status: "info",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                 } else {
                     response = await postData(
                         `${process.env.NEXT_PUBLIC_COVID19GEOMODELLER_URL}/simulate`,
                         objConfig
                     );
                     setMonopopulationData(response, selectedModels);
+                    toast({
+                        position: bottonLeft,
+                        title: "Simulation success",
+                        description:
+                            "Your simulation was completed successfully",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                 }
             }
-            toast({
-                position: bottonLeft,
-                title: "Simulation success",
-                description: "Your simulation was completed successfully",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
+            // toast({
+            //     position: bottonLeft,
+            //     title: "Simulation success",
+            //     description: "Your simulation was completed successfully",
+            //     status: "success",
+            //     duration: 3000,
+            //     isClosable: true,
+            // });
         } catch (error) {
             if (error.response?.status === 400) {
                 toast({

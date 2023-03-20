@@ -116,7 +116,15 @@ const MobilityMatrix = () => {
                         matrixType={matrixTypeLocal}
                         setMatrixType={setMatrixTypeLocal}
                     />
-                    <Flex ml="2%" p="0" h="100%" w="100%" mt="20px">
+                    {/* Eliminar display none a matrix */}
+                    <Flex
+                        ml="2%"
+                        p="0"
+                        h="100%"
+                        w="100%"
+                        mt="20px"
+                        display="none"
+                    >
                         <MobilityConstructorContainer
                             nodesLocalValue={nodesLocalValue}
                             setNodesLocalValue={setNodesLocalValue}

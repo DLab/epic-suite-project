@@ -17,8 +17,14 @@ import React, { useState, useContext, useEffect } from "react";
 import BreadCrumb from "components/BreadCrumb";
 import { getParametersFitModel } from "components/models-tab/GetParametersByNodes";
 import { DataFit } from "context/DataFitContext";
+import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
 import { EpidemicsData } from "types/ControlPanelTypes";
+import {
+    Actions,
+    StatusSimulation,
+    TypeHardSimulation,
+} from "types/HardSimulationType";
 import { NewModelsAllParams } from "types/SimulationTypes";
 import postData from "utils/fetchData";
 
@@ -50,6 +56,7 @@ const Graphic = dynamic(() => import("./GraphicDataFit"), {
  * @component
  */
 const DataFitTab = () => {
+    const bottomLeft = "bottom-left";
     const toast = useToast();
     const [dataSourceType, setDataSourceType] = useState("");
     const [algorithmValue, setAlgorithmValue] = useState(undefined);
@@ -64,9 +71,8 @@ const DataFitTab = () => {
     const [sampleSourceValue, setSampleSourceValue] = useState("1");
     const { fittedData, realDataToFit, setFittedData, setRealDataToFit } =
         useContext(DataFit);
-    const { completeModel, setCompleteModel, setNewModel } =
-        useContext(NewModelSetted);
-
+    const { completeModel } = useContext(NewModelSetted);
+    const { hardSimulation, setHardSimulation } = useContext(HardSimSetted);
     useEffect(() => {
         if (
             modelId !== undefined &&
@@ -110,11 +116,6 @@ const DataFitTab = () => {
             (model: NewModelsAllParams) => model.idNewModel === modelId
         );
         return {
-            // refactorizar cuando el endpoint de datafit reciba funciones
-            // tE_I: modelParameters.tE_I,
-            // tI_R: modelParameters.tI_R,
-            // tE_I: 5,
-            // tI_R: 10,
             tE_I: +modelParameters.tE_I.val,
             tI_R: +modelParameters.tI_R.val,
             method: algorithmValue,
@@ -138,83 +139,62 @@ const DataFitTab = () => {
         return res;
     }
 
-    /**
-     * Adds the fitted model to local storage and saved models.
-     * @param fittedData2 object with the new adjusted values from the endpoint.
-     */
-    const addNewFitModel = (fittedData2) => {
-        const originalModel = completeModel.find(
-            (model: NewModelsAllParams) => model.idNewModel === modelId
-        );
-        const fittedModelData = {
-            idNewModel: Date.now(),
-            name: `${originalModel.name}fitted`,
-            modelType: originalModel.modelType,
-            populationType: originalModel.populationType,
-            typeSelection: originalModel.typeSelection,
-            idGeo: originalModel.idGeo,
-            idMobilityMatrix: originalModel.idMobilityMatrix,
-            idGraph: originalModel.idGraph,
-            initialConditions: originalModel.initialConditions,
-            numberNodes: originalModel.numberNodes,
-            t_init: originalModel.t_init,
-        };
-
-        const parametersValues: EpidemicsData = getParametersFitModel(
-            originalModel.parameters,
-            fittedData2
-        );
-
-        setCompleteModel({
-            type: "add",
-            payload: { ...fittedModelData, parameters: parametersValues },
-        });
-
-        setNewModel({
-            type: "add",
-            payload: fittedModelData,
-        });
-
-        localStorage.setItem(
-            "newModels",
-            JSON.stringify([
-                ...completeModel,
-                { ...fittedModelData, parameters: parametersValues },
-            ])
-        );
-    };
-
-    /**
-     * If there is a selected model, it sends it to be adjusted.
-     */
     const handleFetch = async () => {
         try {
-            setIsSimulating(true);
-            const fitRes = await getFittedData();
-            const fitResModel = { model: fitRes.results.simulation };
-            const val = Object.values(fitResModel);
-            const keys = Object.keys(fitResModel);
-            const resFittedData = val
-                .map((simString: string) => JSON.parse(simString))
-                .map((sim, i) => ({
-                    name: keys[i],
-                    ...sim,
-                }));
+            if (
+                hardSimulation.status === StatusSimulation.RECIEVED ||
+                hardSimulation.status === StatusSimulation.STARTED
+            ) {
+                throw new Error(
+                    "You already have a high-cost simulation in progress, you can cancel that process or wait until it finishes."
+                );
+            }
 
-            const fittedData2 = {
-                I: resFittedData[0].I_d,
-                I_ac: resFittedData[0].I_d,
-                name: resFittedData[0].name,
-                beta: fitRes.results.beta_values,
-                beta_days: fitRes.results.beta_days,
-                mu: fitRes.results.mu,
-            };
-            setFittedData([fittedData2]);
-            addNewFitModel(fittedData2);
+            setIsSimulating(true);
+            const {
+                parameters: { name_model: nameModel },
+            } = completeModel.find(
+                (model: NewModelsAllParams) => model.idNewModel === modelId
+            );
+            const { status, id } = await getFittedData();
+
+            setHardSimulation({
+                type: Actions.SET,
+                payload: {
+                    name: `${nameModel}`,
+                    type: TypeHardSimulation.DATAFIT,
+                    idProcess: id,
+                    idModel: modelId,
+                    description: "Simulation parameters received successfully",
+                },
+                status: status.toUpperCase(),
+            });
+            window.localStorage.setItem(
+                "hardSimulationStatus",
+                JSON.stringify({
+                    status: status.toUpperCase(),
+                    details: {
+                        name: `${nameModel}`,
+                        type: TypeHardSimulation.METAPOPULATION,
+                        idProcess: id,
+                        idModel: modelId,
+                        description:
+                            "Simulation parameters received successfully",
+                    },
+                })
+            );
+            toast({
+                position: bottomLeft,
+                title: "Fit sent",
+                description: "Your model was submitted to fitting",
+                status: "info",
+                duration: 3000,
+                isClosable: true,
+            });
         } catch (error) {
             if (modelId === undefined) {
                 toast({
-                    position: "bottom-left",
+                    position: bottomLeft,
                     title: "Error",
                     description: "Please, choose a model",
                     status: "error",
