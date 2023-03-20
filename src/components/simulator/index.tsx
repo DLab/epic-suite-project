@@ -5,11 +5,13 @@ import {
     HardSimSetted,
     initialStateHardSim,
 } from "context/HardSimulationsStatus";
+import { InterventionColection } from "context/InterventionsContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import TabContext from "context/TabContext";
 import { Actions } from "types/HardSimulationType";
+import { Actions as IntervActions } from "types/InterventionsTypes";
 import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
 
 import EventSourceConnection from "./EventSourceConnection";
@@ -20,6 +22,9 @@ const Simulator = () => {
     const { setCompleteModel, setNewModel } = useContext(NewModelSetted);
     const { setMobilityMatrixList } = useContext(MobilityMatrix);
     const { hardSimulation, setHardSimulation } = useContext(HardSimSetted);
+    const { interventionsCreated, setInterventionsCreated } = useContext(
+        InterventionColection
+    );
     useEffect(() => {
         if (typeof window !== "undefined") {
             if (window.localStorage.getItem("geoSelection")) {
@@ -50,12 +55,21 @@ const Simulator = () => {
                         fromLocalStorageToNewModelContext as unknown as NewModelsParams[],
                 });
             }
-            if (window.localStorage.getItem("mobilityMatrixList")) {
+            // descomentar esto
+            // if (window.localStorage.getItem("mobilityMatrixList")) {
+            //     const dataLocalStorageMatrix =
+            //         window.localStorage.getItem("mobilityMatrixList");
+            //     setMobilityMatrixList({
+            //         type: "setInitial",
+            //         localState: JSON.parse(dataLocalStorageMatrix),
+            //     });
+            // }
+            if (window.localStorage.getItem("Interventions")) {
                 const dataLocalStorageMatrix =
-                    window.localStorage.getItem("mobilityMatrixList");
-                setMobilityMatrixList({
-                    type: "setInitial",
-                    localState: JSON.parse(dataLocalStorageMatrix),
+                    window.localStorage.getItem("Interventions");
+                setInterventionsCreated({
+                    type: IntervActions.reset,
+                    reset: JSON.parse(dataLocalStorageMatrix),
                 });
             }
             if (window.localStorage.getItem("hardSimulationStatus")) {
@@ -80,8 +94,14 @@ const Simulator = () => {
         setNewModel,
         setMobilityMatrixList,
         setHardSimulation,
+        setInterventionsCreated,
     ]);
-
+    useEffect(() => {
+        window.localStorage.setItem(
+            "Interventions",
+            JSON.stringify(interventionsCreated)
+        );
+    }, [interventionsCreated]);
     return (
         <TabContext>
             <MainContentTab />

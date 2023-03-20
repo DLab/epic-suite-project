@@ -39,6 +39,7 @@ export interface NewModelsParams {
     initialConditions: InitialConditionsNewModel[];
     numberNodes: number;
     t_init: string;
+    idIntervention?: number | string;
 }
 
 export interface NewModelsAllParams {
@@ -54,6 +55,7 @@ export interface NewModelsAllParams {
     numberNodes: number;
     t_init: string;
     parameters: EpidemicsData;
+    idIntervention?: number | string;
 }
 
 export interface ActionsNewModelData {
@@ -92,6 +94,8 @@ export interface NewModelType {
     setName: (value: string) => void;
     idMobility: number;
     setIdMobility: (value: number) => void;
+    idIntervention: number;
+    setIdIntervention: (value: number | string) => void;
 }
 
 export interface SimulatorParams {

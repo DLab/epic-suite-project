@@ -29,6 +29,8 @@ export const NewModelSetted = createContext<NewModelType>({
     setName: () => {},
     idMobility: 0,
     setIdMobility: () => {},
+    idIntervention: 0,
+    setIdIntervention: () => {},
 });
 
 // eslint-disable-next-line react/prop-types
@@ -141,6 +143,7 @@ const NewModelsContext: React.FC = ({ children }) => {
     const [idModelUpdate, setIdModelUpdate] = useState(undefined);
     const [name, setName] = useState("");
     const [idMobility, setIdMobility] = useState(undefined);
+    const [idIntervention, setIdIntervention] = useState(undefined);
     return (
         <NewModelSetted.Provider
             value={{
@@ -162,6 +165,8 @@ const NewModelsContext: React.FC = ({ children }) => {
                 setName,
                 idMobility,
                 setIdMobility,
+                idIntervention,
+                setIdIntervention,
             }}
         >
             {children}
