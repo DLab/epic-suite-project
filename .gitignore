@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -50,6 +51,74 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+=======
+compute_initCond/
+endpoint_docs/
+endpointV1.1/countiesUSA.csv
+endpointV1.1/seirhvdUSA.csv
+endpointV1.1/statesUSA.csv
+venv/
+endpointv1.2/venv
+endpointV1.2/app/endpoint_docs/countiesUSA.csv
+endpointV1.2/app/endpoint_docs/seirhvdUSA.csv
+endpointV1.2/app/endpoint_docs/statesUSA.csv
+.pytest_cache/
+yarn.lock
+endpointV1.2_forTesting/
+nohup.out
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+>>>>>>> 8757705 (Squashed 'init-cond/' changes from 0583033..2362043)
 
 # Translations
 *.mo
@@ -101,6 +170,11 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+<<<<<<< HEAD
+=======
+.vscode/
+
+>>>>>>> 8757705 (Squashed 'init-cond/' changes from 0583033..2362043)
 # Environments
 .env
 .venv
@@ -126,4 +200,8 @@ venv.bak/
 dmypy.json
 
 # Pyre type checker
+<<<<<<< HEAD
 .pyre/
+=======
+.pyre/
+>>>>>>> 8757705 (Squashed 'init-cond/' changes from 0583033..2362043)

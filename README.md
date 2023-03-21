@@ -16,4 +16,5 @@
 More details with subtree manage  [here](https://medium.com/@v/git-subtrees-a-tutorial-6ff568381844)
 
 
-
+## Run Mini Version
+`docker compose -f mini.yml up`

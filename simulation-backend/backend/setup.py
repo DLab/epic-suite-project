@@ -23,7 +23,7 @@ setuptools.setup(
     },
     license='MIT',
     packages = setuptools.find_packages(),
-    install_requires=['requests','numpy','matplotlib','pandas','scipy','datetime','toml','logging','flask_cors','flask','argparse','waitress'],
+    install_requires=['requests','numpy','matplotlib','pandas','scipy','datetime','toml','logging','flask_cors','flask','argparse','waitress','pygmo'],
     include_package_data=True 
 )
 

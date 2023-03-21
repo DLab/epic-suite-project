@@ -1,34 +1,15 @@
 version: "3.10"
 services:
-    client:
-        build:
-            context: ./epic-suite-gui
-        image: client
-        ports:
-            - "3000:3000"
-        container_name: client
-        # volumes:
-        #   - ./epic-suite-gui/.next:/app/.next
-    initialconditions:
-        build:
-            context: ./init-cond/endpointV1.2
-
-        image: initial_conditions_server
-        ports:
-            - "5002:5002"
-        container_name: initialconditions
     nginx:
         build:
             context: ./nginx
-
+            args:
+                ISMINI: "true"
         image: nginx_proxy
         container_name: nginx
-        volumes:
-            - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
         ports:
             - "80:80"
         depends_on:
-            - initialconditions
             - covid19geomodeller
             - sse
     covid19geomodeller:
@@ -58,7 +39,6 @@ services:
         volumes:
           - ./simulation-backend/backend:/app/backend
         entrypoint: "./worker.sh"
-
     sse:
         container_name: sse
         image: sse
@@ -73,12 +53,3 @@ services:
     redis:
         container_name: redis
         image: "redis:alpine"
-    matrices-od:
-        container_name: matrices-od
-        build:
-            context: /home/epic/endpoint_mOD/
-        ports:
-          - "5010:5010"
-        volumes:
-          - /home/epic/cuebiq/mOD_nDevices:/home/epic/cuebiq/mOD_nDevices
-          - /home/epic/endpoint_mOD/:/matricesOD

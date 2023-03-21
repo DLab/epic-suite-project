@@ -1,8 +1,6 @@
 #Conda image
 FROM continuumio/miniconda3
 
-#Copy cv19gm library. It must be installed before to do anything.
-COPY covid19geomodeller .
 
 
 # Create the environment:
@@ -16,10 +14,18 @@ SHELL ["/bin/bash", "--login", "-c"]
 # Demonstrate the environment is activated:
 # The code to run when container is started:
 #COPY . .
-#WORKDIR /covid19geomodeller
+#Copy cv19gm library. It must be installed before to do anything.
+RUN apt-get install -y git
+ 
+# download and add a public key, and clone a repo and install with pip
+RUN git clone https://github.com/DLab/covid19geomodeller.git
+WORKDIR /covid19geomodeller
+#COPY covid19geomodeller .
+
 RUN python setup.py install
+
 WORKDIR /app
-COPY backend .
+COPY backend ./backend
 COPY install.sh .
 COPY worker.sh .
 

@@ -35,6 +35,7 @@ async def publish_status_simulation(type: str, request: Request):
     form = await request.json()
     await RedisDatabase.publish(json.dumps(StatusMessage(form["id"],type,StatusSimulation[form["status"]]).get_message()))
     if "data" in form and form["status"] == StatusSimulation.FINISHED.name:
+        print("data",form["data"] ,flush=True)
         await RedisDatabase.save_results(form["id"],form["status"],form['data'])
     else:
         await RedisDatabase.save_results(form["id"],form["status"])

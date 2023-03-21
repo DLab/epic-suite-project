@@ -369,8 +369,8 @@ const RunButton = ({ permission }: Props) => {
                     // setIndex(4);
                     toast({
                         position: bottonLeft,
-                        title: "Simulation sended",
-                        description: "Your simulation was sended",
+                        title: "Simulation sent",
+                        description: "Your simulation was submitted",
                         status: "info",
                         duration: 3000,
                         isClosable: true,

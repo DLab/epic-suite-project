@@ -3,9 +3,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
   - flask
-  - numpy
+  - numpy==1.23.4
   - requests
   - flask
   - flask_cors
