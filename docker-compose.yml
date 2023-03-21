@@ -73,3 +73,12 @@ services:
     redis:
         container_name: redis
         image: "redis:alpine"
+    matrices-od:
+        container_name: matrices-od
+        build:
+            context: /home/epic/endpoint_mOD/
+        ports:
+          - "5010:5010"
+        volumes:
+          - /home/epic/cuebiq/mOD_nDevices:/home/epic/cuebiq/mOD_nDevices
+          - /home/epic/endpoint_mOD/:/matricesOD
