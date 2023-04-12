@@ -1,4 +1,7 @@
-import { EpidemicsData, ActionsEpidemicData } from "types/ControlPanelTypes";
+import type {
+    EpidemicsData,
+    ActionsEpidemicData,
+} from "types/ControlPanelTypes";
 import { NameFunction } from "types/VariableDependentTime";
 
 export const initialState: EpidemicsData = {
@@ -388,9 +391,10 @@ export const initialState: EpidemicsData = {
     pIv_det: 1,
 };
 const reducerControlPanel = (
-    state: EpidemicsData = initialState,
+    old_state: EpidemicsData | undefined,
     action: ActionsEpidemicData
 ) => {
+    const state = old_state || initialState;
     if (action.type === "set") {
         if (action.positionVariableDependentTime >= 0) {
             const newState = {

@@ -12,6 +12,7 @@ import {
     Text,
     Icon,
     Button,
+    Stack,
 } from "@chakra-ui/react";
 import { ArrowRightCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -52,83 +53,107 @@ const TableGeographic = () => {
             <Text fontSize="16px" fontWeight={600} mb="5px">
                 Geographic selection
             </Text>
-            <TableContainer border="1px solid #DDDDDD" borderRadius="8px">
-                <Table>
-                    <Thead>
-                        <Tr>
-                            <Th
-                                textAlign="center"
-                                color="#016FB9"
-                                textTransform="capitalize"
-                                fontSize="16px"
+            {geoSelections.length === 0 ? (
+                <Stack>
+                    <Button
+                        size="sm"
+                        fontSize="0.625rem"
+                        bg="#016FB9"
+                        color="#FFFFFF"
+                        w="100px"
+                        onClick={() => {
+                            setMode(Model.Add);
+                            setIndex(2);
+                        }}
+                    >
+                        <Icon
+                            w="0.875rem"
+                            h="0.875rem"
+                            as={PlusIcon}
+                            mr="5px"
+                        />
+                        ADD NEW
+                    </Button>
+                </Stack>
+            ) : (
+                <TableContainer border="1px solid #DDDDDD" borderRadius="8px">
+                    <Table>
+                        <Thead>
+                            <Tr>
+                                <Th
+                                    textAlign="center"
+                                    color="#016FB9"
+                                    textTransform="capitalize"
+                                    fontSize="16px"
+                                >
+                                    Selection
+                                </Th>
+                                <Th
+                                    textAlign="center"
+                                    color="#016FB9"
+                                    textTransform="capitalize"
+                                    fontSize="16px"
+                                >
+                                    Scale
+                                </Th>
+                                <Th />
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {geoSelections.map((geoSelection) => {
+                                return (
+                                    <Tr key={geoSelection.id}>
+                                        <Td fontSize="0.875rem">
+                                            {geoSelection.name}
+                                        </Td>
+                                        <Td fontSize="0.875rem">
+                                            {geoSelection.scale}
+                                        </Td>
+                                        <Td fontSize="0.875rem">
+                                            <Icon
+                                                w="1.25rem"
+                                                h="1.25rem"
+                                                as={ArrowRightCircleIcon}
+                                                color="#1B1B3A"
+                                                onClick={() => {
+                                                    updateGeoSelection(
+                                                        geoSelection.id
+                                                    );
+                                                    setMode(Model.Update);
+                                                    setOriginOfGeoCreation(
+                                                        "summaryTab"
+                                                    );
+                                                    setIndex(2);
+                                                }}
+                                            />
+                                        </Td>
+                                    </Tr>
+                                );
+                            })}
+                        </Tbody>
+                        <TableCaption textAlign="start" m="5px 0">
+                            <Button
+                                size="sm"
+                                fontSize="0.625rem"
+                                bg="#016FB9"
+                                color="#FFFFFF"
+                                onClick={() => {
+                                    setMode(Model.Add);
+                                    setIndex(2);
+                                }}
                             >
-                                Selection
-                            </Th>
-                            <Th
-                                textAlign="center"
-                                color="#016FB9"
-                                textTransform="capitalize"
-                                fontSize="16px"
-                            >
-                                Scale
-                            </Th>
-                            <Th />
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {geoSelections.map((geoSelection) => {
-                            return (
-                                <Tr key={geoSelection.id}>
-                                    <Td fontSize="0.875rem">
-                                        {geoSelection.name}
-                                    </Td>
-                                    <Td fontSize="0.875rem">
-                                        {geoSelection.scale}
-                                    </Td>
-                                    <Td fontSize="0.875rem">
-                                        <Icon
-                                            w="1.25rem"
-                                            h="1.25rem"
-                                            as={ArrowRightCircleIcon}
-                                            color="#1B1B3A"
-                                            onClick={() => {
-                                                updateGeoSelection(
-                                                    geoSelection.id
-                                                );
-                                                setMode(Model.Update);
-                                                setOriginOfGeoCreation(
-                                                    "summaryTab"
-                                                );
-                                                setIndex(2);
-                                            }}
-                                        />
-                                    </Td>
-                                </Tr>
-                            );
-                        })}
-                    </Tbody>
-                    <TableCaption textAlign="start" m="5px 0">
-                        <Button
-                            size="sm"
-                            fontSize="0.625rem"
-                            bg="#016FB9"
-                            color="#FFFFFF"
-                            onClick={() => {
-                                setMode(Model.Add);
-                                setIndex(2);
-                            }}
-                        >
-                            <Icon
-                                w="0.875rem"
-                                h="0.875rem"
-                                as={PlusIcon}
-                                mr="5px"
-                            />
-                            ADD NEW
-                        </Button>
-                    </TableCaption>
-                </Table>
-            </TableContainer>
+                                <Icon
+                                    w="0.875rem"
+                                    h="0.875rem"
+                                    as={PlusIcon}
+                                    mr="5px"
+                                />
+                                ADD NEW
+                            </Button>
+                        </TableCaption>
+                    </Table>
+                </TableContainer>
+            )}
         </Flex>
     );
 };

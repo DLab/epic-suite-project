@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { ChakraProvider } from "@chakra-ui/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EmotionCache } from "@emotion/cache";
+import type { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { DefaultSeo } from "next-seo";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AppProps } from "next/app";
+import type { AppProps } from "next/app";
 import Head from "next/head";
+import { DefaultSeo } from "next-seo";
 import "@fontsource/lexend/latin.css";
 import { Provider } from "react-redux";
 

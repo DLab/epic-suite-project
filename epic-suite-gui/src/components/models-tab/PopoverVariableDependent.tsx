@@ -8,7 +8,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { TransitionFunction, TypePhase } from "types/VariableDependentTime";
+import type {
+    TransitionFunction,
+    TypePhase,
+} from "types/VariableDependentTime";
 
 import {
     SinoInputs,

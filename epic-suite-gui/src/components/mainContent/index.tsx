@@ -72,8 +72,8 @@ const MainContentTab = () => {
                     <DataFitTab />
                 </TabPanel>
                 <TabPanel h="100vh" maxH="100vh">
-                    <Flex maxh="100vh" h="97vh">
-                        <Center w="100%" maxh="100vh">
+                    <Flex maxH="100vh" h="97vh">
+                        <Center w="100%" maxH="100vh">
                             <Results />
                         </Center>
                     </Flex>

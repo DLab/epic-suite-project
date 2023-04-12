@@ -4,7 +4,8 @@ import React, { useState, useContext, useEffect } from "react";
 
 import { MobilityMatrix as MobilityMatrixContext } from "../../context/MobilityMatrixContext";
 import BreadCrumb from "components/BreadCrumb";
-import { InterventionsTypes, MobilityModes } from "types/MobilityMatrixTypes";
+import type { InterventionsTypes } from "types/MobilityMatrixTypes";
+import { MobilityModes } from "types/MobilityMatrixTypes";
 
 import MatrixNameAndButtons from "./MatrixNameAndButtons";
 import MatrixSavedSelect from "./MatrixSavedSelect";

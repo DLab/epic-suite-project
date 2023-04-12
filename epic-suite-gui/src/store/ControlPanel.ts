@@ -1,7 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
 
-import { ActionsEpidemicData, EpidemicsData } from "types/ControlPanelTypes";
+import type {
+    ActionsEpidemicData,
+    EpidemicsData,
+} from "types/ControlPanelTypes";
 
 import { initialState } from "./reducer";
 
@@ -15,9 +18,10 @@ export const counterSlice = createSlice({
     initialState,
     reducers: {
         update: (
-            state: EpidemicsData = initialState,
+            state: EpidemicsData | undefined,
             action: ActionReducerControlPanel
         ) => {
+            state = state || initialState;
             if (action.payload.type === "set") {
                 if (action.payload.positionVariableDependentTime >= 0) {
                     state[action.payload.target][

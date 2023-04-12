@@ -4,8 +4,8 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
-import { InterventionsTypes } from "types/MobilityMatrixTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { InterventionsTypes } from "types/MobilityMatrixTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
     nodesLocalValue: number | undefined;

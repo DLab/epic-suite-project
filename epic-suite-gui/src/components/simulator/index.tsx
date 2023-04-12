@@ -12,7 +12,10 @@ import { SelectFeature } from "context/SelectFeaturesContext";
 import TabContext from "context/TabContext";
 import { Actions } from "types/HardSimulationType";
 import { Actions as IntervActions } from "types/InterventionsTypes";
-import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
+import type {
+    NewModelsAllParams,
+    NewModelsParams,
+} from "types/SimulationTypes";
 
 import EventSourceConnection from "./EventSourceConnection";
 

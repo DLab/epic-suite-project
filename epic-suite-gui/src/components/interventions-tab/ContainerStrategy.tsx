@@ -1,11 +1,9 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
-type Props = {
-    children: React.ReactNode;
-};
+import type { ChildrenProps } from "types/importTypes";
 
-const ContainerStrategy: React.FC<Props> = ({ children }) => {
+const ContainerStrategy: React.FC<ChildrenProps> = ({ children }) => {
     return (
         <Flex
             direction="column"

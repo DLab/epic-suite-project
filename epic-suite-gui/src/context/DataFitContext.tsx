@@ -1,6 +1,8 @@
-import React, { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
+import type React from "react";
 
-import { DataFitProps, FittedData, DataToFit } from "types/DataFitTypes2";
+import type { DataFitProps, FittedData, DataToFit } from "types/DataFitTypes2";
+import type { ChildrenProps } from "types/importTypes";
 
 export const DataFit = createContext<DataFitProps>({
     realDataToFit: [],
@@ -9,22 +11,19 @@ export const DataFit = createContext<DataFitProps>({
     setFittedData: () => {},
 });
 
-const DataFitContext: React.FC = ({ children }) => {
+const DataFitContext: React.FC<ChildrenProps> = ({ children }) => {
     const [realDataToFit, setRealDataToFit] = useState<DataToFit[]>([]);
     const [fittedData, setFittedData] = useState<FittedData[] | null>([]);
-
-    return (
-        <DataFit.Provider
-            value={{
-                realDataToFit,
-                setRealDataToFit,
-                fittedData,
-                setFittedData,
-            }}
-        >
-            {children}
-        </DataFit.Provider>
+    const config = useMemo(
+        () => ({
+            realDataToFit,
+            setRealDataToFit,
+            fittedData,
+            setFittedData,
+        }),
+        [realDataToFit, fittedData]
     );
+    return <DataFit.Provider value={config}>{children}</DataFit.Provider>;
 };
 
 export default DataFitContext;

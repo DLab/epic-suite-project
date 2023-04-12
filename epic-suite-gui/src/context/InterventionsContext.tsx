@@ -1,11 +1,11 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
-import {
+import type { ChildrenProps } from "types/importTypes";
+import { InterventionsModes, Actions } from "types/InterventionsTypes";
+import type {
     InterventionsProps,
-    InterventionsModes,
     Interventions,
     InterventionsActions,
-    Actions,
 } from "types/InterventionsTypes";
 
 export const InterventionColection = createContext<InterventionsProps>({
@@ -22,7 +22,7 @@ export const InterventionColection = createContext<InterventionsProps>({
 });
 
 // eslint-disable-next-line react/prop-types
-const InterventionsContext: React.FC = ({ children }) => {
+const InterventionsContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialStateInterventions: [] | Interventions[] = [];
     const reducer = (
         state: [] | Interventions[],
@@ -57,21 +57,29 @@ const InterventionsContext: React.FC = ({ children }) => {
         useState("");
     const [idInterventionToUpdate, setIdInterventionToUpdate] = useState(0);
     const [idInterventionModel, setIdInterventionModel] = useState(0);
+    const config = useMemo(
+        () => ({
+            interventionsMode,
+            setInterventionMode,
+            interventionsCreated,
+            setInterventionsCreated,
+            originOfInterventionCreation,
+            setOriginOfInterventionCreation,
+            idInterventionToUpdate,
+            setIdInterventionToUpdate,
+            idInterventionModel,
+            setIdInterventionModel,
+        }),
+        [
+            interventionsMode,
+            interventionsCreated,
+            originOfInterventionCreation,
+            idInterventionToUpdate,
+            idInterventionModel,
+        ]
+    );
     return (
-        <InterventionColection.Provider
-            value={{
-                interventionsMode,
-                setInterventionMode,
-                interventionsCreated,
-                setInterventionsCreated,
-                originOfInterventionCreation,
-                setOriginOfInterventionCreation,
-                idInterventionToUpdate,
-                setIdInterventionToUpdate,
-                idInterventionModel,
-                setIdInterventionModel,
-            }}
-        >
+        <InterventionColection.Provider value={config}>
             {children}
         </InterventionColection.Provider>
     );

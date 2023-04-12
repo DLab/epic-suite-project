@@ -5,8 +5,11 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
 import { NewModelSetted } from "context/NewModelsContext";
-import { RootState } from "store/store";
-import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
+import type { RootState } from "store/store";
+import type {
+    NewModelsAllParams,
+    NewModelsParams,
+} from "types/SimulationTypes";
 
 interface Props {
     actualModelName: string;

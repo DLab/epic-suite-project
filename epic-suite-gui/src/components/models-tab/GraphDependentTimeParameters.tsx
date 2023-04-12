@@ -2,7 +2,8 @@ import { Button, Flex } from "@chakra-ui/react";
 import React from "react";
 import Plot from "react-plotly.js";
 
-import VariableDependentTime, {
+import type VariableDependentTime from "types/VariableDependentTime";
+import type {
     DataForGraph,
     Sine,
     Square,

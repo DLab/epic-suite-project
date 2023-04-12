@@ -1,18 +1,17 @@
-import { string } from "prop-types";
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
-import {
+import { Model } from "types/ControlPanelTypes";
+import type {
     ActionsEpidemicData,
-    Model,
     EpidemicsData,
     ActionsInitialConditions,
     InitialConditions,
     EpidemicAttributes,
     DescriptionParameters,
 } from "types/ControlPanelTypes";
-import VariableDependentTime, {
-    NameFunction,
-} from "types/VariableDependentTime";
+import type { ChildrenProps } from "types/importTypes";
+import type VariableDependentTime from "types/VariableDependentTime";
+import { NameFunction } from "types/VariableDependentTime";
 
 export const initialState: EpidemicsData = {
     name_model: "Model 1",
@@ -819,7 +818,7 @@ export const ControlPanel = createContext<EpidemicAttributes>({
 });
 
 // eslint-disable-next-line react/prop-types
-const ControlPanelContext: React.FC = ({ children }) => {
+const ControlPanelContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialStateRed: EpidemicsData = initialState;
 
     const reducerControlPanel = (
@@ -912,26 +911,26 @@ const ControlPanelContext: React.FC = ({ children }) => {
     const [idSimulation, setIdSimulation] = useState(0);
     const [dataViewVariable, setDataViewVariable] =
         useState<VariableDependentTime>(initDataViewVariable);
+    const config = useMemo(
+        () => ({
+            dataViewVariable,
+            setDataViewVariable,
+            parameters: params,
+            setParameters,
+            description: descriptionParameters,
+            mode,
+            setMode,
+            idModelUpdate,
+            setIdModelUpdate,
+            initialConditions: initCond,
+            setInitialConditions: setInitCond,
+            idSimulation,
+            setIdSimulation,
+        }),
+        [dataViewVariable, params, mode, idModelUpdate, initCond, idSimulation]
+    );
     return (
-        <ControlPanel.Provider
-            value={{
-                dataViewVariable,
-                setDataViewVariable,
-                parameters: params,
-                setParameters,
-                description: descriptionParameters,
-                mode,
-                setMode,
-                idModelUpdate,
-                setIdModelUpdate,
-                initialConditions: initCond,
-                setInitialConditions: setInitCond,
-                idSimulation,
-                setIdSimulation,
-            }}
-        >
-            {children}
-        </ControlPanel.Provider>
+        <ControlPanel.Provider value={config}>{children}</ControlPanel.Provider>
     );
 };
 

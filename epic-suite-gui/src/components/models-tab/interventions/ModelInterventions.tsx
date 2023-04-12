@@ -6,6 +6,7 @@ import { InterventionColection } from "context/InterventionsContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
 import { InterventionsModes } from "types/InterventionsTypes";
+import type { Interventions } from "types/InterventionsTypes";
 
 const ModelInterventions = () => {
     const {
@@ -28,7 +29,7 @@ const ModelInterventions = () => {
                     Interventions
                 </Text>
                 {!interventionsCreated.find(
-                    (interv) => interv.id === idModelUpdate
+                    (interv: Interventions) => interv.id === idModelUpdate
                 ) ? (
                     <Text
                         color="#016FB9"

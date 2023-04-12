@@ -1,4 +1,4 @@
-import { EpidemicsData } from "types/ControlPanelTypes";
+import type { EpidemicsData } from "types/ControlPanelTypes";
 import { NameFunction } from "types/VariableDependentTime";
 
 const paramsValues = {

@@ -1,7 +1,8 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
-import {
+import type { ChildrenProps } from "types/importTypes";
+import type {
     ActionsIdSimulation,
     ActionsNewModelData,
     NewModelType,
@@ -34,7 +35,7 @@ export const NewModelSetted = createContext<NewModelType>({
 });
 
 // eslint-disable-next-line react/prop-types
-const NewModelsContext: React.FC = ({ children }) => {
+const NewModelsContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialState: NewModelsParams | [] = [];
     const initialStateCompleteModel: NewModelsAllParams | [] = [];
 
@@ -63,7 +64,8 @@ const NewModelsContext: React.FC = ({ children }) => {
                 return state.map((e, index) => {
                     if (e.idNewModel === action.id) {
                         // eslint-disable-next-line no-param-reassign
-                        state[index] = action.payload;
+                        // state[index] = action.payload;
+                        return action.payload;
                     }
                     return e;
                 });
@@ -102,7 +104,8 @@ const NewModelsContext: React.FC = ({ children }) => {
                 return state.map((e, index) => {
                     if (e.idNewModel === action.id) {
                         // eslint-disable-next-line no-param-reassign
-                        state[index] = action.payload;
+                        // state[index] = action.payload;
+                        return action.payload;
                     }
                     return e;
                 });
@@ -144,31 +147,42 @@ const NewModelsContext: React.FC = ({ children }) => {
     const [name, setName] = useState("");
     const [idMobility, setIdMobility] = useState(undefined);
     const [idIntervention, setIdIntervention] = useState(undefined);
+    const config = useMemo(() => {
+        return {
+            mode,
+            setMode,
+            completeModel,
+            setCompleteModel,
+            newModel,
+            setNewModel,
+            // idNewModelUpdating,
+            // setIdNewModelUpdating,
+            selectedModelsToSimulate,
+            setSelectedModelsToSimulate,
+            simulationsPopulatioType,
+            setSimulationsPopulatioType,
+            idModelUpdate,
+            setIdModelUpdate,
+            name,
+            setName,
+            idMobility,
+            setIdMobility,
+            idIntervention,
+            setIdIntervention,
+        };
+    }, [
+        mode,
+        completeModel,
+        newModel,
+        selectedModelsToSimulate,
+        simulationsPopulatioType,
+        idModelUpdate,
+        name,
+        idMobility,
+        idIntervention,
+    ]);
     return (
-        <NewModelSetted.Provider
-            value={{
-                mode,
-                setMode,
-                completeModel,
-                setCompleteModel,
-                newModel,
-                setNewModel,
-                // idNewModelUpdating,
-                // setIdNewModelUpdating,
-                selectedModelsToSimulate,
-                setSelectedModelsToSimulate,
-                simulationsPopulatioType,
-                setSimulationsPopulatioType,
-                idModelUpdate,
-                setIdModelUpdate,
-                name,
-                setName,
-                idMobility,
-                setIdMobility,
-                idIntervention,
-                setIdIntervention,
-            }}
-        >
+        <NewModelSetted.Provider value={config}>
             {children}
         </NewModelSetted.Provider>
     );

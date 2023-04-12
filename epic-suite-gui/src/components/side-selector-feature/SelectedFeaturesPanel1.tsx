@@ -16,25 +16,23 @@ interface Props {
 const SelectedFeaturesPanel1 = ({ scale }: Props) => {
     const { counties, states } = useContext(SelectFeature);
     return (
-        <>
-            <Box mt="7%" p="3% 0" overflowY="auto" maxH="22vh">
-                {scale === "States" && states.length > 0 && (
-                    <StatesSelectedCheckbox stateSelected={states} />
-                )}
-                {scale === "States" && states.length <= 0 && (
-                    <Text fontSize="0.875rem"> No states selected</Text>
-                )}
-                {scale === "Counties" && counties.length > 0 && (
-                    <StatesSelectedCheckbox countiesSelected={counties} />
-                )}
-                {scale === "Counties" && counties.length <= 0 && (
-                    <Text id={createIdComponent()} fontSize="0.875rem">
-                        {" "}
-                        No counties
-                    </Text>
-                )}
-            </Box>
-        </>
+        <Box mt="7%" p="3% 0" overflowY="auto" maxH="22vh">
+            {scale === "States" && states.length > 0 && (
+                <StatesSelectedCheckbox stateSelected={states} />
+            )}
+            {scale === "States" && states.length <= 0 && (
+                <Text fontSize="0.875rem"> No states selected</Text>
+            )}
+            {scale === "Counties" && counties.length > 0 && (
+                <StatesSelectedCheckbox countiesSelected={counties} />
+            )}
+            {scale === "Counties" && counties.length <= 0 && (
+                <Text id={createIdComponent()} fontSize="0.875rem">
+                    {" "}
+                    No counties
+                </Text>
+            )}
+        </Box>
     );
 };
 

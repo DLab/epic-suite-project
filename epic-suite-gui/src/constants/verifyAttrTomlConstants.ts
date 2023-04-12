@@ -1,6 +1,6 @@
 import countiesData from "data/counties.json";
 import statesData from "data/states.json";
-import { Fields } from "types/importTypes";
+import type { Fields } from "types/importTypes";
 
 export const TYPEMODEL = ["sir", "seir", "seirhvd"];
 export const TYPECOMPARTMENTS = {

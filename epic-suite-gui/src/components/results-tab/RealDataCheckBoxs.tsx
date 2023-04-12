@@ -1,8 +1,8 @@
-import { Checkbox } from "@chakra-ui/react";
+import { Box, Checkbox } from "@chakra-ui/react";
 import React, { useEffect, useContext, useState } from "react";
 
 import { GraphicsData } from "context/GraphicsContext";
-import { KeysRealData } from "types/GraphicsTypes";
+import type { KeysRealData } from "types/GraphicsTypes";
 
 type Props = {
     simName: string;
@@ -35,7 +35,7 @@ const RealDataCheckBoxs = ({ simName, saveKeys }: Props) => {
     }, [realDataSimulationKeys]);
 
     return (
-        <>
+        <Box>
             {realData &&
                 Object.keys(realData).map((key) => {
                     if (key !== "name" && key !== "Compartment") {
@@ -61,7 +61,7 @@ const RealDataCheckBoxs = ({ simName, saveKeys }: Props) => {
                     }
                     return false;
                 })}
-        </>
+        </Box>
     );
 };
 

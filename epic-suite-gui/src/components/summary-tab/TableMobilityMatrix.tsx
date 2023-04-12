@@ -19,7 +19,7 @@ import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
 import { MobilityModes } from "types/MobilityMatrixTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 const TableMobilityMatrix = () => {
     const {

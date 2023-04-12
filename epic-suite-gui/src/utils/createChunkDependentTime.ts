@@ -1,10 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import { value } from "@iarna/toml/stringify";
 import _ from "lodash";
 
 import SeirhbdChunkImport from "components/models-tab/SeirhvdChunkImport";
-import { EpidemicsData } from "types/ControlPanelTypes";
-import { InitialConditions } from "types/SimulationTypes";
+import type { EpidemicsData } from "types/ControlPanelTypes";
+import type { InitialConditions } from "types/SimulationTypes";
 
 export {};
 

@@ -25,13 +25,14 @@ import { useReducer, useState, useContext } from "react";
 import Plot from "react-plotly.js";
 import { useDispatch, useSelector } from "react-redux";
 
+import ToastCustom from "components/ToastCustom";
 import { ControlPanel } from "context/ControlPanelContext";
 import { update } from "store/ControlPanel";
-import { RootState } from "store/store";
-import VariableDependentTime, {
-    DataForGraph,
-    NameFunction,
-} from "types/VariableDependentTime";
+import type { RootState } from "store/store";
+import { StatusSimulation } from "types/HardSimulationType";
+import type VariableDependentTime from "types/VariableDependentTime";
+import type { DataForGraph } from "types/VariableDependentTime";
+import { NameFunction } from "types/VariableDependentTime";
 import createIdComponent from "utils/createIdcomponent";
 import {
     createSeries,
@@ -283,13 +284,18 @@ const SectionVariableDependentTime = ({
                                 showSectionInitialConditions(true);
                             } else {
                                 toast({
-                                    title: "Failed setting function",
-                                    description:
-                                        "Days ranges are wrong. Fix it for setting please!",
-                                    status: "error",
                                     duration: 4000,
                                     isClosable: true,
                                     position: "bottom-left",
+                                    render: () => (
+                                        <ToastCustom
+                                            title="Failed setting function"
+                                            status={StatusSimulation.ERROR}
+                                        >
+                                            "Days ranges are wrong. Fix it to
+                                            set please!"
+                                        </ToastCustom>
+                                    ),
                                 });
                             }
                         }}

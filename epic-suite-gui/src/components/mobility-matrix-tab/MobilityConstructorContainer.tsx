@@ -4,8 +4,9 @@ import React, { useContext, useEffect } from "react";
 import { MobilityMatrix } from "../../context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
-import { InterventionsTypes, MobilityModes } from "types/MobilityMatrixTypes";
-import { NewModelsParams } from "types/SimulationTypes";
+import type { InterventionsTypes } from "types/MobilityMatrixTypes";
+import { MobilityModes } from "types/MobilityMatrixTypes";
+import type { NewModelsParams } from "types/SimulationTypes";
 
 import MatrixTypesOptions from "./MatrixTypesOptions";
 import MobilityInterventions from "./MobilityInterventions";

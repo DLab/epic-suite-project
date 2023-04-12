@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState, useEffect } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { NewModelSetted } from "context/NewModelsContext";
-import { InitialConditions as InitialConditionsContext } from "types/ControlPanelTypes";
-import { NewModelsParams } from "types/SimulationTypes";
+import type { InitialConditions as InitialConditionsContext } from "types/ControlPanelTypes";
+import { StatusSimulation } from "types/HardSimulationType";
+import type { NewModelsParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 import NumberInputInitialConditions from "./NumberInputInitialConditions";
@@ -471,23 +473,34 @@ const InitialConditionsModel = ({
                                 }
                                 toast({
                                     position: "bottom-left",
-                                    title: "Updated successful",
-                                    description:
-                                        "Updating Initial conditions was successful",
-                                    status: "success",
                                     duration: 3000,
                                     isClosable: true,
+
+                                    render: () => (
+                                        <ToastCustom
+                                            title="Updated successful"
+                                            status={StatusSimulation.FINISHED}
+                                        >
+                                            "Updating Initial conditions was
+                                            successful"
+                                        </ToastCustom>
+                                    ),
                                 });
                                 setInitialConditionsMode(false);
                             } else {
                                 toast({
                                     position: "bottom-left",
-                                    title: "Updated failed",
-                                    description:
-                                        "Initial conditions can't be all zero.",
-                                    status: "error",
                                     duration: 3000,
                                     isClosable: true,
+                                    render: () => (
+                                        <ToastCustom
+                                            title="Updated failed"
+                                            status={StatusSimulation.ERROR}
+                                        >
+                                            "Initial conditions can't be all
+                                            zero."
+                                        </ToastCustom>
+                                    ),
                                 });
                                 setInitialConditionsMode(false);
                             }

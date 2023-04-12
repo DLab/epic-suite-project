@@ -1,4 +1,4 @@
-import { Model } from "types/ControlPanelTypes";
+import type { Model } from "types/ControlPanelTypes";
 
 export interface DataGeoSelections {
     id: number;

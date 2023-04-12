@@ -51,12 +51,12 @@ const ResultsDrawer = ({
     return (
         <>
             <IconButton
-                bg="#16609E"
+                bg="#016FB9"
                 color="#FFFFFF"
                 aria-label="Call Segun"
                 size="sm"
                 cursor="pointer"
-                _hover={{ bg: "blue.500" }}
+                _hover={{ bg: "#016FB9" }}
                 icon={<AddIcon />}
                 ref={btnRef}
                 onClick={() => {
@@ -88,7 +88,8 @@ const ResultsDrawer = ({
                                         <ResultsSelection />
                                         <DrawerFooter justifyContent="space-around">
                                             <Button
-                                                colorScheme="teal"
+                                                color="white"
+                                                bg="#016FB9"
                                                 onClick={() => {
                                                     const graphicDataAux = [
                                                         ...allGraphicData,
@@ -119,6 +120,8 @@ const ResultsDrawer = ({
                                                 Chart
                                             </Button>
                                             <Button
+                                                bg="#8080A0"
+                                                color="white"
                                                 variant="outline"
                                                 onClick={() => {
                                                     onClose(true);

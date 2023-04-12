@@ -12,9 +12,8 @@ import {
     StatNumber,
 } from "@chakra-ui/react";
 
-import VariableDependentTime, {
-    NameFunction,
-} from "types/VariableDependentTime";
+import { NameFunction } from "types/VariableDependentTime";
+import type VariableDependentTime from "types/VariableDependentTime";
 import showOnlySelectedAttributes, {
     findValueByKeyInMatrix,
     getSubTypeTransitionFunction,
@@ -85,16 +84,18 @@ const ViewVariableDependentTime = ({ data, close }: Props) => {
                                         <Stat>
                                             <StatLabel>{key}</StatLabel>
                                             <StatNumber>
-                                                {showOnlySelectedAttributes(
-                                                    key,
-                                                    values,
-                                                    getSubTypeTransitionFunction
-                                                )}
+                                                <>
+                                                    {showOnlySelectedAttributes(
+                                                        key,
+                                                        values,
+                                                        getSubTypeTransitionFunction
+                                                    )}
+                                                </>
                                             </StatNumber>
                                         </Stat>
                                     );
                                 }
-                                return <></>;
+                                return <Box />;
                             }
                         )}
                     </StatGroup>

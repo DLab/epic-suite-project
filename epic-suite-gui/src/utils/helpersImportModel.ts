@@ -7,7 +7,7 @@ import {
     REGEXTRANSITIONFUNCTION,
     TYPESEVENTFUNCTION,
 } from "constants/verifyAttrTomlConstants";
-import { Fields } from "types/importTypes";
+import type { Fields } from "types/importTypes";
 
 import { verifyMainKeys } from "./verifyAttrTomlRight";
 
@@ -157,9 +157,12 @@ export const verifyInnertypesVDT = (innerValueVDT: unknown) => {
                             }
                             break;
                         case "boolean":
-                            if (!_.isNumber(val) && (val > 1 || val < 0)) {
+                            if (!_.isNumber(val)) {
                                 throw new Error(`define error boolean`);
                             }
+                            // if (!_.isNumber(val) && (val > 1 || val < 0)) {
+                            //     throw new Error(`define error boolean`);
+                            // }
                             break;
                         default:
                             break;
@@ -169,10 +172,10 @@ export const verifyInnertypesVDT = (innerValueVDT: unknown) => {
         });
         return true;
     }
-    if (_.isNumber(innerValueVDT) && innerValueVDT >= 0) {
-        return true;
-    }
-    return false;
+    // if (_.isNumber(innerValueVDT) && innerValueVDT >= 0) {
+    //     return true;
+    // }
+    return true;
 };
 // export const deleteExtraParameters = (data: unknown) => {
 // --> queda pendiente hacer función que elimine parámetros extras en TOML

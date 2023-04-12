@@ -1,16 +1,25 @@
 {
-  "extends": [
-    "sznm/react",
-    "plugin:react/jsx-runtime",
-    "plugin:@next/next/recommended",
-  ],
-  "parserOptions":{
-    "project": ["tsconfig.json"]
-  },
-  "rules": {
-    "@typescript-eslint/no-unused-vars" : "off",
-    "react/no-unescaped-entities": "off",
-    "@next/next/no-page-custom-font": "off"
-  }
+    "extends": [
+        "sznm/react",
+        "plugin:react/jsx-runtime",
+        "plugin:@next/next/recommended"
+    ],
+    "parserOptions": {
+        "project": ["tsconfig.json"]
+    },
+    "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "react/no-unescaped-entities": "off",
+        "@next/next/no-page-custom-font": "off",
+        "react/forbid-prop-types": "off"
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "rules": {
+                "react/prop-types": "off",
+                "react/forbid-prop-types": "off"
+            }
+        }
+    ]
 }
-

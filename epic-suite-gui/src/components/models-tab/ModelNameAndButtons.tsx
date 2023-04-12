@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable no-nested-ternary */
 /* A React component that is used to save a model. */
 import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
@@ -14,13 +15,18 @@ import {
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 
+import ToastCustom from "components/ToastCustom";
 import { InterventionColection } from "context/InterventionsContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
-import { RootState } from "store/store";
+import type { RootState } from "store/store";
+import { StatusSimulation } from "types/HardSimulationType";
 import { Actions } from "types/InterventionsTypes";
-import { NewModelsAllParams, NewModelsParams } from "types/SimulationTypes";
+import type {
+    NewModelsAllParams,
+    NewModelsParams,
+} from "types/SimulationTypes";
 
 import DeleteModelAlert from "./DeleteModelAlert";
 import UpdateButton from "./UpdateButton";
@@ -117,16 +123,9 @@ const ModelNameAndButtons = ({
         );
         const isInitialConditionsVoid = newModel[
             modelForSim
-        ].initialConditions.some((init) => {
-            if (
-                Object.values(init.conditionsValues).every(
-                    (values) => values === 0
-                )
-            ) {
-                return true;
-            }
-            return false;
-        });
+        ].initialConditions.some((init) =>
+            Object.values(init.conditionsValues).every((values) => values === 0)
+        );
         const isRightKeyModels = Object.keys(
             newModel[modelForSim]
             // eslint-disable-next-line complexity
@@ -141,33 +140,31 @@ const ModelNameAndButtons = ({
                     ) {
                         return true;
                     }
-                    if (
+
+                    return (
                         !newModel[modelForSim][key] &&
                         newModel[modelForSim].idGraph
-                    ) {
-                        return true;
-                    }
-                    return false;
+                    );
                 }
-                if (key === "idMobilityMatrix") {
-                    // if (
-                    //     !newModel[modelForSim][key] &&
-                    //     newModel[modelForSim].populationType ===
-                    //         "monopopulation"
-                    // ) {
-                    //     return true;
-                    // }
-                    // if (
-                    //     newModel[modelForSim][key] &&
-                    //     newModel[modelForSim].populationType ===
-                    //         "metapopulation" &&
-                    //     newModel[modelForSim].modelType !== "seirvhd"
-                    // ) {
-                    //     return true;
-                    // }
-                    // return false;
-                    return true;
-                }
+                // if (key === "idMobilityMatrix") {
+                // if (
+                //     !newModel[modelForSim][key] &&
+                //     newModel[modelForSim].populationType ===
+                //         "monopopulation"
+                // ) {
+                //     return true;
+                // }
+                // if (
+                //     newModel[modelForSim][key] &&
+                //     newModel[modelForSim].populationType ===
+                //         "metapopulation" &&
+                //     newModel[modelForSim].modelType !== "seirvhd"
+                // ) {
+                //     return true;
+                // }
+                // return false;
+                // return true;
+                // }
                 return true;
             }
             return Boolean(newModel[modelForSim][key]);
@@ -176,21 +173,31 @@ const ModelNameAndButtons = ({
         if (isInitialConditionsVoid) {
             toast({
                 position: bottomLeft,
-                title: "Updated failed",
-                description:
-                    "There is one or more nodes with all initial conditions values as zero ",
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom
+                        title="Updated failed"
+                        status={StatusSimulation.ERROR}
+                    >
+                        "There is one or more nodes with all initial conditions
+                        values as zero "
+                    </ToastCustom>
+                ),
             });
         } else if (!isRightKeyModels) {
             toast({
                 position: bottomLeft,
-                title: "Updated failed",
-                description: "There is empty parameters setted ",
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom
+                        title="Updated failed"
+                        status={StatusSimulation.ERROR}
+                    >
+                        "There is empty parameters setted "
+                    </ToastCustom>
+                ),
             });
         } else {
             getModelCompleteObj();
@@ -198,11 +205,16 @@ const ModelNameAndButtons = ({
             setIndex(0);
             toast({
                 position: "bottom-left",
-                title: "Model is ready",
-                description: "Model is enabled to simulate",
-                status: "success",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom
+                        title="Model is ready"
+                        status={StatusSimulation.FINISHED}
+                    >
+                        "Model is enabled to simulate"
+                    </ToastCustom>
+                ),
             });
         }
     };
@@ -260,7 +272,7 @@ const ModelNameAndButtons = ({
                                     !veryfyIsSelfName(id, actualModelName)) ||
                                 isEmpty
                             }
-                            errorBorderColor="red.300"
+                            errorBorderColor="#3EBFE0"
                             onChange={(e) => {
                                 setActualModelName(e.target.value);
                                 setName(e.target.value);
@@ -280,9 +292,12 @@ const ModelNameAndButtons = ({
                                     ? "model name is repeated"
                                     : "Valid name"
                             }
+                            alignSelf="center"
+                            h="100%"
                         >
                             <InputRightElement
                                 // eslint-disable-next-line react/no-children-prop
+                                h="100%"
                                 children={
                                     // eslint-disable-next-line no-nested-ternary
                                     (isRepeatedName &&
@@ -291,9 +306,9 @@ const ModelNameAndButtons = ({
                                             actualModelName
                                         )) ||
                                     isEmpty ? (
-                                        <SmallCloseIcon color="red.300" />
+                                        <SmallCloseIcon color="#3EBFE0" />
                                     ) : (
-                                        <CheckIcon color="green.500" />
+                                        <CheckIcon color="#3EBFE0" />
                                     )
                                 }
                             />
@@ -301,87 +316,82 @@ const ModelNameAndButtons = ({
                     </InputGroup>
                 </Stack>
             )}
-            <>
-                <Stack spacing={4} direction="row" align="center">
-                    {modelMode === "add" && (
-                        <>
-                            <Button
-                                leftIcon={<CheckIcon />}
-                                onClick={() => {
-                                    if (
-                                        !isEmpty &&
-                                        (!verifyIsRepeatName(actualModelName) ||
-                                            veryfyIsSelfName(
-                                                id,
-                                                actualModelName
-                                            ))
-                                    ) {
-                                        saveModel();
-                                    }
-                                }}
-                                isDisabled={isEmpty}
-                                bg="#016FB9"
-                                color="#FFFFFF"
-                                size="sm"
-                                borderRadius="4px"
-                                fontSize="0.625rem"
-                            >
-                                SAVE MODEL
-                            </Button>
-                            <Button
-                                leftIcon={<CloseIcon />}
-                                onClick={() => {
-                                    deleteMatrix();
-                                    setNewModel({
-                                        type: "remove",
-                                        element: id,
-                                    });
-                                    setInterventionsCreated({
-                                        type: Actions.remove,
-                                        id,
-                                    });
-                                    setModelMode("initial");
-                                }}
-                                bg="#B9B9C9"
-                                color="#FFFFFF"
-                                borderRadius="4px"
-                                fontSize="0.625rem"
-                                size="sm"
-                            >
-                                CANCEL
-                            </Button>
-                        </>
-                    )}
-                    {modelMode === "update" && (
-                        <>
-                            <UpdateButton
-                                actualModelName={actualModelName}
-                                saveModel={saveModel}
-                                matrixId={matrixId}
-                                verifyName={verifyIsRepeatName}
-                                verifySelfName={veryfyIsSelfName}
-                                isEmpty={isEmpty}
-                            />
-                            <Button
-                                leftIcon={<CloseIcon />}
-                                bg="#B9B9C9"
-                                color="#FFFFFF"
-                                size="sm"
-                                borderRadius="4px"
-                                fontSize="0.625rem"
-                                // eslint-disable-next-line sonarjs/no-identical-functions
-                                onClick={() => {
-                                    getPreviusInitialConditions();
-                                    setModelMode("initial");
-                                }}
-                            >
-                                CANCEL
-                            </Button>
-                            <DeleteModelAlert setModelMode={setModelMode} />
-                        </>
-                    )}
-                </Stack>
-            </>
+            <Stack spacing={4} direction="row" align="center">
+                {modelMode === "add" && (
+                    <>
+                        <Button
+                            leftIcon={<CheckIcon />}
+                            onClick={() => {
+                                if (
+                                    !isEmpty &&
+                                    (!verifyIsRepeatName(actualModelName) ||
+                                        veryfyIsSelfName(id, actualModelName))
+                                ) {
+                                    saveModel();
+                                }
+                            }}
+                            isDisabled={isEmpty}
+                            bg="#016FB9"
+                            color="#FFFFFF"
+                            size="sm"
+                            borderRadius="4px"
+                            fontSize="0.625rem"
+                        >
+                            SAVE MODEL
+                        </Button>
+                        <Button
+                            leftIcon={<CloseIcon />}
+                            onClick={() => {
+                                deleteMatrix();
+                                setNewModel({
+                                    type: "remove",
+                                    element: id,
+                                });
+                                setInterventionsCreated({
+                                    type: Actions.remove,
+                                    id,
+                                });
+                                setModelMode("initial");
+                            }}
+                            bg="#B9B9C9"
+                            color="#FFFFFF"
+                            borderRadius="4px"
+                            fontSize="0.625rem"
+                            size="sm"
+                        >
+                            CANCEL
+                        </Button>
+                    </>
+                )}
+                {modelMode === "update" && (
+                    <>
+                        <UpdateButton
+                            actualModelName={actualModelName}
+                            saveModel={saveModel}
+                            matrixId={matrixId}
+                            verifyName={verifyIsRepeatName}
+                            verifySelfName={veryfyIsSelfName}
+                            isEmpty={isEmpty}
+                        />
+                        <Button
+                            leftIcon={<CloseIcon />}
+                            bg="#B9B9C9"
+                            color="#FFFFFF"
+                            size="sm"
+                            borderRadius="4px"
+                            fontSize="0.625rem"
+                            // eslint-disable-next-line sonarjs/no-identical-functions
+                            onClick={() => {
+                                getPreviusInitialConditions();
+                                setModelMode("initial");
+                            }}
+                        >
+                            CANCEL
+                        </Button>
+                        <DeleteModelAlert setModelMode={setModelMode} />
+                    </>
+                )}
+            </Stack>
         </Flex>
     );
 };

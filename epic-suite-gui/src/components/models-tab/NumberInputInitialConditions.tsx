@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { InitialConditions } from "types/ControlPanelTypes";
+import type { InitialConditions } from "types/ControlPanelTypes";
 
 interface Props {
     value: InitialConditions;

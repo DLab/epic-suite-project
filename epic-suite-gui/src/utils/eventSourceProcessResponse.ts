@@ -9,6 +9,9 @@ const getResponseForHardMetaSimulation = (
     let listResponse;
     let globalResultsListResponse;
     let name;
+    if (JSON.parse(data)?.status === StatusSimulation.ERROR) {
+        throw new Error("Any error encountered during simulation");
+    }
     if (status === StatusSimulation.FINISHED) {
         const { results, global_results: globalResults } =
             JSON.parse(data).results;
@@ -32,7 +35,7 @@ const getResponseForHardMetaSimulation = (
     setHardSimulation({
         type: Actions.SET_WITHOUT_NAME,
         payload: {
-            type,
+            type: type.toUpperCase(),
             idProcess,
             description,
             ...(name && { name }),

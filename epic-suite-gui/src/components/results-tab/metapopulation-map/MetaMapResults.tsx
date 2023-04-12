@@ -23,7 +23,7 @@ import GraphAndMapMetaModal from "../graphic-map-modal/GraphAndMapMetaModal";
 import PlayDataSlider from "../PlayDataSlider";
 import { GraphicsData } from "context/GraphicsContext";
 import { TabIndex } from "context/TabContext";
-import { MapResultsData } from "types/GraphicsTypes";
+import type { MapResultsData } from "types/GraphicsTypes";
 
 import CountiesMetaResultsMap from "./CountiesMetaResultsMap";
 import StatesMetaResultsMap from "./StatesMetaResultsMap";
@@ -151,7 +151,7 @@ const MetaMapResults = ({ map, sizeGraphic }: Props) => {
                     />
                     <ColorScaleMenu setColorScale={setColorScale} />
                     <DeleteIcon
-                        color="#16609E"
+                        color="#016FB9"
                         cursor="pointer"
                         onClick={() => {
                             const dataToShowInMapFilter =

@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { GeoJSON, useMap } from "react-leaflet";
 import * as topojson from "topojson-client";
-import { GeometryObject, Topology } from "topojson-specification";
+import type { GeometryObject, Topology } from "topojson-specification";
 
 import stateData_ from "../../data/states-10m.json";
 import { TabIndex } from "context/TabContext";

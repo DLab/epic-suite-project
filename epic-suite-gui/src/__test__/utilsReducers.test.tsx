@@ -1,17 +1,20 @@
-import VariableDependentTime, {
+import {
     NameFunction,
+    TransitionFunction,
+    TypePhase,
+} from "../types/VariableDependentTime";
+import type VariableDependentTime from "../types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
-    TransitionFunction,
-    TypePhase,
 } from "../types/VariableDependentTime";
 import reducer, {
-    Actions,
     handleNameFunctionSelect,
     lastValueInMatrix,
 } from "../utils/reducerVariableDependent";
+import type { Actions } from "../utils/reducerVariableDependent";
 
 describe("reducers variable dependent time", () => {
     const dataExampleVariableDependentTime:

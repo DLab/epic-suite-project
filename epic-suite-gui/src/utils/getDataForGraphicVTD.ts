@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 
-import VariableDependentTime, {
-    NameFunction,
+import type VariableDependentTime from "../types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
 } from "../types/VariableDependentTime";
+import { NameFunction } from "../types/VariableDependentTime";
 
 import postData from "./fetchData";
 

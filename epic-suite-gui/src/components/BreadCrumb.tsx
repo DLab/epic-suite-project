@@ -14,9 +14,10 @@ import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
 import { Model } from "types/ControlPanelTypes";
-import { Interventions, InterventionsModes } from "types/InterventionsTypes";
+import type { Interventions } from "types/InterventionsTypes";
+import { InterventionsModes } from "types/InterventionsTypes";
 import { MobilityModes } from "types/MobilityMatrixTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
     firstLink: string;

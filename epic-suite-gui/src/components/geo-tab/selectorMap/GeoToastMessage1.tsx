@@ -4,10 +4,12 @@ import _ from "lodash";
 import { useContext, useState, useEffect } from "react";
 
 import DeleteGeoAlert from "../DeleteGeoAlert";
+import ToastCustom from "components/ToastCustom";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
 import { Model } from "types/ControlPanelTypes";
-import { DataGeoSelections } from "types/SelectFeaturesTypes";
+import { StatusSimulation } from "types/HardSimulationType";
+import type { DataGeoSelections } from "types/SelectFeaturesTypes";
 
 interface Props {
     scale: string;
@@ -130,11 +132,16 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
                 setIdGeoSelectionUpdate(0);
                 toast({
                     position: bottomLeft,
-                    title: "Selection Edited",
-                    description: "Your selection was updated successfully",
-                    status: "success",
                     duration: 2000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Selection Edited"
+                            status={StatusSimulation.FINISHED}
+                        >
+                            "Your selection was updated successfully"
+                        </ToastCustom>
+                    ),
                 });
                 setMode(Model.Initial);
                 setIndex(0);
@@ -152,12 +159,16 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
                 });
                 toast({
                     position: bottomLeft,
-                    title: "Geographic Selection Created",
-                    description:
-                        "Your geographic selection was created successfully",
-                    status: "success",
                     duration: 2000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Geographic Selection Created"
+                            status={StatusSimulation.FINISHED}
+                        >
+                            "Your geographic selection was created successfully"
+                        </ToastCustom>
+                    ),
                 });
                 setMode(Model.Initial);
                 if (originOfGeoCreation === "modelsTab") {
@@ -169,11 +180,13 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
         } catch (error) {
             toast({
                 position: bottomLeft,
-                title: "Error",
-                description: "Something failed. Try again later!",
-                status: "error",
                 duration: 2000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        "Something failed. Try again later!"
+                    </ToastCustom>
+                ),
             });
         }
     };
@@ -200,12 +213,13 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
         if (!geoSelectionName) {
             toast({
                 position: bottomLeft,
-                title: "Error",
-                description:
-                    "Cannot save a geographic selection without a name",
-                status: "error",
                 duration: 2000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        "Cannot save a geographic selection without a name",
+                    </ToastCustom>
+                ),
             });
         } else if (
             (mode === Model.Add &&
@@ -216,22 +230,26 @@ const GeoToastMessage1 = ({ scale, setScale, geoSelectionName }: Props) => {
         ) {
             toast({
                 position: bottomLeft,
-                title: "Error",
-                description: "Name already exists",
-                status: "error",
                 duration: 2000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        "Name already exists"
+                    </ToastCustom>
+                ),
             });
         } else if (states.length !== 0 || counties.length !== 0) {
             handleDataLocalStorage();
         } else {
             toast({
                 position: bottomLeft,
-                title: "Error",
-                description: "At least one geographic area must be selected.",
-                status: "error",
                 duration: 2000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        "At least one geographic area must be selected."
+                    </ToastCustom>
+                ),
             });
         }
     };

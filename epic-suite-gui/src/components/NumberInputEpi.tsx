@@ -150,7 +150,8 @@ const NumberInputEpi = ({
                     mx="0.2rem"
                     fontSize="11px"
                     value={localValue}
-                    onChange={handleChange}
+                    onBlur={() => handleChange(localValue)}
+                    onChange={(e) => setLocalValue(e)}
                     size="xs"
                     min={min}
                     max={max}

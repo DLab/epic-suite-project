@@ -1,7 +1,8 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
 import { Model } from "types/ControlPanelTypes";
-import {
+import type { ChildrenProps } from "types/importTypes";
+import type {
     DataGeoSelections,
     Action,
     StatesProps,
@@ -29,7 +30,7 @@ export const SelectFeature = createContext<StatesProps>({
 });
 
 // eslint-disable-next-line react/prop-types
-const SelectFeatureContext: React.FC = ({ children }) => {
+const SelectFeatureContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialStateGeoSelections: DataGeoSelections[] = [];
     const initialState: string[] = [];
     const eliminateDuplicatesData = (
@@ -107,30 +108,40 @@ const SelectFeatureContext: React.FC = ({ children }) => {
     const [mode, setMode] = useState<Model>(Model.Initial);
     const [idGeoSelectionUpdate, setIdGeoSelectionUpdate] = useState(0);
     const [originOfGeoCreation, setOriginOfGeoCreation] = useState("");
-
+    const config = useMemo(() => {
+        return {
+            idGeoSelectionUpdate,
+            setIdGeoSelectionUpdate,
+            mode,
+            setMode,
+            states,
+            setStates,
+            counties,
+            setCounties,
+            scale,
+            setScale,
+            simulationScale,
+            setSimulationScale,
+            nameGeoSelection,
+            setNameGeoSelection,
+            geoSelections,
+            setGeoSelections,
+            originOfGeoCreation,
+            setOriginOfGeoCreation,
+        };
+    }, [
+        idGeoSelectionUpdate,
+        mode,
+        states,
+        counties,
+        scale,
+        simulationScale,
+        nameGeoSelection,
+        geoSelections,
+        originOfGeoCreation,
+    ]);
     return (
-        <SelectFeature.Provider
-            value={{
-                idGeoSelectionUpdate,
-                setIdGeoSelectionUpdate,
-                mode,
-                setMode,
-                states,
-                setStates,
-                counties,
-                setCounties,
-                scale,
-                setScale,
-                simulationScale,
-                setSimulationScale,
-                nameGeoSelection,
-                setNameGeoSelection,
-                geoSelections,
-                setGeoSelections,
-                originOfGeoCreation,
-                setOriginOfGeoCreation,
-            }}
-        >
+        <SelectFeature.Provider value={config}>
             {children}
         </SelectFeature.Provider>
     );
