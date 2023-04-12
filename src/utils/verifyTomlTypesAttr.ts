@@ -9,7 +9,7 @@ import {
     COUNTYCODES,
     REGEXTYPEMODEL,
 } from "constants/verifyAttrTomlConstants";
-import { EpicConfigToml } from "types/TomlTypes";
+import type { EpicConfigToml } from "types/TomlTypes";
 
 import { verifyInnertypesVDT } from "./helpersImportModel";
 

@@ -13,8 +13,8 @@ import React, { useEffect, useContext } from "react";
 import { GraphicsData } from "context/GraphicsContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
-import { SimulationKeysData } from "types/GraphicsTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { SimulationKeysData } from "types/GraphicsTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 import RealDataCheckBoxs from "./RealDataCheckBoxs";
 
@@ -133,12 +133,8 @@ const ResultsSelection = () => {
         });
 
         const newSavedSimulationKeys = savedSimulationKeys.filter(
-            (savedSimulationKey) => {
-                if (savedSimulationKeysToDelete.includes(savedSimulationKey)) {
-                    return false;
-                }
-                return true;
-            }
+            (savedSimulationKey) =>
+                !savedSimulationKeysToDelete.includes(savedSimulationKey)
         );
 
         setSavedSimulationKeys(newSavedSimulationKeys);
@@ -155,12 +151,9 @@ const ResultsSelection = () => {
 
         const newOneSavedSimulation = {
             name: oneSavedSimulation?.name,
-            keys: oneSavedSimulation?.keys.filter((key) => {
-                if (model.includes(key)) {
-                    return false;
-                }
-                return true;
-            }),
+            keys: oneSavedSimulation?.keys.filter(
+                (key) => !model.includes(key)
+            ),
         };
 
         let modifiedSimulations = savedSimulation.map(
@@ -214,12 +207,9 @@ const ResultsSelection = () => {
             return key + oneSimulationKeysData.name;
         });
 
-        const simulationKeyIsInclude = savedSimulationKeysSave.filter((key) => {
-            if (savedSimulationKeys.includes(key)) {
-                return false;
-            }
-            return true;
-        });
+        const simulationKeyIsInclude = savedSimulationKeysSave.filter(
+            (key) => !savedSimulationKeys.includes(key)
+        );
 
         setSavedSimulationKeys([
             ...savedSimulationKeys,
@@ -245,12 +235,9 @@ const ResultsSelection = () => {
             ];
             setSavedSimulation([...savedSimulation, ...initialParameters]);
         } else {
-            const parametersToSet = model.filter((modelKey) => {
-                if (isSimulationSaved[0].keys.includes(modelKey)) {
-                    return false;
-                }
-                return true;
-            });
+            const parametersToSet = model.filter(
+                (modelKey) => !isSimulationSaved[0].keys.includes(modelKey)
+            );
 
             setSavedSimulation(
                 savedSimulation.map((simulation) => {

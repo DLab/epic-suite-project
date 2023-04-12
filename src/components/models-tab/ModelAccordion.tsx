@@ -393,7 +393,7 @@ const ModelAccordion = ({
                         <IconButton
                             aria-label="Search database"
                             bg="#FFFFFF"
-                            color="#16609E"
+                            color="#016FB9"
                             size="sm"
                             ml="5%"
                             icon={<InfoIcon />}
@@ -487,7 +487,7 @@ const ModelAccordion = ({
                         </Select>
                         <IconButton
                             aria-label="Search database"
-                            bg="#16609E"
+                            bg="#016FB9"
                             color="#FFFFFF"
                             size="sm"
                             ml="5%"
@@ -500,7 +500,7 @@ const ModelAccordion = ({
                             <IconButton
                                 aria-label="Search database"
                                 bg="#FFFFFF"
-                                color="#16609E"
+                                color="#016FB9"
                                 size="sm"
                                 ml="5%"
                                 icon={<InfoIcon />}

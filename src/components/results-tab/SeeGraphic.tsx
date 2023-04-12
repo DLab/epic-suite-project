@@ -13,7 +13,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 
 import SeeGraphicIcon from "../icons/SeeGraphIcon";
-import { DoubleYAxisData } from "types/GraphicsTypes";
+import type { DoubleYAxisData } from "types/GraphicsTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 interface Props {

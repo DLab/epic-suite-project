@@ -22,10 +22,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { GraphicsData } from "context/GraphicsContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import { StatusSimulation } from "types/HardSimulationType";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 import getNodeName from "utils/getNodeNames";
 
@@ -244,11 +246,16 @@ const MetapopulationSelectTable = () => {
         } catch (error) {
             toast({
                 position: "bottom-left",
-                title: "Error when graphing",
-                description: `${error.message}`,
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom
+                        title="Error when graphing"
+                        status={StatusSimulation.ERROR}
+                    >
+                        {error.message}
+                    </ToastCustom>
+                ),
             });
         }
     };
@@ -284,19 +291,13 @@ const MetapopulationSelectTable = () => {
     return (
         <>
             <Flex align="center">
-                <Icon as={InfoIcon} color="teal" />
+                <Icon as={InfoIcon} color="#016FB9" />
                 <Text ml="2%">
                     Select parameters of the metapopulation simulation to graph.
                 </Text>
             </Flex>
-            <TableContainer
-                variant="simple"
-                bg="white"
-                overflowY="auto"
-                m="2% 0"
-                maxH="70vh"
-            >
-                <Table size="sm" m="1% 0">
+            <TableContainer bg="white" overflowY="auto" m="2% 0" maxH="70vh">
+                <Table size="sm" m="1% 0" variant="simple">
                     <Thead>
                         <Tr>
                             <Th>Node</Th>
@@ -349,7 +350,7 @@ const MetapopulationSelectTable = () => {
                                         aria-label="Options"
                                         icon={<AddIcon />}
                                         variant="outline"
-                                        bg="#16609e"
+                                        bg="#016FB9"
                                         color="white"
                                     />
                                     <MenuList>
@@ -446,7 +447,8 @@ const MetapopulationSelectTable = () => {
                 </Table>
             </TableContainer>
             <Button
-                colorScheme="teal"
+                color="white"
+                bg="#016FB9"
                 onClick={() => {
                     getGraphicValues();
                 }}

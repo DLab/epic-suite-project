@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { MobilityModes } from "types/MobilityMatrixTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
     setMatrixType: (value: string) => void;

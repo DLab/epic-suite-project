@@ -9,14 +9,17 @@ import {
     useDisclosure,
     Icon,
     useToast,
+    Box,
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useRef, useContext } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { Model } from "types/ControlPanelTypes";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import { StatusSimulation } from "types/HardSimulationType";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 const DeleteGeoAlert = () => {
     const { completeModel } = useContext(NewModelSetted);
@@ -93,13 +96,21 @@ const DeleteGeoAlert = () => {
 
                                     if (isGeoIdUsed) {
                                         toast({
-                                            title: "Error",
-                                            description:
-                                                "This location is used by many models. It couldn´t delete",
-                                            status: "error",
                                             duration: 3000,
                                             isClosable: true,
                                             position: "bottom-left",
+                                            render: () => (
+                                                <ToastCustom
+                                                    title="Error"
+                                                    status={
+                                                        StatusSimulation.ERROR
+                                                    }
+                                                >
+                                                    "This location is used by
+                                                    many models. It couldn´t
+                                                    delete"
+                                                </ToastCustom>
+                                            ),
                                         });
                                     } else {
                                         deleteGeoSelection(

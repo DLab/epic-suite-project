@@ -2,7 +2,7 @@ import { Select } from "@chakra-ui/react";
 import React, { useContext } from "react";
 
 import { NewModelSetted } from "context/NewModelsContext";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
     setModelMode: (value: string) => void;

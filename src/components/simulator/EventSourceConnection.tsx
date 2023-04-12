@@ -1,8 +1,9 @@
 /* eslint-disable sonarjs/no-identical-functions */
 /* eslint-disable no-console */
-import { useToast } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { DataFit } from "context/DataFitContext";
 import { HardSimSetted } from "context/HardSimulationsStatus";
 import { Actions, StatusSimulation } from "types/HardSimulationType";
@@ -40,12 +41,16 @@ const EventSourceConnection = () => {
                         if (status === StatusSimulation.FINISHED) {
                             toast({
                                 position: bottonLeft,
-                                title: "Simulation finished",
-                                description:
-                                    "Simulation was completed successfully",
-                                status: "success",
                                 duration: 3000,
                                 isClosable: true,
+                                render: () => (
+                                    <ToastCustom
+                                        title="Simulation finished"
+                                        status={StatusSimulation.FINISHED}
+                                    >
+                                        "Simulation was completed successfully"
+                                    </ToastCustom>
+                                ),
                             });
                         }
                     })
@@ -54,11 +59,16 @@ const EventSourceConnection = () => {
                         console.log("error", err);
                         toast({
                             position: bottonLeft,
-                            title: "Error",
-                            description: "Your simulation has failed",
-                            status: "error",
                             duration: 3000,
                             isClosable: true,
+                            render: () => (
+                                <ToastCustom
+                                    title="Error"
+                                    status={StatusSimulation.ERROR}
+                                >
+                                    "Your simulation has failed"
+                                </ToastCustom>
+                            ),
                         });
                     });
             }
@@ -101,10 +111,13 @@ const EventSourceConnection = () => {
                             };
                             setFittedData([fittedData2]);
                         }
+                        if (statusSim === StatusSimulation.ERROR) {
+                            throw new Error(description ?? "");
+                        }
                         setHardSimulation({
                             type: Actions.SET_WITHOUT_NAME,
                             payload: {
-                                type: event.toUpperCase(),
+                                type: event.toUppercase(),
                                 description,
                                 idProcess: id,
                             },
@@ -114,13 +127,27 @@ const EventSourceConnection = () => {
                     // eslint-disable-next-line no-console
                     .catch((err) => {
                         console.log("error", err);
+                        setHardSimulation({
+                            type: Actions.SET_WITHOUT_NAME,
+                            payload: {
+                                type: event.toUppercase(),
+                                description,
+                                idProcess: id,
+                            },
+                            status: status.toUpperCase(),
+                        });
                         toast({
                             position: bottonLeft,
-                            title: "Error",
-                            description: "Fitting has failed",
-                            status: "error",
                             duration: 3000,
                             isClosable: true,
+                            render: () => (
+                                <ToastCustom
+                                    title="Error"
+                                    status={StatusSimulation.ERROR}
+                                >
+                                    "Fitting has failed"
+                                </ToastCustom>
+                            ),
                         });
                     });
             }
@@ -149,12 +176,17 @@ const EventSourceConnection = () => {
                             if (status === StatusSimulation.FINISHED) {
                                 toast({
                                     position: bottonLeft,
-                                    title: "Simulation finished",
-                                    description:
-                                        "Simulation was completed successfully",
-                                    status: "success",
                                     duration: 3000,
                                     isClosable: true,
+                                    render: () => (
+                                        <ToastCustom
+                                            title="Simulation finished"
+                                            status={StatusSimulation.FINISHED}
+                                        >
+                                            "Simulation was completed
+                                            successfully"
+                                        </ToastCustom>
+                                    ),
                                 });
                             }
                         })
@@ -163,11 +195,16 @@ const EventSourceConnection = () => {
                             console.log("error", err);
                             toast({
                                 position: bottonLeft,
-                                title: "Error",
-                                description: "Your simulation has failed",
-                                status: "error",
                                 duration: 3000,
                                 isClosable: true,
+                                render: () => (
+                                    <ToastCustom
+                                        title="Error"
+                                        status={StatusSimulation.ERROR}
+                                    >
+                                        "Your simulation has failed"
+                                    </ToastCustom>
+                                ),
                             });
                         });
                 }
@@ -224,11 +261,16 @@ const EventSourceConnection = () => {
                             console.log("error", err);
                             toast({
                                 position: bottonLeft,
-                                title: "Error",
-                                description: "Fitting has failed",
-                                status: "error",
                                 duration: 3000,
                                 isClosable: true,
+                                render: () => (
+                                    <ToastCustom
+                                        title="Error"
+                                        status={StatusSimulation.ERROR}
+                                    >
+                                        "Fitting has failed"
+                                    </ToastCustom>
+                                ),
                             });
                         });
                 }
@@ -260,11 +302,22 @@ const EventSourceConnection = () => {
                             status
                         )
                     )
-                    .catch((err) => console.log("error", err));
+                    .catch((err) => {
+                        console.log("error", err);
+                        setHardSimulation({
+                            type: Actions.SET_WITHOUT_NAME,
+                            payload: {
+                                type: type.toUppercase(),
+                                description: err,
+                                idProcess,
+                            },
+                            status: StatusSimulation.ERROR,
+                        });
+                    });
             }
         }
     }, [setHardSimulation]);
-    return <></>;
+    return <Box />;
 };
 
 export default EventSourceConnection;

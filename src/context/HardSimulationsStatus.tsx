@@ -1,14 +1,17 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
 import {
     Actions,
-    ActionsHardSim,
-    HardSim,
-    HardSimulationType,
     StatusSimulation,
     TypeHardSimulation,
 } from "types/HardSimulationType";
+import type {
+    ActionsHardSim,
+    HardSim,
+    HardSimulationType,
+} from "types/HardSimulationType";
+import type { ChildrenProps } from "types/importTypes";
 
 export const initialStateHardSim: HardSimulationType = {
     status: StatusSimulation.NOTSTARTED,
@@ -31,11 +34,14 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const HardSimulationContext: React.FC = ({ children }: Props) => {
+const HardSimulationContext: React.FC<ChildrenProps> = ({
+    children,
+}: Props) => {
     const reducer = (
-        state: HardSimulationType = initialStateHardSim,
+        oldState: HardSimulationType | undefined,
         action: ActionsHardSim
     ) => {
+        const state = oldState || initialStateHardSim;
         if (action.type === Actions.RESET) {
             window.localStorage.setItem(
                 "hardSimulationStatus",
@@ -95,11 +101,13 @@ const HardSimulationContext: React.FC = ({ children }: Props) => {
         reducer,
         initialStateHardSim
     );
-    const getHardSimulation = () => hardSimulation;
+    // const getHardSimulation = () => hardSimulation;
+    const config = useMemo(() => {
+        const getHardSimulation = () => hardSimulation;
+        return { hardSimulation, setHardSimulation, getHardSimulation };
+    }, [hardSimulation]);
     return (
-        <HardSimSetted.Provider
-            value={{ hardSimulation, setHardSimulation, getHardSimulation }}
-        >
+        <HardSimSetted.Provider value={config}>
             {children}
         </HardSimSetted.Provider>
     );

@@ -24,7 +24,7 @@ import StatesResultsMap from "../StatesResultsMap";
 import PlayModal from "components/icons/PlayModal";
 import { GraphicsData } from "context/GraphicsContext";
 import { TabIndex } from "context/TabContext";
-import { MapResultsData } from "types/GraphicsTypes";
+import type { MapResultsData } from "types/GraphicsTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 import BarGraphModal from "./BarGraphModal";

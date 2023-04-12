@@ -7,7 +7,7 @@ import {
     DYNAMICKEYS,
     STATICKEYS,
 } from "constants/verifyAttrTomlConstants";
-import { Fields } from "types/importTypes";
+import type { Fields } from "types/importTypes";
 
 /**
  * It takes a length and an array of strings and returns a function that takes a string and returns a

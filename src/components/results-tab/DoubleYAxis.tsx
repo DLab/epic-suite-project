@@ -22,7 +22,7 @@ import DoubleYaxisIcon from "../icons/DoubleYaxisIcon";
 import RightArrow from "../icons/RightArrow";
 import LeftArrow from "components/icons/LeftArrow";
 import { GraphicsData } from "context/GraphicsContext";
-import { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
+import type { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 interface Props {

@@ -12,7 +12,7 @@ import { useContext, useEffect, useMemo } from "react";
 
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 import ResultsDrawer from "./ResultsDrawer";
@@ -30,8 +30,8 @@ const GraphicAndMapResults = dynamic(() => import("./GraphicAndMapResults"), {
                 id={createIdComponent()}
                 thickness="4px"
                 speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
+                emptyColor="#8080A0"
+                color="#016FB9"
                 size="xl"
             />
         </Grid>
@@ -94,16 +94,16 @@ const Results = () => {
             h="100%"
             templateColumns="repeat(5, 1fr)"
             templateRows="1fr 10fr"
-            direction="column"
+            dir="column"
         >
             <GridItem
                 colSpan={5}
                 h="5vh"
-                mh="5vh"
+                maxH="5vh"
                 justifyContent="space-between"
             >
                 <Flex justifyContent="space-between">
-                    <Text color="#16609E" fontSize="1.125rem" fontWeight="bold">
+                    <Text color="#016FB9" fontSize="1.125rem" fontWeight="bold">
                         Results
                     </Text>
                     <ResultsDrawer
@@ -121,8 +121,8 @@ const Results = () => {
                     colSpan={5}
                     h="88vh"
                     w="98%"
-                    justify="center"
-                    align="center"
+                    justifyContent="center"
+                    alignItems="center"
                 >
                     <HStack
                         h="100%"
@@ -130,7 +130,7 @@ const Results = () => {
                         justify="center"
                         alignItems="center"
                     >
-                        <Text color="gray.600" fontSize="4xl">
+                        <Text color="#8080A0" fontSize="4xl">
                             Nothing Here
                         </Text>
                     </HStack>

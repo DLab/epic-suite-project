@@ -2,13 +2,17 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable complexity */
 
-import VariableDependentTime, {
-    NameFunction,
+/* eslint-disable @typescript-eslint/dot-notation */
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable complexity */
+import type VariableDependentTime from "types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
 } from "types/VariableDependentTime";
+import { NameFunction } from "types/VariableDependentTime";
 
 const createObjectVariableDependent = (params: VariableDependentTime) => {
     const variableDependent = {

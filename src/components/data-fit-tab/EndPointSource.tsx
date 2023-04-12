@@ -3,10 +3,12 @@ import { Box, useToast, Button } from "@chakra-ui/react";
 import { add, format } from "date-fns";
 import React, { useContext } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { DataFit } from "context/DataFitContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import { StatusSimulation } from "types/HardSimulationType";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import postData from "utils/fetchData";
 
 interface Props {
@@ -123,31 +125,41 @@ const EndPointSource = ({ modelId, setDataValues, algorithmValue }: Props) => {
             if (modelId === undefined) {
                 toast({
                     position: "bottom-left",
-                    title: "Error",
-                    description: "Please, choose a model",
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Error"
+                            status={StatusSimulation.ERROR}
+                        >
+                            "Please, choose a model"
+                        </ToastCustom>
+                    ),
                 });
             } else {
                 toast({
                     position: "bottom-left",
-                    title: "Error",
-                    description: `${error.message}`,
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Error"
+                            status={StatusSimulation.ERROR}
+                        >
+                            {error.message}
+                        </ToastCustom>
+                    ),
                 });
             }
         }
     };
 
     return (
-        <Box m="0 0 3%">
+        <Box mr="1rem">
             <Button
                 size="sm"
-                colorScheme="blue"
-                variant="outline"
+                color="white"
+                bg="#3EBFE0"
                 onClick={() => {
                     // setFittedData([]);
                     // setRealDataToFit([]);

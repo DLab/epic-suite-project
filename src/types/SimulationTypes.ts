@@ -1,4 +1,7 @@
-import { EpidemicsData, InitialConditionsNewModel } from "./ControlPanelTypes";
+import type {
+    EpidemicsData,
+    InitialConditionsNewModel,
+} from "./ControlPanelTypes";
 
 export enum OptionFeature {
     None = "",

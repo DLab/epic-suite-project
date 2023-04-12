@@ -1,6 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useMemo, useReducer } from "react";
 
-import {
+import type { ChildrenProps } from "types/importTypes";
+import type {
     SimulatorParams,
     ActionsSimulationData,
     ActionsIdSimulation,
@@ -38,7 +39,7 @@ export const SimulationSetted = createContext<SimulationType>({
 });
 
 // eslint-disable-next-line react/prop-types
-const SimulationContext: React.FC = ({ children }) => {
+const SimulationContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialState: SimulatorParams | [] = [];
 
     const reducer = (
@@ -97,15 +98,16 @@ const SimulationContext: React.FC = ({ children }) => {
         reducerIdSimulation,
         0
     );
+    const configSimulationContext = useMemo(() => {
+        return {
+            simulation: simulatorElements,
+            setSimulation: setSimulatorElements,
+            idSimulationUpdating,
+            setIdSimulationUpdating,
+        };
+    }, [simulatorElements, idSimulationUpdating]);
     return (
-        <SimulationSetted.Provider
-            value={{
-                simulation: simulatorElements,
-                setSimulation: setSimulatorElements,
-                idSimulationUpdating,
-                setIdSimulationUpdating,
-            }}
-        >
+        <SimulationSetted.Provider value={configSimulationContext}>
             {children}
         </SimulationSetted.Provider>
     );

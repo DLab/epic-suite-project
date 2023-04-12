@@ -1,11 +1,13 @@
-import React, { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
+import type React from "react";
 
-import {
+import type {
     SavedSimulationData,
     GraphicsProps,
     KeysRealData,
     DoubleYAxisData,
 } from "types/GraphicsTypes";
+import type { ChildrenProps } from "types/importTypes";
 
 export const GraphicsData = createContext<GraphicsProps>({
     simulationKeys: [],
@@ -28,7 +30,7 @@ export const GraphicsData = createContext<GraphicsProps>({
     setGlobalParametersValues: () => {},
 });
 
-const GraphicsContext: React.FC = ({ children }) => {
+const GraphicsContext: React.FC<ChildrenProps> = ({ children }) => {
     // para ver mostar las keys de los parametros en los checkbox
     const [simulationKeys, setSimulationKeys] = useState([]);
     // para ver mostar las keys de la data real en los checkbox
@@ -51,32 +53,41 @@ const GraphicsContext: React.FC = ({ children }) => {
     const [allResults, setAllResults] = useState([]);
     const [globalParametersValues, setGlobalParametersValues] =
         useState<string>("");
-
+    const config = useMemo(
+        () => ({
+            simulationKeys,
+            setSimulationKeys,
+            realDataSimulationKeys,
+            setRealDataSimulationKeys,
+            savedSimulationKeys,
+            setSavedSimulationKeys,
+            savedSimulation,
+            setSavedSimulation,
+            allGraphicData,
+            setAllGraphicData,
+            checkedItems,
+            setCheckedItems,
+            dataToShowInMap,
+            setDataToShowInMap,
+            allResults,
+            setAllResults,
+            globalParametersValues,
+            setGlobalParametersValues,
+        }),
+        [
+            simulationKeys,
+            realDataSimulationKeys,
+            savedSimulationKeys,
+            savedSimulation,
+            allGraphicData,
+            checkedItems,
+            dataToShowInMap,
+            allResults,
+            globalParametersValues,
+        ]
+    );
     return (
-        <GraphicsData.Provider
-            value={{
-                simulationKeys,
-                setSimulationKeys,
-                realDataSimulationKeys,
-                setRealDataSimulationKeys,
-                savedSimulationKeys,
-                setSavedSimulationKeys,
-                savedSimulation,
-                setSavedSimulation,
-                allGraphicData,
-                setAllGraphicData,
-                checkedItems,
-                setCheckedItems,
-                dataToShowInMap,
-                setDataToShowInMap,
-                allResults,
-                setAllResults,
-                globalParametersValues,
-                setGlobalParametersValues,
-            }}
-        >
-            {children}
-        </GraphicsData.Provider>
+        <GraphicsData.Provider value={config}>{children}</GraphicsData.Provider>
     );
 };
 

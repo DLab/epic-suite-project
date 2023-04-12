@@ -5,14 +5,8 @@
  * */
 import createEmotionServer from "@emotion/server/create-instance";
 // eslint-disable-next-line @next/next/no-document-import-in-page
-import Document, {
-    Html,
-    Head,
-    Main,
-    NextScript,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    DocumentContext,
-} from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import type { DocumentContext } from "next/document";
 import * as React from "react";
 
 import createEmotionCache from "styles/createEmotionCache";

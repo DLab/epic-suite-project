@@ -1,11 +1,14 @@
-import VariableDependentTime, {
+import {
     NameFunction,
+    TransitionFunction,
+    TypePhase,
+} from "../types/VariableDependentTime";
+import type VariableDependentTime from "../types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
-    TransitionFunction,
-    TypePhase,
 } from "../types/VariableDependentTime";
 import addInLocalStorage from "../utils/addInLocalStorage";
 import convertFiles, { TypeFile } from "../utils/convertFiles";
@@ -16,12 +19,15 @@ import {
     formatVariableDependentTime,
 } from "../utils/getDataForGraphicVTD";
 import reducerValuesObjects from "../utils/reducerValuesObject";
-import reducer, { Actions, lastValueInMatrix } from "../utils/reducerVariableDependent";
+import reducer, {
+    Actions,
+    lastValueInMatrix,
+} from "../utils/reducerVariableDependent";
 import showOnlySelectedAttributes, {
     findValueByKeyInMatrix,
     getSubTypeTransitionFunction,
 } from "../utils/showOnlySelectedAttributes";
-import { InitialConditions } from "types/SimulationTypes";
+import type { InitialConditions } from "types/SimulationTypes";
 
 const fakeLocalStorage = (() => {
     let store = {};

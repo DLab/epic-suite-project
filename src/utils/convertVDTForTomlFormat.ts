@@ -1,12 +1,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/dot-notation */
-import {
-    NameFunction,
+import { NameFunction, TransitionFunction } from "types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
-    TransitionFunction,
 } from "types/VariableDependentTime";
 
 export const convertTypeFunctionVDTForTomlFormat = (

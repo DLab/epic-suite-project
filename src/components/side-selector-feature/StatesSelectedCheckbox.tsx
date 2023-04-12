@@ -15,7 +15,10 @@ import { useContext } from "react";
 import countiesData from "../../data/counties.json";
 import stateData from "../../data/states.json";
 import { SelectFeature } from "context/SelectFeaturesContext";
-import { DataCountiesObj, ObjStatesCounties } from "types/SelectFeaturesTypes";
+import type {
+    DataCountiesObj,
+    ObjStatesCounties,
+} from "types/SelectFeaturesTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 interface StatesSelected {

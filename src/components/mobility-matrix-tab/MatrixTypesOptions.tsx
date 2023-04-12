@@ -1,9 +1,9 @@
-import { RadioGroup, Radio, Stack } from "@chakra-ui/react";
+import { RadioGroup, Radio, Stack, Box } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
-import { NewModelsParams } from "types/SimulationTypes";
+import type { NewModelsParams } from "types/SimulationTypes";
 
 interface Props {
     matrixType: string;
@@ -36,7 +36,7 @@ const MatrixTypesOptions = ({
     }, [idMatrixModel, newModel, setIsDynamical, setMatrixType]);
 
     return (
-        <>
+        <Box>
             {idMatrixModel !== 0 && (
                 <RadioGroup
                     size="sm"
@@ -54,7 +54,7 @@ const MatrixTypesOptions = ({
                     </Stack>
                 </RadioGroup>
             )}
-        </>
+        </Box>
     );
 };
 

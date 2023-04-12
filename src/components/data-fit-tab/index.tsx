@@ -16,6 +16,8 @@ import React, { useState, useContext, useEffect } from "react";
 
 import BreadCrumb from "components/BreadCrumb";
 import { getParametersFitModel } from "components/models-tab/GetParametersByNodes";
+import StatusHardSimPop from "components/summary-tab/StatusHardSimPop";
+import ToastCustom from "components/ToastCustom";
 import { DataFit } from "context/DataFitContext";
 import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
@@ -25,7 +27,7 @@ import {
     StatusSimulation,
     TypeHardSimulation,
 } from "types/HardSimulationType";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import postData from "utils/fetchData";
 
 import EndPointSource from "./EndPointSource";
@@ -185,30 +187,45 @@ const DataFitTab = () => {
             );
             toast({
                 position: bottomLeft,
-                title: "Fit sent",
-                description: "Your model was submitted to fitting",
-                status: "info",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom
+                        title="Fit sent"
+                        status={StatusSimulation.STARTED}
+                    >
+                        "Your model was submitted to fitting"
+                    </ToastCustom>
+                ),
             });
         } catch (error) {
             if (modelId === undefined) {
                 toast({
                     position: bottomLeft,
-                    title: "Error",
-                    description: "Please, choose a model",
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Error"
+                            status={StatusSimulation.ERROR}
+                        >
+                            "Please, choose a model"
+                        </ToastCustom>
+                    ),
                 });
             } else {
                 toast({
                     position: "bottom-left",
-                    title: "Error",
-                    description: `${error.message}`,
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title="Error"
+                            status={StatusSimulation.ERROR}
+                        >
+                            {error.message}
+                        </ToastCustom>
+                    ),
                 });
             }
         } finally {
@@ -348,25 +365,35 @@ const DataFitTab = () => {
                                 Data For Fit:
                             </Text>
                             {dataValues.length > 0 ? (
-                                <Text fontSize="14px" color="green">
+                                <Text
+                                    fontSize="14px"
+                                    fontWeight="bold"
+                                    color="#3EBFE0"
+                                >
                                     {/* Refactorizar cuando se usen diferentes infectados */}
                                     {/* <TagLabel>{parameterName} Loaded</TagLabel> */}
                                     Loaded
                                 </Text>
                             ) : (
-                                <Text color="red" fontSize="14px">
+                                <Text
+                                    color="#8080A0"
+                                    fontWeight="bold"
+                                    fontSize="14px"
+                                >
                                     Pending
                                 </Text>
                             )}
                         </Flex>
                         <Center>
                             <Button
-                                colorScheme="blue"
+                                bg="#016FB9"
                                 color="white"
                                 isDisabled={!enableFitButton}
                                 onClick={() => {
                                     handleFetch();
                                 }}
+                                size="sm"
+                                mr="1rem"
                             >
                                 {isSimulating ? (
                                     <>
@@ -382,6 +409,10 @@ const DataFitTab = () => {
                                     `Fit`
                                 )}
                             </Button>
+                            {hardSimulation.details.type ===
+                                TypeHardSimulation.DATAFIT && (
+                                <StatusHardSimPop />
+                            )}
                         </Center>
                     </Flex>
                 </Flex>

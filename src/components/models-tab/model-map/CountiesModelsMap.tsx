@@ -2,7 +2,7 @@ import { polygon } from "leaflet";
 import { useContext, useReducer, useState, useEffect } from "react";
 import { GeoJSON, Tooltip, useMap } from "react-leaflet";
 import * as topojson from "topojson-client";
-import { GeometryObject, Topology } from "topojson-specification";
+import type { GeometryObject, Topology } from "topojson-specification";
 
 import us_ from "../../../data/counties-10m.json";
 import { SelectFeature } from "context/SelectFeaturesContext";

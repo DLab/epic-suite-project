@@ -5,7 +5,7 @@ import Plot from "react-plotly.js";
 import getColor from "../getColor";
 import { GraphicsData } from "context/GraphicsContext";
 import { TabIndex } from "context/TabContext";
-import { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
+import type { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
 import getNodeName from "utils/getNodeNames";
 
 interface Props {
@@ -128,41 +128,39 @@ const BarGraphModal = ({
     }, [savedSimulationKeys, allGraphicData, simDay]);
 
     return (
-        <>
-            <Plot
-                data={axios}
-                layout={{
-                    autosize: false,
-                    width: 320,
-                    height: 260,
-                    margin: {
-                        l: 75,
-                        b: 60,
-                        t: 0,
+        <Plot
+            data={axios}
+            layout={{
+                autosize: false,
+                width: 320,
+                height: 260,
+                margin: {
+                    l: 75,
+                    b: 60,
+                    t: 0,
+                },
+                color: "blue",
+                legend: { xanchor: "end", x: 1.1, y: 1.1, yanchor: "top" },
+                showlegend: true,
+                xaxis: {
+                    title: {
+                        text: "Time",
                     },
-                    color: "blue",
-                    legend: { xanchor: "end", x: 1.1, y: 1.1, yanchor: "top" },
-                    showlegend: true,
-                    xaxis: {
-                        title: {
-                            text: "Time",
-                        },
-                        autorange: true,
+                    autorange: true,
+                },
+                yaxis: {
+                    title: {
+                        text: "Population",
                     },
-                    yaxis: {
-                        title: {
-                            text: "Population",
-                        },
-                        range: [0, maxValue],
-                        autorange: false,
-                    },
-                }}
-                config={{
-                    editable: false,
-                    responsive: true,
-                }}
-            />
-        </>
+                    range: [0, maxValue],
+                    autorange: false,
+                },
+            }}
+            config={{
+                editable: false,
+                responsive: true,
+            }}
+        />
     );
 };
 

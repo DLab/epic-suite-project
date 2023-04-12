@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
 
-import { InterventionsTypes } from "types/MobilityMatrixTypes";
+import type { InterventionsTypes } from "types/MobilityMatrixTypes";
 
 import MobilityInterventions from "./MobilityInterventions";
 

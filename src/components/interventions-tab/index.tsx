@@ -6,13 +6,13 @@ import { InterventionColection } from "../../context/InterventionsContext";
 import BreadCrumb from "components/BreadCrumb";
 import ContainerStrategy from "components/interventions-tab/ContainerStrategy";
 import Strategy from "components/interventions-tab/Strategy";
-import {
-    Interventions,
-    InterventionsModes,
+import { InterventionsModes } from "types/InterventionsTypes";
+import type {
     InterventionsTypes,
     NonpharmaceuticalSubStrategy,
     PharmaceuticalSubStrategy,
     TypeStrategy,
+    Interventions,
 } from "types/InterventionsTypes";
 import createIdComponent from "utils/createIdcomponent";
 

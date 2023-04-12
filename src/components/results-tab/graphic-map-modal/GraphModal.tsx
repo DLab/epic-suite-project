@@ -5,7 +5,7 @@ import Plot from "react-plotly.js";
 
 import { GraphicsData } from "context/GraphicsContext";
 import { TabIndex } from "context/TabContext";
-import { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
+import type { DoubleYAxisData, SavedSimulationData } from "types/GraphicsTypes";
 import getNodeName from "utils/getNodeNames";
 
 interface Props {
@@ -117,42 +117,40 @@ const GraphModal = ({
     }, [savedSimulationKeys, allGraphicData, simDay]);
 
     return (
-        <>
-            <Plot
-                data={axios}
-                layout={{
-                    autosize: false,
-                    width: 320,
-                    height: 260,
-                    margin: {
-                        l: 75,
-                        b: 60,
-                        t: 0,
+        <Plot
+            data={axios}
+            layout={{
+                autosize: false,
+                width: 320,
+                height: 260,
+                margin: {
+                    l: 75,
+                    b: 60,
+                    t: 0,
+                },
+                color: "blue",
+                legend: { xanchor: "end", x: 1.1, y: 1.1, yanchor: "top" },
+                showlegend: true,
+                xaxis: {
+                    title: {
+                        text: "Time",
                     },
-                    color: "blue",
-                    legend: { xanchor: "end", x: 1.1, y: 1.1, yanchor: "top" },
-                    showlegend: true,
-                    xaxis: {
-                        title: {
-                            text: "Time",
-                        },
-                        autorange: false,
-                        range: [0, duration],
+                    autorange: false,
+                    range: [0, duration],
+                },
+                yaxis: {
+                    title: {
+                        text: "Population",
                     },
-                    yaxis: {
-                        title: {
-                            text: "Population",
-                        },
-                        autorange: false,
-                        range: [0, maxValue],
-                    },
-                }}
-                config={{
-                    editable: false,
-                    responsive: true,
-                }}
-            />
-        </>
+                    autorange: false,
+                    range: [0, maxValue],
+                },
+            }}
+            config={{
+                editable: false,
+                responsive: true,
+            }}
+        />
     );
 };
 

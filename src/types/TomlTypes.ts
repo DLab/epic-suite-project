@@ -1,4 +1,4 @@
-import { InitialConditions } from "./SimulationTypes";
+import type { InitialConditions } from "./SimulationTypes";
 
 export interface EpicConfigToml {
     title?: string;

@@ -23,7 +23,12 @@ const ColorScaleMenu = ({ setColorScale }: Props) => {
         <Menu>
             <MenuButton h="60%">
                 <Tooltip label="Choose color scale">
-                    <Icon as={ColorIcon} cursor="pointer" mr="6px" />
+                    <Icon
+                        color="#016FB9"
+                        as={ColorIcon}
+                        cursor="pointer"
+                        mr="6px"
+                    />
                 </Tooltip>
             </MenuButton>
             <MenuList>

@@ -15,7 +15,7 @@ import React, { useRef, useContext } from "react";
 import { GraphicsData } from "context/GraphicsContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
     setModelMode: (value: string) => void;

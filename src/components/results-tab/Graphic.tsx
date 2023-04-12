@@ -5,7 +5,7 @@ import Plot from "react-plotly.js";
 
 import { GraphicsData } from "context/GraphicsContext";
 import { TabIndex } from "context/TabContext";
-import { DoubleYAxisData } from "types/GraphicsTypes";
+import type { DoubleYAxisData } from "types/GraphicsTypes";
 import getNodeName from "utils/getNodeNames";
 
 interface Props {

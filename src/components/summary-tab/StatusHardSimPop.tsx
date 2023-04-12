@@ -16,28 +16,51 @@ import {
     PopoverHeader,
     PopoverTrigger,
     Text,
+    Tooltip,
     useToast,
 } from "@chakra-ui/react";
 import { format, add } from "date-fns";
 import { useContext } from "react";
 
+import ToastCustom from "components/ToastCustom";
 import { GraphicsData } from "context/GraphicsContext";
 import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import { TabIndex } from "context/TabContext";
-import { StatusSimulation } from "types/HardSimulationType";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import { StatusSimulation, TypeHardSimulation } from "types/HardSimulationType";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import postData, { getData } from "utils/fetchData";
 
 import getSEIRHVDObjMono from "./getSEIRHVDObjMono";
 import getSEIRObjMono from "./getSEIRObjMono";
 import getSIRObjMono from "./getSIRObjMono";
 
+export const schemeColorStatus = {
+    [StatusSimulation.NOTSTARTED]: () => (
+        <Icon cursor="pointer" as={WarningTwoIcon} />
+    ),
+    [StatusSimulation.RECIEVED]: () => (
+        <Icon cursor="pointer" color="#3EBFE0" as={InfoIcon} />
+    ),
+    [StatusSimulation.STARTED]: () => (
+        <Icon cursor="pointer" color="#3EBFE0" as={InfoIcon} />
+    ),
+    [StatusSimulation.ERROR]: () => (
+        <Icon cursor="pointer" color="#8080A0" as={WarningTwoIcon} />
+    ),
+    [StatusSimulation.FINISHED]: () => (
+        <Icon cursor="pointer" color="#005086" as={CheckCircleIcon} />
+    ),
+    [StatusSimulation.CANCELED]: () => (
+        <Icon cursor="pointer" color="#8080A0" as={InfoOutlineIcon} />
+    ),
+};
+
 export default function StatusHardSimPop() {
     const {
         hardSimulation: {
-            details: { idModel, idProcess, description, result },
+            details: { idModel, idProcess, description, result, type },
             status,
         },
     } = useContext(HardSimSetted);
@@ -113,6 +136,11 @@ export default function StatusHardSimPop() {
                 status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        {error.message}
+                    </ToastCustom>
+                ),
             });
             return false;
         }
@@ -145,70 +173,67 @@ export default function StatusHardSimPop() {
         getGraphicRealMetaData(selectedModels);
         setIndex(4);
     };
-    const schemeColorStatus = {
-        [StatusSimulation.NOTSTARTED]: () => (
-            <Icon cursor="pointer" as={WarningTwoIcon} />
-        ),
-        [StatusSimulation.RECIEVED]: () => (
-            <Icon cursor="pointer" color="skyblue" as={InfoIcon} />
-        ),
-        [StatusSimulation.STARTED]: () => (
-            <Icon cursor="pointer" color="purple" as={InfoIcon} />
-        ),
-        [StatusSimulation.ERROR]: () => (
-            <Icon cursor="pointer" color="red" as={WarningTwoIcon} />
-        ),
-        [StatusSimulation.FINISHED]: () => (
-            <Icon cursor="pointer" color="green" as={CheckCircleIcon} />
-        ),
-        [StatusSimulation.CANCELED]: () => (
-            <Icon cursor="pointer" color="gray" as={InfoOutlineIcon} />
-        ),
-    };
     return (
-        <Popover placement="right">
-            <PopoverTrigger>
-                {schemeColorStatus[status]()}
-                {/* <Status status={status} /> */}
-            </PopoverTrigger>
-            <PopoverContent>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverHeader fontWeight="bold">{status}</PopoverHeader>
-                <PopoverBody>
-                    <Text marginBottom="0.2rem">Detail: {description}</Text>
-                    {/* {status === StatusSimulation.RECIEVED ||
-                        (status === StatusSimulation.STARTED && (
-                            <Button
-                                onClick={() => {
-                                    getData(
-                                        `${process.env.NEXT_PUBLIC_COVID19GEOMODELLER_URL}/simulate_meta_status/${idProcess}?cancel=true`
-                                    );
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                        ))} */}
-                    {status === StatusSimulation.FINISHED && (
-                        <Button
-                            size="sm"
-                            marginTop="0.2rem"
-                            onClick={() => {
-                                const { globalResult, result: resultData } =
-                                    result as Record<string, unknown>;
-                                const selectedModel = getSelectedModel(idModel);
-                                showDataInResultsTabs(
-                                    resultData,
-                                    globalResult,
-                                    selectedModel
-                                );
-                            }}
-                        >
-                            Show data
-                        </Button>
-                    )}
-                </PopoverBody>
-            </PopoverContent>
-        </Popover>
+        <>
+            {(status === StatusSimulation.RECIEVED ||
+                status === StatusSimulation.STARTED) && (
+                <Text color="#3EBFE0">Running...</Text>
+            )}
+            {status === StatusSimulation.FINISHED &&
+                type !== TypeHardSimulation.DATAFIT && (
+                    <Button
+                        size="xs"
+                        marginTop="0.2rem"
+                        color="white"
+                        bg="#3EBFE0"
+                        onClick={() => {
+                            const { globalResult, result: resultData } =
+                                result as Record<string, unknown>;
+                            const selectedModel = getSelectedModel(idModel);
+                            showDataInResultsTabs(
+                                resultData,
+                                globalResult,
+                                selectedModel
+                            );
+                        }}
+                    >
+                        Show results
+                    </Button>
+                )}
+            {status === StatusSimulation.ERROR && <Text>Failed</Text>}
+        </>
+        // <Popover placement="right">
+        //     <PopoverTrigger>{schemeColorStatus[status]()}</PopoverTrigger>
+        //     <PopoverContent>
+        //         <PopoverArrow />
+        //         <PopoverCloseButton />
+        //         <PopoverHeader fontWeight="bold">{status}</PopoverHeader>
+        //         <PopoverBody>
+        //             <Text marginBottom="0.2rem">Detail: {description}</Text>
+        //             {status === StatusSimulation.FINISHED &&
+        //                 type !== TypeHardSimulation.DATAFIT && (
+        //                     <Button
+        //                         size="sm"
+        //                         marginTop="0.2rem"
+        //                         color="white"
+        //                         bg="#016FB9"
+        //                         onClick={() => {
+        //                             const { globalResult, result: resultData } =
+        //                                 result as Record<string, unknown>;
+        //                             const selectedModel =
+        //                                 getSelectedModel(idModel);
+        //                             showDataInResultsTabs(
+        //                                 resultData,
+        //                                 globalResult,
+        //                                 selectedModel
+        //                             );
+        //                         }}
+        //                     >
+        //                         Show data
+        //                     </Button>
+        //                 )}
+        //         </PopoverBody>
+        //     </PopoverContent>
+        // </Popover>
     );
 }

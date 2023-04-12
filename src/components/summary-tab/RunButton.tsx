@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-identical-functions */
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/dot-notation */
@@ -7,6 +8,7 @@ import { useContext, useState, useEffect } from "react";
 
 import Play from "components/icons/Play";
 import RunModelsButton from "components/icons/RunModelsButton";
+import ToastCustom from "components/ToastCustom";
 import { GraphicsData } from "context/GraphicsContext";
 import { HardSimSetted } from "context/HardSimulationsStatus";
 import { NewModelSetted } from "context/NewModelsContext";
@@ -17,7 +19,7 @@ import {
     StatusSimulation,
     TypeHardSimulation,
 } from "types/HardSimulationType";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 import postData from "utils/fetchData";
 
@@ -123,11 +125,13 @@ const RunButton = ({ permission }: Props) => {
         } catch (error) {
             return toast({
                 position: "bottom-left",
-                title: "Error",
-                description: `${error.message}`,
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        {error.message}
+                    </ToastCustom>
+                ),
             });
         }
     };
@@ -157,11 +161,13 @@ const RunButton = ({ permission }: Props) => {
         } catch (error) {
             return toast({
                 position: "bottom-left",
-                title: "Error",
-                description: `${error.message}`,
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        {error.message}
+                    </ToastCustom>
+                ),
             });
         }
     };
@@ -331,49 +337,18 @@ const RunButton = ({ permission }: Props) => {
                             },
                         })
                     );
-                    // const name = `${selectedModels[0].name}`;
-
-                    // const jsonResponse = await JSON.parse(
-                    //     response.results[name]
-                    // );
-
-                    // const jsonGlobalResultsResponse = await JSON.parse(
-                    //     response.global_results[name]
-                    // );
-                    // const listResponse = Object.keys(jsonResponse).map(
-                    //     (key) => {
-                    //         return { name: key, ...jsonResponse[key] };
-                    //     }
-                    // );
-
-                    // let globalResultsListResponse = { name: "general" };
-                    // Object.keys(jsonGlobalResultsResponse).forEach((key) => {
-                    //     globalResultsListResponse = {
-                    //         ...globalResultsListResponse,
-                    //         [key]: Object.values(
-                    //             jsonGlobalResultsResponse[key]
-                    //         ),
-                    //     };
-                    // });
-
-                    // setAllGraphicData([]);
-                    // setAllResults([]);
-                    // setDataToShowInMap([]);
-                    // setRealDataSimulationKeys([]);
-                    // setAux(JSON.stringify(listResponse));
-                    // setGlobalParametersValues(
-                    //     JSON.stringify([globalResultsListResponse])
-                    // );
-                    // setSelectedModelsToSimulate(selectedModels);
-                    // getGraphicRealMetaData(selectedModels);
-                    // setIndex(4);
                     toast({
                         position: bottonLeft,
-                        title: "Simulation sent",
-                        description: "Your simulation was submitted",
-                        status: "info",
                         duration: 3000,
                         isClosable: true,
+                        render: () => (
+                            <ToastCustom
+                                title="Simulation sent"
+                                status={StatusSimulation.STARTED}
+                            >
+                                "Your simulation was submitted"
+                            </ToastCustom>
+                        ),
                     });
                 } else {
                     response = await postData(
@@ -383,12 +358,16 @@ const RunButton = ({ permission }: Props) => {
                     setMonopopulationData(response, selectedModels);
                     toast({
                         position: bottonLeft,
-                        title: "Simulation success",
-                        description:
-                            "Your simulation was completed successfully",
-                        status: "success",
                         duration: 3000,
                         isClosable: true,
+                        render: () => (
+                            <ToastCustom
+                                title="Simulation success"
+                                status={StatusSimulation.FINISHED}
+                            >
+                                "Your simulation was completed successfully"
+                            </ToastCustom>
+                        ),
                     });
                 }
             }
@@ -404,20 +383,30 @@ const RunButton = ({ permission }: Props) => {
             if (error.response?.status === 400) {
                 toast({
                     position: bottonLeft,
-                    title: SIMULATIONFAILED,
-                    description: "Parameters are invalid. Check your models!",
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title={SIMULATIONFAILED}
+                            status={StatusSimulation.ERROR}
+                        >
+                            "Parameters are invalid. Check your models!"
+                        </ToastCustom>
+                    ),
                 });
             } else {
                 toast({
                     position: bottonLeft,
-                    title: SIMULATIONFAILED,
-                    description: `${error.message}`,
-                    status: "error",
                     duration: 3000,
                     isClosable: true,
+                    render: () => (
+                        <ToastCustom
+                            title={SIMULATIONFAILED}
+                            status={StatusSimulation.ERROR}
+                        >
+                            {error.message}
+                        </ToastCustom>
+                    ),
                 });
             }
         } finally {
@@ -435,53 +424,56 @@ const RunButton = ({ permission }: Props) => {
     }, [permission]);
 
     return (
-        <>
-            <Button
-                onClick={() => {
-                    const withPermission = Object.values(permission).some(
-                        (perm) => perm
-                    );
-                    if (withPermission) {
-                        handleJsonToToml();
-                        setSimulationsPopulatioType("");
-                    } else {
-                        toast({
-                            position: bottonLeft,
-                            title: SIMULATIONFAILED,
-                            description: `You must select at least one model`,
-                            status: "error",
-                            duration: 3000,
-                            isClosable: true,
-                        });
-                    }
-                }}
-                size="sm"
-                fontSize="10px"
-                bg="#016FB9"
-                color="#FFFFFF"
-                isDisabled={disabledButton}
-            >
-                {isSimulating ? (
-                    <>
-                        <Spinner
-                            id={createIdComponent()}
-                            thickness="4px"
-                            speed="0.65s"
-                            emptyColor="gray.200"
-                            color="blue.500"
-                        />
-                        <Text id={createIdComponent()} pl="1rem">
-                            Simulating...
-                        </Text>
-                    </>
-                ) : (
-                    <>
-                        <Icon w="20px" h="20px" as={Play} mr="5px" />
-                        RUN SELECTED MODELS
-                    </>
-                )}
-            </Button>
-        </>
+        <Button
+            onClick={() => {
+                const withPermission = Object.values(permission).some(
+                    (perm) => perm
+                );
+                if (withPermission) {
+                    handleJsonToToml();
+                    setSimulationsPopulatioType("");
+                } else {
+                    toast({
+                        position: bottonLeft,
+                        duration: 3000,
+                        isClosable: true,
+                        render: () => (
+                            <ToastCustom
+                                title={SIMULATIONFAILED}
+                                status={StatusSimulation.ERROR}
+                            >
+                                `You must select at least one model`
+                            </ToastCustom>
+                        ),
+                    });
+                }
+            }}
+            size="sm"
+            fontSize="10px"
+            bg="#016FB9"
+            color="#FFFFFF"
+            isDisabled={disabledButton}
+        >
+            {isSimulating ? (
+                <>
+                    <Spinner
+                        id={createIdComponent()}
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="blue.500"
+                    />
+                    <Text id={createIdComponent()} pl="1rem">
+                        Simulating...
+                    </Text>
+                </>
+            ) : (
+                <>
+                    <Icon w="20px" h="20px" as={Play} mr="5px" />
+                    RUN SELECTED MODELS
+                </>
+            )}
+        </Button>
     );
 };
 

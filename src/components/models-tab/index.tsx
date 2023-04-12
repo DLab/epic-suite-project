@@ -8,7 +8,7 @@ import BreadCrumb from "components/BreadCrumb";
 import { NewModelSetted } from "context/NewModelsContext";
 import { update } from "store/ControlPanel";
 import { initialState } from "store/reducer";
-import { NewModelsParams } from "types/SimulationTypes";
+import type { NewModelsParams } from "types/SimulationTypes";
 
 import ImportModels from "./ImportModels";
 import ModelMainTab from "./ModelMainTab";

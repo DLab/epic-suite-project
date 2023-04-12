@@ -1,8 +1,9 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useMemo, useReducer, useState } from "react";
 
-import {
+import type { ChildrenProps } from "types/importTypes";
+import { MobilityModes } from "types/MobilityMatrixTypes";
+import type {
     MobilityMatrixProps,
-    MobilityModes,
     MobilityMatrixListProps,
     Actions,
 } from "types/MobilityMatrixTypes";
@@ -23,7 +24,7 @@ export const MobilityMatrix = createContext<MobilityMatrixProps>({
 });
 
 // eslint-disable-next-line react/prop-types
-const MobilityMatrixContext: React.FC = ({ children }) => {
+const MobilityMatrixContext: React.FC<ChildrenProps> = ({ children }) => {
     const initialStateMobilityMatrix: MobilityMatrixListProps | [] = [];
     const reducer = (state: MobilityMatrixListProps[], action: Actions) => {
         switch (action.type) {
@@ -76,24 +77,31 @@ const MobilityMatrixContext: React.FC = ({ children }) => {
     );
     const [originOfMatrixCreation, setOriginOfMatrixCreation] = useState("");
     const [mobilityMatrixType, setMobilityMatrixType] = useState("");
-
+    const config = useMemo(() => {
+        return {
+            idMatrixModel,
+            setIdMatrixModel,
+            idMobilityMatrixUpdate,
+            setIdMobilityMatrixUpdate,
+            matrixMode,
+            setMatrixMode,
+            mobilityMatrixList,
+            setMobilityMatrixList,
+            originOfMatrixCreation,
+            setOriginOfMatrixCreation,
+            mobilityMatrixType,
+            setMobilityMatrixType,
+        };
+    }, [
+        idMatrixModel,
+        idMobilityMatrixUpdate,
+        matrixMode,
+        mobilityMatrixList,
+        originOfMatrixCreation,
+        mobilityMatrixType,
+    ]);
     return (
-        <MobilityMatrix.Provider
-            value={{
-                idMatrixModel,
-                setIdMatrixModel,
-                idMobilityMatrixUpdate,
-                setIdMobilityMatrixUpdate,
-                matrixMode,
-                setMatrixMode,
-                mobilityMatrixList,
-                setMobilityMatrixList,
-                originOfMatrixCreation,
-                setOriginOfMatrixCreation,
-                mobilityMatrixType,
-                setMobilityMatrixType,
-            }}
-        >
+        <MobilityMatrix.Provider value={config}>
             {children}
         </MobilityMatrix.Provider>
     );

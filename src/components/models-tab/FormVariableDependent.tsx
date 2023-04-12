@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-identical-functions */
 /* eslint-disable sonarjs/no-duplicate-string */
 import {
     NumberInput,
@@ -21,6 +22,8 @@ import {
     TransitionFunction,
     TypePhase,
 } from "../../types/VariableDependentTime";
+import ToastCustom from "components/ToastCustom";
+import { StatusSimulation } from "types/HardSimulationType";
 
 interface DataSetters {
     id: number;
@@ -67,7 +70,7 @@ export const StaticInputs = ({ value, id, setVal, close }: StaticsProps) => {
                     <NumberDecrementStepper />
                 </NumberInputStepper>
             </NumberInput>
-            <ButtonGroup mt={1} d="flex" justifyContent="flex-end">
+            <ButtonGroup mt={1} display="flex" justifyContent="flex-end">
                 <Button
                     size="xs"
                     onClick={() => {
@@ -165,7 +168,7 @@ export const SinoInputs = ({
                 <Flex>
                     InitPhase:
                     <RadioGroup
-                        value={initPhaseVal}
+                        value={`${initPhaseVal}`}
                         size="sm"
                         onChange={(e) => {
                             if (+e === TypePhase.min) {
@@ -176,25 +179,30 @@ export const SinoInputs = ({
                         }}
                     >
                         <Stack direction="row">
-                            <Radio value={TypePhase.min}>min</Radio>
-                            <Radio value={TypePhase.max}>max</Radio>
+                            <Radio value={`${TypePhase.min}`}>min</Radio>
+                            <Radio value={`${TypePhase.max}`}>max</Radio>
                         </Stack>
                     </RadioGroup>
                 </Flex>
             </Flex>
-            <ButtonGroup d="flex" justifyContent="flex-end">
+            <ButtonGroup display="flex" justifyContent="flex-end">
                 <Button
                     size="xs"
                     onClick={() => {
                         if (minVal >= maxVal) {
                             toast({
-                                title: "Failed setting function",
-                                description:
-                                    "min must to be lesser than max. Fix it for setting please!",
-                                status: "error",
-                                duration: 4000,
+                                duration: 3000,
                                 isClosable: true,
                                 position: "bottom-right",
+                                render: () => (
+                                    <ToastCustom
+                                        title="Failed setting function"
+                                        status={StatusSimulation.ERROR}
+                                    >
+                                        "min must to be lesser than max. Fix it
+                                        for setting please!"
+                                    </ToastCustom>
+                                ),
                             });
                         } else {
                             setVal({
@@ -304,8 +312,8 @@ export const SquareInputs = ({
                 </NumberInput>
                 InitPhase:
                 <RadioGroup
-                    defaultValue={initPhaseVal}
-                    value={initPhaseVal}
+                    defaultValue={`${initPhaseVal}`}
+                    value={`${initPhaseVal}`}
                     // eslint-disable-next-line sonarjs/no-identical-functions
                     onChange={(e) => {
                         if (+e === TypePhase.min) {
@@ -316,24 +324,29 @@ export const SquareInputs = ({
                     }}
                 >
                     <Stack direction="row">
-                        <Radio value={TypePhase.min}>Min</Radio>
-                        <Radio value={TypePhase.max}>Max</Radio>
+                        <Radio value={`${TypePhase.min}`}>Min</Radio>
+                        <Radio value={`${TypePhase.max}`}>Max</Radio>
                     </Stack>
                 </RadioGroup>
             </Flex>
-            <ButtonGroup d="flex" justifyContent="flex-end">
+            <ButtonGroup display="flex" justifyContent="flex-end">
                 <Button
                     size="xs"
                     onClick={() => {
                         if (+minVal >= +maxVal) {
                             toast({
-                                title: "Failed setting function",
-                                description:
-                                    "min must to be lesser than max. Fix it for setting please!",
-                                status: "error",
-                                duration: 4000,
+                                duration: 3000,
                                 isClosable: true,
                                 position: "bottom-right",
+                                render: () => (
+                                    <ToastCustom
+                                        title="Failed setting function"
+                                        status={StatusSimulation.ERROR}
+                                    >
+                                        "min must to be lesser than max. Fix it
+                                        for setting please!"
+                                    </ToastCustom>
+                                ),
                             });
                         } else {
                             setVal({
@@ -380,7 +393,7 @@ export const TransitionInputs = ({
         <Flex direction="column" p="0.5rem">
             <Text>Transition</Text>
             <RadioGroup
-                value={transitionVal}
+                value={`${transitionVal}`}
                 // eslint-disable-next-line sonarjs/no-identical-functions
                 onChange={(e) => {
                     if (+e === 0) {
@@ -393,11 +406,11 @@ export const TransitionInputs = ({
                 }}
             >
                 <Stack direction="row">
-                    <Radio value={TransitionFunction.linear}>Linear</Radio>
-                    <Radio value={TransitionFunction.quadratic}>
+                    <Radio value={`${TransitionFunction.linear}`}>Linear</Radio>
+                    <Radio value={`${TransitionFunction.quadratic}`}>
                         Quadratic
                     </Radio>
-                    <Radio value={TransitionFunction.sigmoidal}>
+                    <Radio value={`${TransitionFunction.sigmoidal}`}>
                         Sigmoidal
                     </Radio>
                 </Stack>
@@ -439,34 +452,39 @@ export const TransitionInputs = ({
                         <>
                             Concavity:
                             <RadioGroup
-                                value={concavityVal}
+                                value={`${concavityVal}`}
                                 // eslint-disable-next-line sonarjs/no-identical-functions
                                 onChange={(e) => {
                                     setConcavityVal(+e);
                                 }}
                             >
                                 <Stack direction="row">
-                                    <Radio value={0}>Concave</Radio>
-                                    <Radio value={1}>Convex</Radio>
+                                    <Radio value="0">Concave</Radio>
+                                    <Radio value="1">Convex</Radio>
                                 </Stack>
                             </RadioGroup>
                         </>
                     )}
                 </Flex>
             </Flex>
-            <ButtonGroup d="flex" justifyContent="flex-end" mt="0.5">
+            <ButtonGroup display="flex" justifyContent="flex-end" mt="0.5">
                 <Button
                     size="xs"
                     onClick={() => {
                         if (initVal >= endVal) {
                             toast({
-                                title: "Failed setting function",
-                                description:
-                                    "min must to be lesser than max. Fix it for setting please!",
-                                status: "error",
-                                duration: 4000,
+                                duration: 3000,
                                 isClosable: true,
                                 position: "bottom-right",
+                                render: () => (
+                                    <ToastCustom
+                                        title="Failed setting function"
+                                        status={StatusSimulation.ERROR}
+                                    >
+                                        "min must to be lesser than max. Fix it
+                                        for setting please!"
+                                    </ToastCustom>
+                                ),
                             });
                         } else {
                             setVal({

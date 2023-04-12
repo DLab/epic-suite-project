@@ -1,4 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
+
+import type { ChildrenProps } from "types/importTypes";
 
 interface TabType {
     index: number;
@@ -14,21 +16,19 @@ export const TabIndex = createContext<TabType>({
     setAux: () => {},
 });
 
-// eslint-disable-next-line react/prop-types
-const TabContext: React.FC = ({ children }) => {
+const TabContext: React.FC<ChildrenProps> = ({ children }) => {
     const [index, setIndex] = useState<number>(0);
     const [aux, setAux] = useState<string>("");
+    const contextValue = useMemo(() => {
+        return {
+            index,
+            setIndex,
+            aux,
+            setAux,
+        };
+    }, [index, aux]);
     return (
-        <TabIndex.Provider
-            value={{
-                index,
-                setIndex,
-                aux,
-                setAux,
-            }}
-        >
-            {children}
-        </TabIndex.Provider>
+        <TabIndex.Provider value={contextValue}>{children}</TabIndex.Provider>
     );
 };
 

@@ -13,7 +13,7 @@ import { SelectFeature } from "context/SelectFeaturesContext";
 import countiesData from "data/counties.json";
 import stateData from "data/states.json";
 import { update } from "store/ControlPanel";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 import getArrayParametersByNode from "./GetParametersByNodes";
 import ModelController from "./ModelController";
@@ -172,20 +172,16 @@ const ModelBuilder = ({
         }
     }, [completeModel, id, dispatch]);
     return (
-        <>
-            <ModelController
-                showSectionVariable={setShowSectionVariable}
-                modelCompartment={modelCompartment}
-                nodes={nodes}
-                setPositionVDT={setPositionVDT}
-                setShowSectionInitialConditions={
-                    setShowSectionInitialConditions
-                }
-                populationValue={populationValue}
-                matrixId={matrixId}
-                setMatrixId={setMatrixId}
-            />
-        </>
+        <ModelController
+            showSectionVariable={setShowSectionVariable}
+            modelCompartment={modelCompartment}
+            nodes={nodes}
+            setPositionVDT={setPositionVDT}
+            setShowSectionInitialConditions={setShowSectionInitialConditions}
+            populationValue={populationValue}
+            matrixId={matrixId}
+            setMatrixId={setMatrixId}
+        />
     );
 };
 

@@ -1,11 +1,14 @@
-import VariableDependentTime, {
+import {
     NameFunction,
+    TransitionFunction,
+    TypePhase,
+} from "../types/VariableDependentTime";
+import type VariableDependentTime from "../types/VariableDependentTime";
+import type {
     Sine,
     Square,
     StaticValue,
     Transition,
-    TransitionFunction,
-    TypePhase,
 } from "../types/VariableDependentTime";
 
 export interface Actions {

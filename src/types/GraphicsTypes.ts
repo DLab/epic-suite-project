@@ -1,4 +1,4 @@
-import { GeometryObject } from "topojson-specification";
+import type { GeometryObject } from "topojson-specification";
 
 export interface DoubleYAxisData {
     graphicName: string;

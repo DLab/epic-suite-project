@@ -57,6 +57,7 @@ const NumberInputVariableDependent = ({
     const [isEditingLocalValue, setIsEditingLocalValue] =
         useState<boolean>(false);
     const dispatch = useDispatch();
+    const [locVal, setLocVal] = useState(value);
 
     /**
      * Saves the new values of the time-dependent variables.
@@ -131,7 +132,10 @@ const NumberInputVariableDependent = ({
                 mx="0.2rem"
                 fontSize="11px"
                 value={!isStateLocal ? value : localValue}
-                onChange={handleChange}
+                onBlur={() => {
+                    handleChange(localValue);
+                }}
+                onChange={(e) => setLocalValue(e)}
                 size="xs"
                 min={min}
                 max={max}

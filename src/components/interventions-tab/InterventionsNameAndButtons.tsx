@@ -8,7 +8,8 @@ import {
     Stack,
     useToast,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import type React from "react";
 
 import { InterventionColection } from "../../context/InterventionsContext";
 import { NewModelSetted } from "context/NewModelsContext";
@@ -19,9 +20,9 @@ import {
     NonpharmaceuticalSubStrategy,
     PharmaceuticalSubStrategy,
     TypeStrategy,
-    InterventionsTypes,
 } from "types/InterventionsTypes";
-import { NewModelsParams } from "types/SimulationTypes";
+import type { InterventionsTypes } from "types/InterventionsTypes";
+import type { NewModelsParams } from "types/SimulationTypes";
 import createIdComponent from "utils/createIdcomponent";
 
 import strategyFactory from "./strategyFactory";

@@ -9,7 +9,7 @@ import {
     Heading,
 } from "@chakra-ui/react";
 import _ from "lodash";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import NumberInputEpi from "../NumberInputEpi";
@@ -18,8 +18,8 @@ import NumberInputVariableDependent from "components/NumberInputVariableDependen
 import { ControlPanel } from "context/ControlPanelContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { update } from "store/ControlPanel";
-import { RootState } from "store/store";
-import { NewModelsAllParams } from "types/SimulationTypes";
+import type { RootState } from "store/store";
+import type { NewModelsAllParams } from "types/SimulationTypes";
 
 // import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
 import NodesParams from "./NodesParams";
@@ -35,7 +35,48 @@ interface Props {
     matrixId: number;
     setMatrixId: (value: number) => void;
 }
-
+function createIsEnabledObject(parameters) {
+    return [
+        parameters.rR_S,
+        parameters.tE_I,
+        parameters.tI_R,
+        parameters.beta,
+        parameters.alpha,
+        parameters.Beta_v,
+        parameters.vac_d,
+        parameters.vac_eff,
+        parameters.pE_Im,
+        parameters.tE_Im,
+        parameters.pE_Icr,
+        parameters.tE_Icr,
+        parameters.tEv_Iv,
+        parameters.tIm_R,
+        parameters.tIcr_H,
+        parameters.pIv_R,
+        parameters.tIv_R,
+        parameters.pIv_H,
+        parameters.tIv_H,
+        parameters.pH_R,
+        parameters.tH_R,
+        parameters.pH_D,
+        parameters.tH_D,
+        parameters.pR_S,
+        parameters.tR_S,
+    ].reduce((acc, current) => {
+        if (Array.isArray(current)) {
+            return {
+                ...acc,
+                [current[0].name]: [
+                    ...current.map((variable) => variable.isEnabled),
+                ],
+            };
+        }
+        return {
+            ...acc,
+            [current.name]: [current.isEnabled],
+        };
+    }, {});
+}
 /**
  * Accordion with the parameter settings of a model.
  * @subcategory NewModel
@@ -58,50 +99,13 @@ const ModelController = ({
     const dispatch = useDispatch();
     const [isEnableIconButton, setIsEnableIconButton] = useState<
         Record<string, boolean[]>
-    >(
-        [
-            parameters.rR_S,
-            parameters.tE_I,
-            parameters.tI_R,
-            parameters.beta,
-            parameters.alpha,
-            parameters.Beta_v,
-            parameters.vac_d,
-            parameters.vac_eff,
-            parameters.pE_Im,
-            parameters.tE_Im,
-            parameters.pE_Icr,
-            parameters.tE_Icr,
-            parameters.tEv_Iv,
-            parameters.tIm_R,
-            parameters.tIcr_H,
-            parameters.pIv_R,
-            parameters.tIv_R,
-            parameters.pIv_H,
-            parameters.tIv_H,
-            parameters.pH_R,
-            parameters.tH_R,
-            parameters.pH_D,
-            parameters.tH_D,
-            parameters.pR_S,
-            parameters.tR_S,
-        ].reduce((acc, current) => {
-            if (Array.isArray(current)) {
-                return {
-                    ...acc,
-                    [current[0].name]: [
-                        ...current.map((variable) => variable.isEnabled),
-                    ],
-                };
-            }
-
-            return {
-                ...acc,
-                [current.name]: [current.isEnabled],
-            };
-        }, {})
+    >(createIsEnabledObject(parameters));
+    const setIsEnableIconButtonCallback = useCallback(
+        (newIsEnableIconButton) => {
+            setIsEnableIconButton(newIsEnableIconButton);
+        },
+        []
     );
-
     useEffect(() => {
         const paramsModelsToUpdate = completeModel.find(
             (model: NewModelsAllParams) => model.idNewModel === idModelUpdate
@@ -113,55 +117,11 @@ const ModelController = ({
                     updateData: paramsModelsToUpdate.parameters,
                 })
             );
-            setIsEnableIconButton(
-                [
-                    paramsModelsToUpdate.parameters.rR_S,
-                    paramsModelsToUpdate.parameters.tE_I,
-                    paramsModelsToUpdate.parameters.tI_R,
-                    paramsModelsToUpdate.parameters.beta,
-                    paramsModelsToUpdate.parameters.alpha,
-                    paramsModelsToUpdate.parameters.Beta_v,
-                    paramsModelsToUpdate.parameters.vac_d,
-                    paramsModelsToUpdate.parameters.vac_eff,
-                    paramsModelsToUpdate.parameters.pE_Im,
-                    paramsModelsToUpdate.parameters.tE_Im,
-                    paramsModelsToUpdate.parameters.pE_Icr,
-                    paramsModelsToUpdate.parameters.tE_Icr,
-                    paramsModelsToUpdate.parameters.tEv_Iv,
-                    paramsModelsToUpdate.parameters.tIm_R,
-                    paramsModelsToUpdate.parameters.tIcr_H,
-                    paramsModelsToUpdate.parameters.pIv_R,
-                    paramsModelsToUpdate.parameters.tIv_R,
-                    paramsModelsToUpdate.parameters.pIv_H,
-                    paramsModelsToUpdate.parameters.tIv_H,
-                    paramsModelsToUpdate.parameters.pH_R,
-                    paramsModelsToUpdate.parameters.tH_R,
-                    paramsModelsToUpdate.parameters.pH_D,
-                    paramsModelsToUpdate.parameters.tH_D,
-                    paramsModelsToUpdate.parameters.pR_S,
-                    paramsModelsToUpdate.parameters.tR_S,
-                ].reduce((acc, current) => {
-                    if (Array.isArray(current)) {
-                        return {
-                            ...acc,
-                            [current[0].name]: [
-                                ...current.map(
-                                    (variable) => variable.isEnabled
-                                ),
-                            ],
-                        };
-                    }
-                    // if (_.isEmpty(current)) {
-                    //     return acc;
-                    // }
-                    return {
-                        ...acc,
-                        [current.name]: [current.isEnabled],
-                    };
-                }, {})
+            setIsEnableIconButtonCallback(
+                createIsEnabledObject(paramsModelsToUpdate.parameters)
             );
         }
-    }, [completeModel, dispatch, idModelUpdate]);
+    }, [completeModel, dispatch, idModelUpdate, setIsEnableIconButtonCallback]);
 
     return (
         <>
@@ -220,7 +180,7 @@ const ModelController = ({
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.tI_R[0]}
                                 onChange={(e) => {
-                                    setIsEnableIconButton({
+                                    setIsEnableIconButtonCallback({
                                         ...isEnableIconButton,
                                         tI_R: [e.target.checked],
                                     });
@@ -240,7 +200,7 @@ const ModelController = ({
                             <IconButton
                                 fill="white"
                                 bg="#FFFFFF"
-                                color="#16609E"
+                                color="#016FB9"
                                 aria-label="Call Segun"
                                 size="sm"
                                 isDisabled={!isEnableIconButton.tI_R[0]}
@@ -284,7 +244,7 @@ const ModelController = ({
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.tE_I[0]}
                                 onChange={(e) => {
-                                    setIsEnableIconButton({
+                                    setIsEnableIconButtonCallback({
                                         ...isEnableIconButton,
                                         tE_I: [e.target.checked],
                                     });
@@ -304,7 +264,7 @@ const ModelController = ({
                             <IconButton
                                 fill="white"
                                 bg="#FFFFFF"
-                                color="#16609E"
+                                color="#016FB9"
                                 aria-label="Call Segun"
                                 size="sm"
                                 isDisabled={!isEnableIconButton.tE_I[0]}
@@ -348,7 +308,7 @@ const ModelController = ({
                                 ml="0.5rem"
                                 isChecked={isEnableIconButton.rR_S[0]}
                                 onChange={(e) => {
-                                    setIsEnableIconButton({
+                                    setIsEnableIconButtonCallback({
                                         ...isEnableIconButton,
                                         rR_S: [e.target.checked],
                                     });
@@ -368,7 +328,7 @@ const ModelController = ({
                             <IconButton
                                 fill="white"
                                 bg="#FFFFFF"
-                                color="#16609E"
+                                color="#016FB9"
                                 aria-label="Call Segun"
                                 size="sm"
                                 isDisabled={!isEnableIconButton.rR_S[0]}
@@ -439,7 +399,7 @@ const ModelController = ({
                 mu={parameters.mu}
                 nodes={nodes}
                 duration={parameters.t_end}
-                setIsEnableIconButton={setIsEnableIconButton}
+                setIsEnableIconButton={setIsEnableIconButtonCallback}
                 isEnableIconButton={isEnableIconButton}
                 showSectionVariable={showSectionVariable}
                 setShowSectionInitialConditions={

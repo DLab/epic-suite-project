@@ -1,4 +1,4 @@
-import VariableDependentTime from "./VariableDependentTime";
+import type VariableDependentTime from "./VariableDependentTime";
 
 // Updated into ActionsEpidemicData payload: add string[] type
 export interface ActionsEpidemicData {

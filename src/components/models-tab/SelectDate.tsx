@@ -5,13 +5,15 @@ import { format } from "date-fns";
 import React, { useContext, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
+import ToastCustom from "components/ToastCustom";
 import { NewModelSetted } from "context/NewModelsContext";
 import { SelectFeature } from "context/SelectFeaturesContext";
 import "react-datepicker/dist/react-datepicker.css";
 // eslint-disable-next-line import/order
 import countiesData from "data/counties.json";
 import stateData from "data/states.json";
-import { InitialConditionsNewModel } from "types/ControlPanelTypes";
+import type { InitialConditionsNewModel } from "types/ControlPanelTypes";
+import { StatusSimulation } from "types/HardSimulationType";
 import postData from "utils/fetchData";
 
 import { postInitialConditionsByModel } from "./initialConditionsByModel";
@@ -182,11 +184,13 @@ const SelectDate = ({
         } catch (error) {
             toast({
                 position: "bottom-left",
-                title: "Error",
-                description: `${error.message}`,
-                status: "error",
                 duration: 3000,
                 isClosable: true,
+                render: () => (
+                    <ToastCustom title="Error" status={StatusSimulation.ERROR}>
+                        {error.message}
+                    </ToastCustom>
+                ),
             });
         } finally {
             // setIsLoading(false);

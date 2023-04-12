@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import { InitialConditionsNewModel } from "types/ControlPanelTypes";
-import VariableDependentTime from "types/VariableDependentTime";
+import type { InitialConditionsNewModel } from "types/ControlPanelTypes";
+import type VariableDependentTime from "types/VariableDependentTime";
 
 import { convertTypeFunctionVDTForTomlFormat } from "./convertVDTForTomlFormat";
 
