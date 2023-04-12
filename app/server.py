@@ -3,7 +3,7 @@ import json
 from operator import itemgetter
 import uuid
 from app.connections.connect_redis import Connect, RedisDatabase, StatusMessage, StatusSimulation
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from app.constants.pub import CHANNEL_REDIS_PUB, RETRY_TIMEOUT, STREAM_DELAY
 from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,10 +46,10 @@ async def process_status_simulation(id_process: str):
         print("Processing",id_process, flush=True)
         data = await RedisDatabase.get_data(id_process)
         if data is None:
-            return {"message":f"There is not any process with id {id_process}"}, 404
+            raise ValueError
         return data
     except ValueError:
-        return {"error": "Invalid process id"}, 400
+        raise HTTPException(status_code=404, detail="Process not found")
 
 @app.get('/stream')
 async def message_stream(request: Request):
