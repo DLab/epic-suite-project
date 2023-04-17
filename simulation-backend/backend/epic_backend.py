@@ -13,7 +13,7 @@ from flask import request
 #from flask import send_file
 from flask_cors import CORS
 from datetime import datetime
-
+import json
 from cv19gm.cv19sim import CV19SIM
 import cv19gm.utils.cv19functions as cv19functions
 from cv19gm.models.seir_meta import SEIRMETA
@@ -24,7 +24,7 @@ from rq.job import Job
 import redis
 from background_tasks import datafit_task, simulate_meta_task, publish_status_simulation, send_task
 import uuid
-from get_mobility_matrix import matrix_builder,matrix_usa
+from get_mobility_matrix import matrix_builder,matrix_usa, matrix_js
 
 app = Flask(__name__)
 
@@ -216,14 +216,9 @@ def get_matrix_custom(source):
         matrix = None
         if source == "custom":
             matrix = matrix_builder(cfg)
-        elif source == "usa":
-            matrix = matrix_usa(cfg)
-        else:
-            raise Exception("Wrong source to build matrix")
-        if matrix:
-            return matrix, 200
-        else:
-            raise Exception("Wrong configuration to build matrix")
+        if source == "usa":
+            matrix = matrix_usa(json.dumps(cfg)) 
+        return jsonify(matrix_js(matrix)), 200
     except Exception as e:
         print("\033[4;35;47m"+"------------ Error -----------"+'\033[0;m',e, flush=True)        
         print(e, flush=True)        
