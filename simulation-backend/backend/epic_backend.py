@@ -10,6 +10,7 @@ import numpy as np
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import abort
 #from flask import send_file
 from flask_cors import CORS
 from datetime import datetime
@@ -214,16 +215,102 @@ def datafit():
 def get_matrix_custom(source):
     try:
         cfg =  request.get_json(force=True)
-        matrix = None
         if source == "artificial":
-            matrix = matrix_builder(cfg)
+            tags, rest = cfg.pop('tags'), cfg
+            return jsonify({"artificial": {"values": matrix_builder(cfg).tolist(), "tags": tags}}), 200
         elif source == "usa":
-            matrix = matrix_usa(json.dumps(cfg)) 
+            return jsonify(matrix_js(matrix_usa(json.dumps(cfg)) )), 200
+
         else:
-            raise Exception("Wrong source")       
-        return jsonify(matrix_js(matrix)), 200
+            raise Exception("Wrong source")        
     except Exception as e:
         print("\033[4;35;47m"+"------------ Error -----------"+'\033[0;m',e, flush=True)        
         print(e, flush=True)        
         response = {"error": str(e)}
-        return response, 400   
+        abort(400, description=response)
+        # return response, 400   
+    
+@app.route('/legacy/simulate_meta', methods=['POST'])
+def legacy_simulate_meta():
+    '''
+    http://192.168.2.223:5003/simulate_meta?campo=1
+    Estructura del código
+     1.- leer parámetros
+     2.- Crear objetdo de simulación
+     3.- Simular. Lanzar un warning del tiempo que se puede tomar si es que es una RBM
+     4.- Retornar los resultados
+    '''
+    try:
+        cfg =  request.get_json(force=True)
+        results = {}
+        global_results = {}
+
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("Simulating metapopulation model (", current_time,")")
+
+        for key,value in cfg.items():
+            print(key)
+            #print(value)
+            cfg = dict(value)
+            sim = SEIRMETA(cfg)
+            print('Simulating may take some time')
+            sim.solve() 
+            aux = {}
+
+            # Assigns the fips code to the data. Could be done in the simulation library 
+            if sim.cfg['data']['state']:
+                names = sim.cfg['data']['state']        
+            elif sim.cfg['data']['county']:
+                names = sim.cfg['data']['county']
+            else: 
+                names = [str(i) for i in range(sim.nodes)]
+
+            for i in range(sim.nodes):
+                aux[names[i]] = sim.results.loc[sim.results['node']==i].to_dict('list')               
+
+            results.update({key:json.dumps(aux)})            
+            global_results.update({key:sim.global_results.to_json()})
+
+        response = {'status': 'OK','results' : results,'global_results' : global_results}
+        return jsonify(response), 200
+
+    except Exception as e: 
+        print(e)        
+        response = {"error": "Wrong parameters"}
+        return response, 400  
+    
+@app.route('/legacy/datafit', methods=['POST'])
+def legacy_datafit():
+    """Optimal parameters for fitting data
+    Returns:
+        _type_: _description_
+    """
+
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print("Finding optimal parameters (",current_time,")")
+
+    input =  request.get_json(force=True)
+
+    results = {}
+
+    fit = cv19paramfit.SEQUENTIAL_FIT(cfg = 'SEIR.toml', I_d_data=np.array(list(json.loads(input['I_d_data']).values())),t_data = np.array(list(json.loads(input['t_data']).values())),global_errortol=200, local_errortol=250, 
+        intervalsize=10, maxintervals=5, bounds_beta=[0,1], bounds_mu=[0,4],tE_I = input['tE_I'],tI_R = input['tI_R'])
+
+    fit.optimize()
+
+
+    results['beta_values'] = str(fit.beta_values)
+    results['beta_days'] = str(fit.beta_days)
+    results['mu'] = fit.mu
+    results['simulation'] =  fit.sim.sims[0].results.to_json()
+
+    response = {'status': 'OK','results' : results}
+    try:
+        return jsonify(response), 200
+
+    except Exception as e: 
+        print(e)        
+        response = {"error": "Wrong parameters"}
+        return response, 400
