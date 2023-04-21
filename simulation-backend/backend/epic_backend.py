@@ -209,18 +209,21 @@ def datafit():
         response = {"error": "Wrong parameters"}
         return response, 400    
 
+
 @app.route("/mobility/<source>",methods=["POST"])
 def get_matrix_custom(source):
     try:
         cfg =  request.get_json(force=True)
         matrix = None
-        if source == "custom":
+        if source == "artificial":
             matrix = matrix_builder(cfg)
-        if source == "usa":
+        elif source == "usa":
             matrix = matrix_usa(json.dumps(cfg)) 
+        else:
+            raise Exception("Wrong source")       
         return jsonify(matrix_js(matrix)), 200
     except Exception as e:
         print("\033[4;35;47m"+"------------ Error -----------"+'\033[0;m',e, flush=True)        
         print(e, flush=True)        
-        response = {"error": "Wrong parameters"}
+        response = {"error": str(e)}
         return response, 400   

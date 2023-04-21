@@ -1,10 +1,28 @@
 import json
 import requests
+import cv19gm.utils.cv19mobility as cv19mobility
 
 # modify this functions
 def matrix_builder(cfg):
+    """Build artificial mobility matrix
+
+    Args:
+        cfg (dict): Dictionary with parameters for builing the mobility matrix
+        
+    
+    Returns:
+        matrix (np.array): Mobility matrix
+        
+    cfg:
+    * populations: list of populations
+    * model: 'gravity', 'radiation' or 'random'
+    * fraction [optional]: fraction of the population that moves
+    * seed [optional]: seed for random number generator    
+    
+    """
+    return cv19mobility.create_mobility_matrix(**cfg)
    
-   return "recieved"
+    
 
 config_get_matrix={
   "timeInit":"2020-04-04",
