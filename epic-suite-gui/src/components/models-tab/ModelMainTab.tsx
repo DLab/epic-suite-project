@@ -67,7 +67,7 @@ const ModelMainTab = ({
     const [graphsSelectedValue, setGraphsSelectedValue] = useState(undefined);
     const [showSectionInitialConditions, setShowSectionInitialConditions] =
         useState(false);
-    const { newModel } = useContext(NewModelSetted);
+    const { newModel, name } = useContext(NewModelSetted);
     const { setAux } = useContext(TabIndex);
     const { setIdModelUpdate, dataViewVariable } = useContext(ControlPanel);
     const [startDate, setStartDate] = useState(
@@ -191,7 +191,7 @@ const ModelMainTab = ({
                             />
                         )}
                 </Flex>
-                <Box
+                {/* <Box
                     borderRadius="8px"
                     boxShadow="sm"
                     border="1px solid #DDDDDD"
@@ -200,7 +200,7 @@ const ModelMainTab = ({
                     h="10vh"
                 >
                     <ModelInterventions />
-                </Box>
+                </Box> */}
             </Box>
             {showSectionInitialConditions && !showSectionVariable && (
                 <Flex
@@ -211,6 +211,7 @@ const ModelMainTab = ({
                     boxShadow="sm"
                     overflowY="auto"
                     h="75vh"
+                    display={!name ? "none" : "flex"}
                 >
                     {/* <ModelsMap idGeo={areaSelectedValue} /> */}
 

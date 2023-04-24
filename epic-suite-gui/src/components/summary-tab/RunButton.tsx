@@ -343,10 +343,10 @@ const RunButton = ({ permission }: Props) => {
                         isClosable: true,
                         render: () => (
                             <ToastCustom
-                                title="Simulation sent"
+                                title="Simulation submitted"
                                 status={StatusSimulation.STARTED}
                             >
-                                "Your simulation was submitted"
+                                "Your simulation is running"
                             </ToastCustom>
                         ),
                     });
@@ -371,14 +371,6 @@ const RunButton = ({ permission }: Props) => {
                     });
                 }
             }
-            // toast({
-            //     position: bottonLeft,
-            //     title: "Simulation success",
-            //     description: "Your simulation was completed successfully",
-            //     status: "success",
-            //     duration: 3000,
-            //     isClosable: true,
-            // });
         } catch (error) {
             if (error.response?.status === 400) {
                 toast({

@@ -37,14 +37,25 @@ const SummaryTab = () => {
                 p="20px"
                 m=" 15px 0"
             >
-                <Text fontSize="1.75rem" fontWeight={800} color="#1B1B3A">
+                <Heading
+                    size="4xl"
+                    fontSize="40px"
+                    fontWeight="extrabold"
+                    lineHeight="54px"
+                    letterSpacing="-0.02em"
+                    color="#1B1B3A"
+                >
                     Epidemiological Modeling and Simulation
-                </Text>
-                <Text fontSize="0.875rem">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </Heading>
+                <Text fontSize="0.875rem" p="0.3rem">
+                    Welcome to our epidemiological simulation platform! Before
+                    starting, you must create and define your model's
+                    configuration. Additionally, if you want to customize your
+                    simulation, you can choose geographic areas to establish
+                    initial conditions and use mobility matrices in
+                    metapopulation models. Explore all these options to get more
+                    accurate and useful results in your epidemiological
+                    simulation!
                 </Text>
             </Box>
 
@@ -58,9 +69,9 @@ const SummaryTab = () => {
                     <TableGeographic />
                 </Flex>
                 {/* descomentar esto */}
-                {/* <Flex>
+                <Flex>
                     <TableMobilityMatrix />
-                </Flex> */}
+                </Flex>
             </Flex>
         </>
     );

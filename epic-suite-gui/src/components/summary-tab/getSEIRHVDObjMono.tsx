@@ -82,6 +82,10 @@ const getSEIRHVDObjMono = (e, modelParameters, scale, featureSelected) => {
                 t_end: +modelParameters.t_end,
                 mu: +modelParameters.mu[0],
                 populationfraction: +modelParameters.populationfraction,
+                pI_det: +modelParameters.pI_det,
+                pIcr_det: +modelParameters.pIcr_det,
+                pIm_det: +modelParameters.pIm_det,
+                pIv_det: +modelParameters.pIv_det,
             },
             dynamic: {
                 beta: !modelParameters.beta[0].isEnabled
@@ -159,10 +163,10 @@ const getSEIRHVDObjMono = (e, modelParameters, scale, featureSelected) => {
                 tR_S: !modelParameters.tR_S[0].isEnabled
                     ? +modelParameters.tR_S[0].val
                     : createObjectVariableDependent(modelParameters.tR_S[0]),
-                pI_det: +modelParameters.pI_det,
-                pIcr_det: +modelParameters.pIcr_det,
-                pIm_det: +modelParameters.pIm_det,
-                pIv_det: +modelParameters.pIv_det,
+                // pI_det: +modelParameters.pI_det,
+                // pIcr_det: +modelParameters.pIcr_det,
+                // pIm_det: +modelParameters.pIm_det,
+                // pIv_det: +modelParameters.pIv_det,
             },
         },
         initialconditions: {

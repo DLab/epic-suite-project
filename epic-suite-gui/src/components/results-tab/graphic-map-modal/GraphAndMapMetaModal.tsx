@@ -218,7 +218,7 @@ const GraphAndMapMetaModal = ({ mapInfo, colorScale }: Props) => {
                                             width: "60%",
                                             margin: "0 5%",
                                         }}
-                                        scrollWheelZoom={false}
+                                        // scrollWheelZoom={false}
                                     >
                                         <ColorsScale
                                             maxValue={maxModalMetaValue}

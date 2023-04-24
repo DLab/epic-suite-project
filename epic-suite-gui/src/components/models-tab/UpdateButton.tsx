@@ -15,8 +15,15 @@ interface Props {
     actualModelName: string;
     saveModel: () => void;
     matrixId: number;
-    verifyName: (name: string) => boolean;
-    verifySelfName: (num: number, name: string) => boolean;
+    verifyName: (
+        name: string,
+        contextValue: NewModelsAllParams[] | NewModelsAllParams
+    ) => boolean;
+    verifySelfName: (
+        num: number,
+        name: string,
+        contextValue: NewModelsAllParams[] | NewModelsAllParams
+    ) => boolean;
     isEmpty: boolean;
 }
 
@@ -32,6 +39,7 @@ const UpdateButton = ({
         newModel,
         completeModel,
         idModelUpdate: id,
+        setName,
     } = useContext(NewModelSetted);
     const [isModelSavedLocal, setIsModelSavedLocal] = useState(false);
     const [modelValue, setModelValue] = useState(undefined);
@@ -51,7 +59,17 @@ const UpdateButton = ({
         },
         [newModel, id]
     );
-
+    useEffect(() => {
+        try {
+            const { name } = completeModel.find((model: NewModelsAllParams) => {
+                return model.idNewModel === id;
+            });
+            setName(name);
+        } catch (error) {
+            // asdf
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     useEffect(() => {
         try {
             const modelSaved = completeModel.find(
@@ -155,8 +173,8 @@ const UpdateButton = ({
             onClick={() => {
                 if (
                     !isEmpty &&
-                    (!verifyName(actualModelName) ||
-                        verifySelfName(id, actualModelName))
+                    (!verifyName(actualModelName, completeModel) ||
+                        verifySelfName(id, actualModelName, completeModel))
                 ) {
                     saveModel();
                 }

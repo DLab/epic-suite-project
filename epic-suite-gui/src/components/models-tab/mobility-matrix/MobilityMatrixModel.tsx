@@ -1,11 +1,17 @@
 import { Select, Text, Flex, RadioGroup, Stack, Radio } from "@chakra-ui/react";
 import React, { useContext, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { ControlPanel } from "context/ControlPanelContext";
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
+import type { RootState } from "store/store";
 import { MobilityModes } from "types/MobilityMatrixTypes";
+import {
+    VerifyIsRepeatName,
+    VerifyIsSelfName,
+} from "utils/verifyRepeatedNames";
 
 interface Props {
     matrixId: number;
@@ -14,7 +20,7 @@ interface Props {
 
 const MobilityMatrixModel = ({ matrixId, setMatrixId }: Props) => {
     const { idModelUpdate } = useContext(ControlPanel);
-    const { setIdMobility } = useContext(NewModelSetted);
+    const { setIdMobility, completeModel, name } = useContext(NewModelSetted);
     const {
         mobilityMatrixList,
         setMatrixMode,
@@ -24,6 +30,7 @@ const MobilityMatrixModel = ({ matrixId, setMatrixId }: Props) => {
     } = useContext(MobilityMatrix);
     const { setIndex } = useContext(TabIndex);
     const [matrixByModel, setMatrixByModel] = useState([]);
+    const parameters = useSelector((state: RootState) => state.controlPanel);
 
     useEffect(() => {
         const matrixList = mobilityMatrixList.filter(
@@ -38,23 +45,39 @@ const MobilityMatrixModel = ({ matrixId, setMatrixId }: Props) => {
                 Mobility Data
             </Text>
             <Flex direction="column">
-                <Flex justify="space-between">
-                    <Text
-                        color="#016FB9"
-                        fontSize="0.875rem"
-                        textDecorationLine="underline"
-                        cursor="pointer"
-                        ml="4%"
-                        onClick={() => {
-                            setIdMatrixModel(idModelUpdate);
-                            setMatrixMode(MobilityModes.Add);
-                            setIndex(5);
-                            setOriginOfMatrixCreation("modelsTab");
-                        }}
-                    >
-                        + Add mobility matrix
-                    </Text>
-                </Flex>
+                {matrixByModel.length === 0 && (
+                    <Flex justify="space-between">
+                        <Text
+                            color="#016FB9"
+                            fontSize="0.875rem"
+                            textDecorationLine="underline"
+                            cursor="pointer"
+                            ml="4%"
+                            onClick={() => {
+                                if (!name) {
+                                    /* empty */
+                                }
+                                if (
+                                    name &&
+                                    (!VerifyIsRepeatName(name, completeModel) ||
+                                        VerifyIsSelfName(
+                                            idModelUpdate,
+                                            name,
+                                            completeModel
+                                        ))
+                                ) {
+                                    setIdMatrixModel(idModelUpdate);
+                                    setMatrixMode(MobilityModes.Add);
+                                    setIndex(5);
+                                    setOriginOfMatrixCreation("modelsTab");
+                                }
+                            }}
+                        >
+                            + Add mobility matrix
+                        </Text>
+                    </Flex>
+                )}
+
                 {matrixByModel.length > 0 && (
                     <Flex mt="15px">
                         <Select

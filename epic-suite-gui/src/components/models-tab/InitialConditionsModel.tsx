@@ -9,10 +9,12 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
+    Heading,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import type { InitialConditionsNewModel } from "types/ControlPanelTypes";
+import createIdComponent from "utils/createIdcomponent";
 
 import InitialConditions from "./InitialConditions";
 import SelectDate from "./SelectDate";
@@ -56,7 +58,7 @@ const InitialConditiosModels = ({
 
     return (
         <Box maxH="100%" borderRadius="8px" p="2%" border="1px solid #DDDDDD">
-            <Flex justify="space-between">
+            <Flex justify="space-between" mb="1rem">
                 <Flex>
                     <Text fontSize="1rem" fontWeight={700} alignSelf="center">
                         Initial Conditions
@@ -106,59 +108,57 @@ const InitialConditiosModels = ({
                         )}
                 </Flex>
             </Flex>
-
-            {initialConditionsGraph.length === 1 && (
-                <InitialConditions
-                    modelValue={modelValue}
-                    nodeName={initialConditionsGraph[0].name}
-                    initialConditions={
-                        initialConditionsGraph[0].conditionsValues
+            <Accordion allowToggle>
+                {initialConditionsGraph.map((node, _i, array) => {
+                    if (array.length === 1) {
+                        return (
+                            <InitialConditions
+                                key={createIdComponent()}
+                                modelValue={modelValue}
+                                nodeName={initialConditionsGraph[0].name}
+                                initialConditions={
+                                    initialConditionsGraph[0].conditionsValues
+                                }
+                                initialConditionsMode={initialConditionsMode}
+                                setInitialConditionsMode={
+                                    setInitialConditionsMode
+                                }
+                                populationValue={populationValue}
+                            />
+                        );
                     }
-                    initialConditionsMode={initialConditionsMode}
-                    setInitialConditionsMode={setInitialConditionsMode}
-                    populationValue={populationValue}
-                />
-            )}
-            {initialConditionsGraph.length > 1 &&
-                initialConditionsGraph.map((node) => {
                     return (
-                        <Accordion
-                            key={`initial-conditions-accordion-${node.name}`}
-                            allowMultiple
-                        >
-                            <AccordionItem>
-                                <h2>
-                                    <AccordionButton>
-                                        <Box
-                                            flex="1"
-                                            textAlign="left"
-                                            fontSize="0.875rem"
-                                        >
-                                            {node.name}
-                                        </Box>
-                                        <AccordionIcon />
-                                    </AccordionButton>
-                                </h2>
-                                <AccordionPanel pb={4} bg="#FFFFFF">
-                                    <InitialConditions
-                                        modelValue={modelValue}
-                                        nodeName={node.name}
-                                        initialConditions={
-                                            node.conditionsValues
-                                        }
-                                        initialConditionsMode={
-                                            initialConditionsMode
-                                        }
-                                        setInitialConditionsMode={
-                                            setInitialConditionsMode
-                                        }
-                                        populationValue={populationValue}
-                                    />
-                                </AccordionPanel>
-                            </AccordionItem>
-                        </Accordion>
+                        <AccordionItem key={createIdComponent()}>
+                            <Heading>
+                                <AccordionButton>
+                                    <Box
+                                        flex="1"
+                                        textAlign="left"
+                                        fontSize="0.875rem"
+                                    >
+                                        {node.name}
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </Heading>
+                            <AccordionPanel pb={4} bg="#FFFFFF">
+                                <InitialConditions
+                                    modelValue={modelValue}
+                                    nodeName={node.name}
+                                    initialConditions={node.conditionsValues}
+                                    initialConditionsMode={
+                                        initialConditionsMode
+                                    }
+                                    setInitialConditionsMode={
+                                        setInitialConditionsMode
+                                    }
+                                    populationValue={populationValue}
+                                />
+                            </AccordionPanel>
+                        </AccordionItem>
                     );
                 })}
+            </Accordion>
         </Box>
     );
 };

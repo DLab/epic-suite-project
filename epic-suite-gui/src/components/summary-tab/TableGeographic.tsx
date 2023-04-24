@@ -103,13 +103,22 @@ const TableGeographic = () => {
                             {geoSelections.map((geoSelection) => {
                                 return (
                                     <Tr key={geoSelection.id}>
-                                        <Td fontSize="0.875rem">
+                                        <Td
+                                            fontSize="0.875rem"
+                                            textAlign="center"
+                                        >
                                             {geoSelection.name}
                                         </Td>
-                                        <Td fontSize="0.875rem">
+                                        <Td
+                                            fontSize="0.875rem"
+                                            textAlign="center"
+                                        >
                                             {geoSelection.scale}
                                         </Td>
-                                        <Td fontSize="0.875rem">
+                                        <Td
+                                            fontSize="0.875rem"
+                                            textAlign="center"
+                                        >
                                             <Icon
                                                 w="1.25rem"
                                                 h="1.25rem"

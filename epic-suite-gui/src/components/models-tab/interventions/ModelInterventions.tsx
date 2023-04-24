@@ -7,6 +7,10 @@ import { NewModelSetted } from "context/NewModelsContext";
 import { TabIndex } from "context/TabContext";
 import { InterventionsModes } from "types/InterventionsTypes";
 import type { Interventions } from "types/InterventionsTypes";
+import {
+    VerifyIsRepeatName,
+    VerifyIsSelfName,
+} from "utils/verifyRepeatedNames";
 
 const ModelInterventions = () => {
     const {
@@ -21,7 +25,8 @@ const ModelInterventions = () => {
         setIdInterventionModel,
     } = useContext(InterventionColection);
     const { setIndex } = useContext(TabIndex);
-    const { idModelUpdate } = useContext(NewModelSetted);
+    const { setIdMobility, completeModel, name, idModelUpdate } =
+        useContext(NewModelSetted);
     return (
         <Flex direction="column">
             <Flex justify="left" align="center">
@@ -38,10 +43,23 @@ const ModelInterventions = () => {
                         cursor="pointer"
                         ml="4%"
                         onClick={() => {
-                            setIdInterventionModel(idModelUpdate);
-                            setInterventionMode(InterventionsModes.Add);
-                            setIndex(6);
-                            setOriginOfInterventionCreation("modelsTab");
+                            if (!name) {
+                                /* empty */
+                            }
+                            if (
+                                name &&
+                                (!VerifyIsRepeatName(name, completeModel) ||
+                                    VerifyIsSelfName(
+                                        idModelUpdate,
+                                        name,
+                                        completeModel
+                                    ))
+                            ) {
+                                setIdInterventionModel(idModelUpdate);
+                                setInterventionMode(InterventionsModes.Add);
+                                setIndex(6);
+                                setOriginOfInterventionCreation("modelsTab");
+                            }
                         }}
                     >
                         + Add interventions

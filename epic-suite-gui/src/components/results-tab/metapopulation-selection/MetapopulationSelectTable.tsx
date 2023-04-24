@@ -65,13 +65,23 @@ const MetapopulationSelectTable = () => {
 
     useEffect(() => {
         let nodesNamesAux = {};
-        metaData.map((node) => {
-            nodesNamesAux = {
-                ...nodesNamesAux,
-                [node.name]: getNodeName(node.name, false),
-            };
-            return nodesNamesAux;
-        });
+        if (metaData[0].name === "0") {
+            metaData.map((node) => {
+                nodesNamesAux = {
+                    ...nodesNamesAux,
+                    [node.name]: node.name,
+                };
+                return nodesNamesAux;
+            });
+        } else {
+            metaData.map((node) => {
+                nodesNamesAux = {
+                    ...nodesNamesAux,
+                    [node.name]: getNodeName(node.name, false),
+                };
+                return nodesNamesAux;
+            });
+        }
         setNodesNames(nodesNamesAux);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

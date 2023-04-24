@@ -9,7 +9,7 @@ import {
     NumberInputStepper,
     Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 
 interface Props {
     numberInputName: string;
@@ -24,23 +24,34 @@ const NumberInputMobilityMatrix = ({
     setValue,
     disabled,
 }: Props) => {
+    const [locVal, setLocVal] = useState(`${value}`);
     return (
-        <Flex alignItems="center">
-            <Box>
-                <Text align="left" fontSize="14px" mr="7px">
+        <>
+            <Box w="5rem">
+                <Text align="left" fontSize="14px">
                     {numberInputName}
                 </Text>
             </Box>
             <NumberInput
-                maxW="75px"
-                value={numberInputName !== "Population" ? value : `${value} %`}
+                maxH="20px"
+                maxW="90px"
+                mx="0.2rem"
+                fontSize="11px"
+                value={
+                    numberInputName !== "Population" ? locVal : `${locVal} %`
+                }
                 isDisabled={!!disabled}
                 onChange={(e) => {
-                    setValue(+e);
+                    setLocVal(e);
                 }}
-                size="sm"
+                onBlur={() => {
+                    setValue(+locVal);
+                }}
+                size="xs"
                 min={0}
                 step={1}
+                variant="outline"
+                borderRadius="8px"
             >
                 <NumberInputField borderRadius="6px" />
                 <NumberInputStepper>
@@ -48,7 +59,7 @@ const NumberInputMobilityMatrix = ({
                     <NumberDecrementStepper />
                 </NumberInputStepper>
             </NumberInput>
-        </Flex>
+        </>
     );
 };
 

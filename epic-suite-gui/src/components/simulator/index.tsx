@@ -58,15 +58,14 @@ const Simulator = () => {
                         fromLocalStorageToNewModelContext as unknown as NewModelsParams[],
                 });
             }
-            // descomentar esto
-            // if (window.localStorage.getItem("mobilityMatrixList")) {
-            //     const dataLocalStorageMatrix =
-            //         window.localStorage.getItem("mobilityMatrixList");
-            //     setMobilityMatrixList({
-            //         type: "setInitial",
-            //         localState: JSON.parse(dataLocalStorageMatrix),
-            //     });
-            // }
+            if (window.localStorage.getItem("mobilityMatrixList")) {
+                const dataLocalStorageMatrix =
+                    window.localStorage.getItem("mobilityMatrixList");
+                setMobilityMatrixList({
+                    type: "setInitial",
+                    localState: JSON.parse(dataLocalStorageMatrix),
+                });
+            }
             if (window.localStorage.getItem("Interventions")) {
                 const dataLocalStorageMatrix =
                     window.localStorage.getItem("Interventions");

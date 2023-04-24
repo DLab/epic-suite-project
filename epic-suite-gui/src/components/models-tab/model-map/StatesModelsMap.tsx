@@ -104,7 +104,7 @@ const StatesModelsMap = ({ idGeo }: Props) => {
         }
         return {
             fillColor: color,
-            fillOpacity: 1,
+            fillOpacity: 0.6,
             weight: 0.5,
             color: "white",
             opacity: 1,
