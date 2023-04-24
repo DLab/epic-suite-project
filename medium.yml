@@ -1,0 +1,70 @@
+version: "3.10"
+services:
+    initialconditions:
+        build:
+            context: ./init-cond/endpointV1.2
+
+        image: initial_conditions_server
+        ports:
+            - "5002:5002"
+        container_name: initialconditions
+        restart: always
+    nginx:
+        build:
+            context: ./nginx
+            args:
+                ISMEDIUM: "true"
+        image: nginx_proxy
+        container_name: nginx
+        ports:
+            - "80:80"
+        depends_on:
+            - covid19geomodeller
+            - sse
+            - initialconditions
+        restart: always
+    covid19geomodeller:
+        platform: linux/amd64
+        container_name: covid19geomodeller
+        image: simulation-backend
+        command: conda run -n myenv python backend/run.py -d
+        build: 
+            context: ./simulation-backend
+        ports:
+          - "5003:5003"
+        volumes:
+          - ./simulation-backend/backend:/app/backend
+        depends_on:
+          - redis
+        entrypoint: "./install.sh"
+        restart: always
+    worker:
+        platform: linux/amd64
+        container_name: worker
+        image: simulation-backend
+        command: conda run -n myenv rq worker --name worker --url redis://redis:6379/0
+        build: 
+            context: ./simulation-backend
+        depends_on:
+          - redis
+          - covid19geomodeller
+        volumes:
+          - ./simulation-backend/backend:/app/backend
+        entrypoint: "./worker.sh"
+        restart: always
+    sse:
+        container_name: sse
+        image: sse
+        build: 
+            context: ./sse-server
+        ports:
+          - "9000:9000"
+        volumes:
+          - ./sse-server/app:/code/app
+        depends_on:
+          - redis
+        restart: always
+    redis:
+        container_name: redis
+        image: "redis:alpine"
+        restart: always
