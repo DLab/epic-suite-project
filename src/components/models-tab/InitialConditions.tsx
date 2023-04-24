@@ -42,6 +42,7 @@ const InitialConditionsModel = ({
         newModel,
         setNewModel,
         idModelUpdate: id,
+        name,
     } = useContext(NewModelSetted);
     const RealConditions = "real-conditions";
     const toast = useToast();
@@ -100,7 +101,7 @@ const InitialConditionsModel = ({
     }, [initialConditions, modelValue]);
 
     return (
-        <Flex direction="column">
+        <Flex direction="column" display={!name ? "none" : "flex"}>
             <Flex m="2% 1%" flexWrap="wrap">
                 {!initialConditionsMode && (
                     <Flex wrap="wrap" w="100%">
@@ -183,7 +184,7 @@ const InitialConditionsModel = ({
                                         </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
-                                                initialConditions.Iv
+                                                initialConditions.Iv ?? 0
                                             )}
                                         </StatNumber>
                                     </Stat>
@@ -230,7 +231,7 @@ const InitialConditionsModel = ({
                                         </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
-                                                initialConditions.Sv
+                                                initialConditions.Sv ?? 0
                                             )}
                                         </StatNumber>
                                     </Stat>
@@ -245,7 +246,7 @@ const InitialConditionsModel = ({
                                         </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
-                                                initialConditions.H_cap
+                                                initialConditions.H_cap ?? 0
                                             )}
                                         </StatNumber>
                                     </Stat>
@@ -291,7 +292,7 @@ const InitialConditionsModel = ({
                                         </StatLabel>
                                         <StatNumber fontSize="xl">
                                             {new Intl.NumberFormat().format(
-                                                initialConditions.D_d
+                                                initialConditions.D_d ?? 0
                                             )}
                                         </StatNumber>
                                     </Stat>

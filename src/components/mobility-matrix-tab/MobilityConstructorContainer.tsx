@@ -1,5 +1,5 @@
 import { Flex, Select, Switch, Text, Input, Box } from "@chakra-ui/react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { MobilityMatrix } from "../../context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
@@ -31,6 +31,10 @@ interface Props {
     setInterventionList: (value: InterventionsTypes[] | []) => void;
     matrixType: string;
     setMatrixType: (value: string) => void;
+    valNodes: number[] | [];
+    setValNodes: (value: number[] | []) => void;
+    mobilityModel: string;
+    setMobilityModel: (value: string) => void;
 }
 
 const MobilityConstructorContainer = ({
@@ -50,20 +54,38 @@ const MobilityConstructorContainer = ({
     setInterventionList,
     matrixType,
     setMatrixType,
+    valNodes,
+    setValNodes,
+    mobilityModel,
+    setMobilityModel,
 }: Props) => {
     const { matrixMode, idMatrixModel } = useContext(MobilityMatrix);
     const { newModel } = useContext(NewModelSetted);
     const { geoSelections } = useContext(SelectFeature);
-
+    const [nameNodes, setNameNodes] = useState([]);
     useEffect(() => {
         if (idMatrixModel !== 0) {
-            const { numberNodes } = newModel.find((model: NewModelsParams) => {
-                return model.idNewModel === idMatrixModel;
-            });
+            const { numberNodes, initialConditions } = newModel.find(
+                (model: NewModelsParams) => {
+                    return model.idNewModel === idMatrixModel;
+                }
+            );
 
             setNodesLocalValue(numberNodes);
+            setValNodes(
+                initialConditions.map(
+                    (cond) => cond.conditionsValues.population
+                )
+            );
+            setNameNodes(initialConditions.map((cond) => cond.name));
         }
-    }, [newModel, geoSelections, idMatrixModel, setNodesLocalValue]);
+    }, [
+        newModel,
+        geoSelections,
+        idMatrixModel,
+        setNodesLocalValue,
+        setValNodes,
+    ]);
 
     return (
         <Flex
@@ -102,8 +124,12 @@ const MobilityConstructorContainer = ({
                                 setGraphTypeLocal={setGraphTypeLocal}
                                 popPercentage={popPercentage}
                                 setPopPercentage={setPopPercentage}
+                                valNodes={valNodes}
+                                mobilityModel={mobilityModel}
+                                setMobilityModel={setMobilityModel}
+                                nameNodes={nameNodes}
                             />
-                            {graphTypeLocal && (
+                            {/* {graphTypeLocal && (
                                 <Flex
                                     mb="17px"
                                     display="grid"
@@ -155,8 +181,8 @@ const MobilityConstructorContainer = ({
                                         </Select>
                                     )}
                                 </Flex>
-                            )}
-                            {modulationLocalValue === "custom" && (
+                            )} */}
+                            {/* {modulationLocalValue === "custom" && (
                                 <Flex mb="10px" alignItems="center">
                                     <Box>
                                         <Text
@@ -180,13 +206,13 @@ const MobilityConstructorContainer = ({
                                         />
                                     </Box>
                                 </Flex>
-                            )}
-                            {modulationLocalValue && (
+                            )} */}
+                            {/* {modulationLocalValue && (
                                 <MobilityInterventions
                                     interventionList={interventionList}
                                     setInterventionList={setInterventionList}
                                 />
-                            )}
+                            )} */}
                         </>
                     )}
                 </>

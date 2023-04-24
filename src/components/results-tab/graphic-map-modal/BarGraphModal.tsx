@@ -132,15 +132,14 @@ const BarGraphModal = ({
             data={axios}
             layout={{
                 autosize: false,
-                width: 320,
+                width: 620,
                 height: 260,
-                margin: {
-                    l: 75,
-                    b: 60,
-                    t: 0,
-                },
-                color: "blue",
-                legend: { xanchor: "end", x: 1.1, y: 1.1, yanchor: "top" },
+                // margin: {
+                //     l: 75,
+                //     b: 60,
+                //     t: 0,
+                // },
+                legend: { xanchor: "right", x: 1.1, y: 1.1, yanchor: "top" },
                 showlegend: true,
                 xaxis: {
                     title: {

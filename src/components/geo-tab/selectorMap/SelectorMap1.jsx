@@ -107,7 +107,7 @@ const SelectorMap1 = ({ extentionOption, setExtentionOption }) => {
                     {mode === Model.Add && (
                         <>
                             {" "}
-                            <Radio
+                            {/* <Radio
                                 id="radio-national"
                                 name="radio-national"
                                 bg="white"
@@ -118,7 +118,7 @@ const SelectorMap1 = ({ extentionOption, setExtentionOption }) => {
                                 <span style={{ fontSize: "14px" }}>
                                     National
                                 </span>
-                            </Radio>
+                            </Radio> */}
                             <Radio
                                 id="radio-state"
                                 name="radio-state"
@@ -144,7 +144,7 @@ const SelectorMap1 = ({ extentionOption, setExtentionOption }) => {
                     {mode === Model.Update && (
                         <>
                             {" "}
-                            <Radio
+                            {/* <Radio
                                 id="radio-national"
                                 name="radio-national"
                                 bg="white"
@@ -156,7 +156,7 @@ const SelectorMap1 = ({ extentionOption, setExtentionOption }) => {
                                 <span style={{ fontSize: "14px" }}>
                                     National
                                 </span>
-                            </Radio>
+                            </Radio> */}
                             <Radio
                                 id="radio-state"
                                 name="radio-state"

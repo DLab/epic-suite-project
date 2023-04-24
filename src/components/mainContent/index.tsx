@@ -78,15 +78,10 @@ const MainContentTab = () => {
                         </Center>
                     </Flex>
                 </TabPanel>
-                <TabPanel
-                    display="none"
-                    maxH="100vh"
-                    h="100%"
-                    overflow="hidden"
-                >
+                <TabPanel maxH="100vh" h="100%" overflow="hidden">
                     <MobilityMatrix />
                 </TabPanel>
-                <TabPanel maxH="100vh" h="100%">
+                <TabPanel maxH="100vh" h="100%" display="none">
                     <InterventionsTab />
                 </TabPanel>
             </TabPanels>

@@ -52,6 +52,8 @@ const MatrixNameAndButtons = ({
         setIdMobilityMatrixUpdate,
         mobilityMatrixList,
         originOfMatrixCreation,
+        matrix,
+        setMatrix,
     } = useContext(MobilityMatrix);
     const { newModel, setIdMobility } = useContext(NewModelSetted);
     const { setIndex } = useContext(TabIndex);
@@ -97,6 +99,7 @@ const MatrixNameAndButtons = ({
                 interventions: interventionList,
                 nameMobilityMatrix: matrixNameLocal,
                 type: matrixType,
+                matrix,
             };
 
             const dataMatrixCreated = JSON.parse(
@@ -117,6 +120,7 @@ const MatrixNameAndButtons = ({
                     interventions: interventionList,
                     nameMobilityMatrix: matrixNameLocal,
                     type: matrixType,
+                    matrix,
                 };
 
                 const indexDataToUpdate = mobilityMatrixList.findIndex(
@@ -133,6 +137,7 @@ const MatrixNameAndButtons = ({
                     payload: updateDataMatrix,
                 });
                 setIdMobilityMatrixUpdate(0);
+                setMatrix({});
                 toast({
                     position,
                     duration: 2000,
@@ -203,14 +208,15 @@ const MatrixNameAndButtons = ({
         setMatrixMode(MobilityModes.Initial);
         setIdMobilityMatrixUpdate(0);
         setIdMatrixModel(0);
+        setMatrix({});
     };
 
     useEffect(() => {
         if (matrixType === "artificial") {
             if (
                 !nodesLocalValue ||
-                graphTypeLocal === "" ||
-                modulationLocalValue === "" ||
+                // graphTypeLocal === "" ||
+                // modulationLocalValue === "" ||
                 matrixNameLocal === ""
             ) {
                 setIsButtonDisabled(true);
@@ -289,6 +295,7 @@ const MatrixNameAndButtons = ({
                             matrixNameLocal={matrixNameLocal}
                             saveMobilityMatrix={saveMobilityMatrix}
                             matrixType={matrixType}
+                            matrixData={matrix}
                         />
                         <Button
                             leftIcon={<CloseIcon />}

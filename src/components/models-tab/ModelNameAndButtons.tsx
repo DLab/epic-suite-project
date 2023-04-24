@@ -27,6 +27,10 @@ import type {
     NewModelsAllParams,
     NewModelsParams,
 } from "types/SimulationTypes";
+import {
+    VerifyIsRepeatName,
+    VerifyIsSelfName,
+} from "utils/verifyRepeatedNames";
 
 import DeleteModelAlert from "./DeleteModelAlert";
 import UpdateButton from "./UpdateButton";
@@ -61,13 +65,13 @@ const ModelNameAndButtons = ({
     const { setIndex } = useContext(TabIndex);
     const { setMobilityMatrixList, mobilityMatrixList } =
         useContext(MobilityMatrix);
-    const verifyIsRepeatName = (nameMod: string): boolean => {
-        return completeModel.some(
-            (mod: NewModelsAllParams) => mod.name === nameMod
-        );
-    };
+    // const VerifyIsRepeatName = (nameMod: string): boolean => {
+    //     return completeModel.some(
+    //         (mod: NewModelsAllParams) => mod.name === nameMod
+    //     );
+    // };
     const [isRepeatedName, setIsRepeatedName] = useState(
-        verifyIsRepeatName(actualModelName)
+        VerifyIsRepeatName(actualModelName, completeModel)
     );
     const [isEmpty, setIsEmpty] = useState(
         modelMode === "add" ? !actualModelName : !!actualModelName
@@ -247,13 +251,13 @@ const ModelNameAndButtons = ({
         });
     };
 
-    const veryfyIsSelfName = (idMod: number, currentNameModel: string) => {
-        return Boolean(
-            completeModel.find(
-                (mod: NewModelsAllParams) => mod.idNewModel === idMod
-            )?.name === currentNameModel
-        );
-    };
+    // const VerifyIsSelfName = (idMod: number, currentNameModel: string) => {
+    //     return Boolean(
+    //         completeModel.find(
+    //             (mod: NewModelsAllParams) => mod.idNewModel === idMod
+    //         )?.name === currentNameModel
+    //     );
+    // };
     return (
         <Flex p="0 2%" mt="20px">
             {modelMode !== "Initial" && (
@@ -269,7 +273,11 @@ const ModelNameAndButtons = ({
                             value={actualModelName}
                             isInvalid={
                                 (isRepeatedName &&
-                                    !veryfyIsSelfName(id, actualModelName)) ||
+                                    !VerifyIsSelfName(
+                                        id,
+                                        actualModelName,
+                                        completeModel
+                                    )) ||
                                 isEmpty
                             }
                             errorBorderColor="#3EBFE0"
@@ -277,9 +285,18 @@ const ModelNameAndButtons = ({
                                 setActualModelName(e.target.value);
                                 setName(e.target.value);
                                 setIsRepeatedName(
-                                    verifyIsRepeatName(e.target.value)
+                                    VerifyIsRepeatName(
+                                        e.target.value,
+                                        completeModel
+                                    )
                                 );
                                 setIsEmpty(!e.target.value);
+                                setNewModel({
+                                    type: "update",
+                                    target: "name",
+                                    element: e.target.value,
+                                    id,
+                                });
                             }}
                         />
                         <Tooltip
@@ -288,7 +305,11 @@ const ModelNameAndButtons = ({
                                 isEmpty
                                     ? "model name can't be empty"
                                     : isRepeatedName &&
-                                      !veryfyIsSelfName(id, actualModelName)
+                                      !VerifyIsSelfName(
+                                          id,
+                                          actualModelName,
+                                          completeModel
+                                      )
                                     ? "model name is repeated"
                                     : "Valid name"
                             }
@@ -301,9 +322,10 @@ const ModelNameAndButtons = ({
                                 children={
                                     // eslint-disable-next-line no-nested-ternary
                                     (isRepeatedName &&
-                                        !veryfyIsSelfName(
+                                        !VerifyIsSelfName(
                                             id,
-                                            actualModelName
+                                            actualModelName,
+                                            completeModel
                                         )) ||
                                     isEmpty ? (
                                         <SmallCloseIcon color="#3EBFE0" />
@@ -324,8 +346,15 @@ const ModelNameAndButtons = ({
                             onClick={() => {
                                 if (
                                     !isEmpty &&
-                                    (!verifyIsRepeatName(actualModelName) ||
-                                        veryfyIsSelfName(id, actualModelName))
+                                    (!VerifyIsRepeatName(
+                                        actualModelName,
+                                        completeModel
+                                    ) ||
+                                        VerifyIsSelfName(
+                                            id,
+                                            actualModelName,
+                                            completeModel
+                                        ))
                                 ) {
                                     saveModel();
                                 }
@@ -369,8 +398,8 @@ const ModelNameAndButtons = ({
                             actualModelName={actualModelName}
                             saveModel={saveModel}
                             matrixId={matrixId}
-                            verifyName={verifyIsRepeatName}
-                            verifySelfName={veryfyIsSelfName}
+                            verifyName={VerifyIsRepeatName}
+                            verifySelfName={VerifyIsSelfName}
                             isEmpty={isEmpty}
                         />
                         <Button

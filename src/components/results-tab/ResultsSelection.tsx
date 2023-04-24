@@ -37,6 +37,7 @@ const ResultsSelection = () => {
     } = useContext(GraphicsData);
 
     const model = ["S", "E", "I", "R"];
+    const hvd = ["H", "V", "D"];
     const { completeModel } = useContext(NewModelSetted);
 
     /**
@@ -188,7 +189,8 @@ const ResultsSelection = () => {
             (sim: NewModelsAllParams) => sim.name === simulation.name
         );
         if (simByName?.parameters.name === "SEIRHVD") {
-            parametersCompartments = ["S", "E", "I", "R"];
+            parametersCompartments = model;
+            // parametersCompartments = model.concat(hvd);
         } else {
             parametersCompartments = simByName?.parameters.compartments;
         }

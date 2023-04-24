@@ -137,7 +137,6 @@ const SideBar = () => {
                     </Tab>
                     <Tab
                         _focus={{ boxShadow: "none" }}
-                        display="none"
                         flexDirection="column"
                         w="100%"
                         border="none"
@@ -155,7 +154,7 @@ const SideBar = () => {
                     </Tab>
                     <Tab
                         _focus={{ boxShadow: "none" }}
-                        display="flex"
+                        display="none"
                         flexDirection="column"
                         w="100%"
                         border="none"

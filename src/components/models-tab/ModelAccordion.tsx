@@ -237,6 +237,7 @@ const ModelAccordion = ({
                     mt="1%"
                     mb="5%"
                     value={modelValue}
+                    isDisabled={!modelName}
                     onChange={(e) => {
                         setNumberOfNodes(0);
                         setModelValue(e);
@@ -267,6 +268,7 @@ const ModelAccordion = ({
                         setNumberOfNodes(0);
                         setGraphId(undefined);
                     }}
+                    isDisabled={!modelName}
                 >
                     <Stack direction="row" spacing="1.5rem">
                         <Radio value="monopopulation">Monopopulation</Radio>
@@ -284,6 +286,7 @@ const ModelAccordion = ({
                         size="sm"
                         mt="1%"
                         value={dataSourceValue}
+                        isDisabled={!modelName}
                         onChange={(e) => {
                             setDataSourceValue(e);
                             setAreaSelectedValue("");
@@ -301,19 +304,24 @@ const ModelAccordion = ({
                             label="To build geographic models, first you have to create geographic selections."
                             bg="#016FB9"
                             fontSize="0.875rem"
+                            isDisabled={!modelName}
                         >
-                            <WarningIcon color="#016FB9" />
+                            <WarningIcon
+                                color={modelName ? "#016FB9" : "#8080A0"}
+                            />
                         </Tooltip>
                         <Text
-                            color="#016FB9"
+                            color={modelName ? "#016FB9" : "#8080A0"}
                             fontSize="0.875rem"
                             textDecorationLine="underline"
                             cursor="pointer"
                             ml="4%"
                             onClick={() => {
-                                setMode(Model.Add);
-                                setOriginOfGeoCreation("modelsTab");
-                                setIndex(2);
+                                if (modelName) {
+                                    setMode(Model.Add);
+                                    setOriginOfGeoCreation("modelsTab");
+                                    setIndex(2);
+                                }
                             }}
                         >
                             + Add selection
@@ -337,7 +345,7 @@ const ModelAccordion = ({
                             onChange={(e) => {
                                 setNumberOfGraphs(+e);
                             }}
-                            isDisabled={isDisabled}
+                            isDisabled={isDisabled || !modelName}
                         >
                             <NumberInputField />
                             <NumberInputStepper>
@@ -354,6 +362,7 @@ const ModelAccordion = ({
                         size="sm"
                         borderRadius="4px"
                         fontSize="10px"
+                        isDisabled={!modelName}
                         onClick={() => {
                             setNumberOfNodes(numberOfGraphs);
                             const graphsValuesArray =
@@ -415,6 +424,7 @@ const ModelAccordion = ({
                             fontSize="0.875rem"
                             placeholder="Select area"
                             value={areaSelectedValue}
+                            isDisabled={!modelName}
                             onChange={(e) => {
                                 if (e.target.value !== "") {
                                     setAreaSelectedValue(+e.target.value);
@@ -492,6 +502,7 @@ const ModelAccordion = ({
                             size="sm"
                             ml="5%"
                             icon={<EditIcon />}
+                            isDisabled={!modelName}
                             onClick={() => {
                                 setShowSectionInitialConditions(true);
                             }}
@@ -504,6 +515,7 @@ const ModelAccordion = ({
                                 size="sm"
                                 ml="5%"
                                 icon={<InfoIcon />}
+                                isDisabled={!modelName}
                             />
                         </Tooltip>
                     </Flex>

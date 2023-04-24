@@ -4,7 +4,10 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { MobilityMatrix } from "context/MobilityMatrixContext";
 import { NewModelSetted } from "context/NewModelsContext";
-import type { InterventionsTypes } from "types/MobilityMatrixTypes";
+import type {
+    InterventionsTypes,
+    MobilityMatrixRealData,
+} from "types/MobilityMatrixTypes";
 import type { NewModelsAllParams } from "types/SimulationTypes";
 
 interface Props {
@@ -17,6 +20,7 @@ interface Props {
     interventionList: InterventionsTypes[];
     matrixNameLocal: string;
     matrixType: string;
+    matrixData: MobilityMatrixRealData;
     saveMobilityMatrix: () => void;
 }
 
@@ -30,6 +34,7 @@ const UpdateMatrixButton = ({
     interventionList,
     matrixNameLocal,
     matrixType,
+    matrixData,
     saveMobilityMatrix,
 }: Props) => {
     const [isModelSavedLocal, setIsModelSavedLocal] = useState(false);
@@ -63,6 +68,7 @@ const UpdateMatrixButton = ({
                 interventions: interventionList,
                 nameMobilityMatrix: matrixNameLocal,
                 type: matrixType,
+                matrix: matrixData,
             };
 
             if (_.isEqual(matrixSaved, newMatrix)) {
@@ -88,6 +94,7 @@ const UpdateMatrixButton = ({
         nodesLocalValue,
         popPercentage,
         matrixType,
+        matrixData,
     ]);
 
     return (

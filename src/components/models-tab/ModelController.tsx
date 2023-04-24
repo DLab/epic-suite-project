@@ -7,6 +7,7 @@ import {
     Switch,
     FormControl,
     Heading,
+    Box,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { useContext, useState, useEffect, useCallback } from "react";
@@ -21,7 +22,7 @@ import { update } from "store/ControlPanel";
 import type { RootState } from "store/store";
 import type { NewModelsAllParams } from "types/SimulationTypes";
 
-// import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
+import MobilityMatrixModel from "./mobility-matrix/MobilityMatrixModel";
 import NodesParams from "./NodesParams";
 // import ModelInterventions from "./interventions/ModelInterventions";
 
@@ -94,7 +95,7 @@ const ModelController = ({
 }: Props) => {
     const { description, setDataViewVariable, idModelUpdate } =
         useContext(ControlPanel);
-    const { completeModel } = useContext(NewModelSetted);
+    const { completeModel, name } = useContext(NewModelSetted);
     const parameters = useSelector((state: RootState) => state.controlPanel);
     const dispatch = useDispatch();
     const [isEnableIconButton, setIsEnableIconButton] = useState<
@@ -124,14 +125,13 @@ const ModelController = ({
     }, [completeModel, dispatch, idModelUpdate, setIsEnableIconButtonCallback]);
 
     return (
-        <>
-            {/* descomentar esto */}
-            {/* {populationValue === "metapopulation" && (
+        <Box display={!name ? "none" : "block"}>
+            {populationValue === "metapopulation" && (
                 <MobilityMatrixModel
                     matrixId={matrixId}
                     setMatrixId={setMatrixId}
                 />
-            )} */}
+            )}
             <Text fontSize="1rem" fontWeight={700} mb="5%" mt="5%">
                 Common parameters
             </Text>
@@ -430,7 +430,7 @@ const ModelController = ({
                     tR_S: parameters.tR_S,
                 }}
             />
-        </>
+        </Box>
     );
 };
 

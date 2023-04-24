@@ -21,6 +21,8 @@ export const MobilityMatrix = createContext<MobilityMatrixProps>({
     setOriginOfMatrixCreation: () => {},
     mobilityMatrixType: "",
     setMobilityMatrixType: () => {},
+    matrix: {},
+    setMatrix: () => {},
 });
 
 // eslint-disable-next-line react/prop-types
@@ -77,6 +79,7 @@ const MobilityMatrixContext: React.FC<ChildrenProps> = ({ children }) => {
     );
     const [originOfMatrixCreation, setOriginOfMatrixCreation] = useState("");
     const [mobilityMatrixType, setMobilityMatrixType] = useState("");
+    const [matrix, setMatrix] = useState({});
     const config = useMemo(() => {
         return {
             idMatrixModel,
@@ -91,6 +94,8 @@ const MobilityMatrixContext: React.FC<ChildrenProps> = ({ children }) => {
             setOriginOfMatrixCreation,
             mobilityMatrixType,
             setMobilityMatrixType,
+            matrix,
+            setMatrix,
         };
     }, [
         idMatrixModel,
@@ -99,6 +104,7 @@ const MobilityMatrixContext: React.FC<ChildrenProps> = ({ children }) => {
         mobilityMatrixList,
         originOfMatrixCreation,
         mobilityMatrixType,
+        matrix,
     ]);
     return (
         <MobilityMatrix.Provider value={config}>

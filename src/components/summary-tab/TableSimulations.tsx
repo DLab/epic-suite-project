@@ -325,7 +325,7 @@ const TableSimulations = () => {
                                             }}
                                         />
                                     </Td> */}
-                                            <td>
+                                            <Td textAlign="center">
                                                 {elem?.populationType ===
                                                     "metapopulation" &&
                                                     elem?.idNewModel ===
@@ -333,7 +333,7 @@ const TableSimulations = () => {
                                                             .idModel && (
                                                         <StatusHardSimPop />
                                                     )}
-                                            </td>
+                                            </Td>
                                         </Tr>
                                     );
                                 })}

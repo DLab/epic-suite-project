@@ -18,5 +18,33 @@ export const getData = async (url: string) => {
     const res = await axios.get(url);
     return res.data;
 };
+export const getRealMatrix = (
+    setter,
+    loadAdviceFunction,
+    body: unknown = {
+        timeInit: "2019-01-01",
+        timeEnd: "2019-01-04",
+        scale: "States",
+        spatialSelection: ["10", "11"],
+    },
+    url = "http://localhost/covid19geomodeller/mobility/usa"
+) => {
+    loadAdviceFunction(true);
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+    })
+        .then((e) => e.json())
+        .then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            setter(data);
+        })
+        .catch(() => {
+            setter({});
+        })
+        .finally(() => loadAdviceFunction(false));
+};
 
 export default postData;

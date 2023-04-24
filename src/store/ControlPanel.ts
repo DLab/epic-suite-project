@@ -20,6 +20,7 @@ export const counterSlice = createSlice({
         update: (
             state: EpidemicsData | undefined,
             action: ActionReducerControlPanel
+            // eslint-disable-next-line sonarjs/cognitive-complexity
         ) => {
             state = state || initialState;
             if (action.payload.type === "set") {
@@ -36,6 +37,14 @@ export const counterSlice = createSlice({
                     state[action.payload.target][
                         action.payload.positionVariableDependentTime
                     ] = action.payload.payloadVariableDependent;
+                } else if (
+                    action.payload.target === "vac_d" ||
+                    action.payload.target === "vac_eff" ||
+                    action.payload.target === "Beta_v"
+                ) {
+                    state[action.payload.target] = [
+                        action.payload.payloadVariableDependent,
+                    ];
                 } else {
                     state[action.payload.target] =
                         action.payload.payloadVariableDependent;
