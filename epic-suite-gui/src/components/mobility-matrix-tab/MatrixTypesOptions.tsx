@@ -48,7 +48,11 @@ const MatrixTypesOptions = ({
                 >
                     <Stack direction="row" spacing="24px">
                         <Radio value="artificial">Artificial</Radio>
-                        <Radio isDisabled={isDisabled} value="real">
+                        <Radio
+                            display="none"
+                            isDisabled={isDisabled}
+                            value="real"
+                        >
                             Real
                         </Radio>
                     </Stack>
