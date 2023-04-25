@@ -58,11 +58,17 @@ const MobilityMatrixContext: React.FC<ChildrenProps> = ({ children }) => {
                 return state.filter(
                     (e: MobilityMatrixListProps) => e.id !== +action.element
                 );
-            case "remove-several":
-                return state.filter(
+            case "remove-several": {
+                const newState = state.filter(
                     (e: MobilityMatrixListProps) =>
                         e.modelId !== +action.element
                 );
+                localStorage.setItem(
+                    "mobilityMatrixList",
+                    JSON.stringify(newState)
+                );
+                return newState;
+            }
             case "setInitial":
                 return [...state, ...action.localState];
             default:
